@@ -1,46 +1,119 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    var userEmail = Context.Session.GetString("userEmail");
+    var userType = Context.Session.GetString("userType");
+    var jobID = Context.Session.GetString("jobID");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - property_rental_management</title>
+    <title>@ViewData["Title"] - RentaSpace</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/property_rental_management.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">property_rental_management</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+
+        <!--NAVIGATION-->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
+            <div class="container-fluid rs-header-nav">
+                <div class="left">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/logo_text_header_nobg.png" alt="Rentaspace Logo Text" class="img-logo img-header" />
+                    </a>
                 </div>
+
+                <div class="right">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1 rs-navbar-btn">
+                            @if (userEmail != null)
+                            {
+                                if (userType == "Tenant")
+                                {
+                                    <li class="nav-item">
+                                        @Html.ActionLink("My Profile", "Index", "Login", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                    </li>
+                                } else
+                                {
+                                    if (jobID == "500")
+                                    {
+                                        <li class="nav-item">
+                                            @Html.ActionLink("Admin", "Index", "Login", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                        </li>
+                                    }
+                                    else if (jobID == "502")
+                                    {
+                                        <li class="nav-item">
+                                            @Html.ActionLink("Manager", "Index", "Login", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                        </li>
+                                    }
+                                }
+                                <li class="nav-item">
+                                    @Html.ActionLink("Logout", "Index", "Logout", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-outline" })
+                                </li>
+
+                            } else
+                            {
+                                <li class="nav-item">
+                                    @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                </li>
+                                <li class="nav-item">
+                                    @Html.ActionLink("Register", "Profile", "Tenant", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-outline" })
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                
             </div>
         </nav>
     </header>
+
+    <!--BODY-->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - property_rental_management - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!--FOOTER-->
+    <div class="container">
+        <footer class="row row-cols-5 py-5 my-5 border-top">
+            <div class="col-3">
+                <h5>Search</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Apartments</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Properties</a></li>
+                </ul>
+            </div>
+
+            <div class="col-3">
+                <h5>Information</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQ</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Terms & Conditions</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="col-6">
+                <img src="~/images/logo_text_nobg.png" alt="Rentaspace Logo Text" class="img-logo img-footer" />
+                <p class="p-0 text-muted">Rentaspace enables tenants to explore rental options, including apartments, condos, and houses, in Montreal and key cities across Quebec.</p>
+                <p class="p-0 text-muted">Copyright &copy; 2024 dttncl</p>
+            </div>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

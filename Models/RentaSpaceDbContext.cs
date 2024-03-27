@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using property_rental_management.Models;
 
 namespace property_rental_management.Models;
 
@@ -340,4 +341,8 @@ public partial class RentaSpaceDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<property_rental_management.Models.Login> Login { get; set; } = default!;
+
+public DbSet<property_rental_management.Models.Register> Register { get; set; } = default!;
 }

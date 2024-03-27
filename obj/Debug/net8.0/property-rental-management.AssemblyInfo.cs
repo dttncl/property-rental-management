@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("property-rental-management")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a04dfb110667c2d0e3b818cf15ed0dfd5dd7ee83")]
 [assembly: System.Reflection.AssemblyProductAttribute("property-rental-management")]
 [assembly: System.Reflection.AssemblyTitleAttribute("property-rental-management")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
