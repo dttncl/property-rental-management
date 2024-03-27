@@ -4,21 +4,19 @@ namespace property_rental_management.Models
 {
     public class Register
     {
-        [Key]
-        public string TenantID { get; set; } = null!;
-
+        
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
 
-        [Required]
+        [Key]
+        [Required(ErrorMessage = "Email field is required")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = "Phone field is required")]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; } = null!;
 
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = null!;

@@ -19,138 +19,67 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Register
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Register.ToListAsync());
-        }
-
-        // GET: Register/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var register = await _context.Register
-                .FirstOrDefaultAsync(m => m.TenantID == id);
-            if (register == null)
-            {
-                return NotFound();
-            }
-
-            return View(register);
-        }
-
-        // GET: Register/Create
-        public IActionResult Create()
+        public IActionResult Index()
         {
             return View();
         }
 
-        // POST: Register/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TenantID,FirstName,LastName,Email,Phone,Password,ConfirmPassword")] Register register)
+        public async Task<IActionResult> Index(Register register)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(register);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(register);
-        }
-
-        // GET: Register/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var register = await _context.Register.FindAsync(id);
-            if (register == null)
-            {
-                return NotFound();
-            }
-            return View(register);
-        }
-
-        // POST: Register/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("TenantID,FirstName,LastName,Email,Phone,Password,ConfirmPassword")] Register register)
-        {
-            if (id != register.TenantID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (register == null)
                 {
-                    _context.Update(register);
+                    return NotFound();
+                }
+
+                var userAccount = await _context.UserAccounts
+                    .FirstOrDefaultAsync(m => m.Email == register.Email);
+
+                if (userAccount == null)
+                {
+                    var newUserAccount = new UserAccount
+                    {
+                        Email = register.Email,
+                        Password = register.Password,
+                        UserType = "Tenant"
+                    };
+
+                    _context.UserAccounts.Add(newUserAccount);
                     await _context.SaveChangesAsync();
+
+                    string tID;
+                    do
+                    {
+                        tID = RandomIDGenerator.GenerateRandomID("T", 4);
+                    }
+                    while (_context.Tenants.Any(x => x.TenantId == tID));
+
+                    var tenant = new Tenant
+                    {
+                        TenantId = tID,
+                        FirstName = register.FirstName,
+                        LastName = register.LastName,
+                        Email = register.Email,
+                        Phone = register.Phone
+                    };
+
+                    _context.Tenants.Add(tenant);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Index", "Home");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!RegisterExists(register.TenantID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ModelState.AddModelError("Email", "Email is already registered.");
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(register);
-        }
-
-        // GET: Register/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var register = await _context.Register
-                .FirstOrDefaultAsync(m => m.TenantID == id);
-            if (register == null)
-            {
-                return NotFound();
             }
 
             return View(register);
         }
 
-        // POST: Register/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var register = await _context.Register.FindAsync(id);
-            if (register != null)
-            {
-                _context.Register.Remove(register);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool RegisterExists(string id)
-        {
-            return _context.Register.Any(e => e.TenantID == id);
-        }
     }
 }
