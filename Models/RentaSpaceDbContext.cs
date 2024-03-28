@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using property_rental_management.Models;
 
 namespace property_rental_management.Models;
 
@@ -40,6 +41,7 @@ public partial class RentaSpaceDbContext : DbContext
     public virtual DbSet<Tenant> Tenants { get; set; }
 
     public virtual DbSet<UserAccount> UserAccounts { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -297,7 +299,6 @@ public partial class RentaSpaceDbContext : DbContext
             entity.HasKey(e => e.ScheduleId).HasName("PK__Schedule__9C8A5B699EA15F7B");
 
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
-            entity.Property(e => e.WeekDay).HasMaxLength(10);
         });
 
         modelBuilder.Entity<Status>(entity =>
@@ -347,4 +348,6 @@ public partial class RentaSpaceDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<property_rental_management.Models.BookAppointment> BookAppointment { get; set; } = default!;
 }

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<property_rental_management.Models.Property>
+
+@{
+    ViewData["Title"] = "Index";
+    var userEmail = Context.Session.GetString("userEmail");
+    var tenantID = Context.Session.GetString("tenantID");
+}
+
+
+<main class="rs-properties-container">
+    <div class="rs-map-container">
+        <div class="rs-map-container" id="map"></div>
+    </div>
+
+    <div class="rs-cards-container">
+        @foreach (var property in Model)
+        {
+            <a asp-action="Details" asp-route-id="@property.PropertyId" class="rs-card-link">
+            <div class="card rs-card">
+                <img class="card-img rs-card-img" src="~/images/sample.jpg" />
+                <div class="rs-card-right">
+                    <div class="card-header">
+                        @property.Address
+                    </div>
+
+                    <div class="card-text">
+                        @{
+                            decimal minPrice = property.Apartments.Min(p => p.Price);
+                            decimal maxPrice = property.Apartments.Max(p => p.Price);
+                            int minBed = property.Apartments.Min(p => p.Bedrooms);
+                            int maxBed = property.Apartments.Max(p => p.Bedrooms);
+                            int minBath = property.Apartments.Min(p => p.Bathrooms);
+                            int maxBath = property.Apartments.Max(p => p.Bathrooms);
+                        }
+
+                        @if (minPrice == maxPrice)
+                        {
+                            <text>$ @minPrice</text>
+                        }
+                        else
+                        {
+                            <text>$ @minPrice - $ @maxPrice</text>
+                        }
+                        <br />
+                        Year Established: @property.YearEstablished
+                        <br />
+                        @if (minBed == maxBed)
+                        {
+                            <text>Bedrooms: @minBed</text>
+                        }
+                        else
+                        {
+                            <text>Bedrooms: @minBed - @maxBed</text>
+                        }
+                        <br />
+                        @if (minBath == maxBath)
+                        {
+                            <text>Bathrooms: @minBath</text>
+                        }
+                        else
+                        {
+                            <text>Bathrooms: @minBath - @maxBath</text>
+                        }
+                        <br />
+                        @property.Address, @property.City.CityName, QC
+                        <br />
+                            <form asp-controller="Msg" asp-action="Create" method="get">
+                                <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                <input type="hidden" name="tenantID" value="@tenantID" />
+                                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Send Message</button>
+                            </form>
+
+                            <form asp-controller="BookAppointments" asp-action="Create" method="get">
+                                <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                <input type="hidden" name="tenantID" value="@tenantID" />
+                                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
+                            </form>
+                        <br />
+                    </div>
+                </div>
+            </div>
+            </a>
+        }
+    </div>
+</main>
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhYZ4ntcdv5Zlx9K1VmCD2j3epIUGMHvs&callback=initMap" defer></script>-->
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8
+        });
+    }
+</script>

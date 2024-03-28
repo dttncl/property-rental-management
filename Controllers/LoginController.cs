@@ -71,6 +71,17 @@ namespace property_rental_management.Controllers
                         {
                             HttpContext.Session.SetString("jobID", "502");
                         }
+                    } else
+                    {
+                        var tenant = await _context.Tenants
+                            .FirstOrDefaultAsync(t => t.Email == userAccount.Email);
+
+                        if (tenant == null)
+                        {
+                            return NotFound();
+                        }
+
+                        HttpContext.Session.SetString("tenantID", tenant.TenantId);
                     }
 
                 }

@@ -7,8 +7,6 @@ public partial class Schedule
 {
     public int ScheduleId { get; set; }
 
-    public string WeekDay { get; set; } = null!;
-
     public TimeOnly? StartTime { get; set; }
 
     public TimeOnly? EndTime { get; set; }

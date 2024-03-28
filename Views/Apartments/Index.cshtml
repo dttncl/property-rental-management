@@ -20,15 +20,15 @@
                     </div>
 
                     <div class="card-text">
+                        $ @app.Price
+                        <br />
+                        Year Established: @app.Properties.First().YearEstablished
+                        <br />
                         Bedrooms: @app.Bedrooms
                         <br />
                         Bathrooms: @app.Bathrooms
                         <br />
-                        Floor Area: @app.FloorArea sqm
-                        <br />
-                        $ @app.Price
-                        <br />
-                        Status: @app.Status.Description
+                        @app.Properties.First().City.CityName QC
                         <br />
                         <a asp-action="Details" asp-route-id="@app.ApartmentId">Details</a>
                     </div>

@@ -23,7 +23,8 @@ namespace property_rental_management.Controllers
         {
             var rentaSpaceDbContext = _context.Apartments
                 .Include(a => a.Status)
-                .Include(p => p.Properties);
+                .Include(p => p.Properties)
+                    .ThenInclude(c => c.City);
             return View(await rentaSpaceDbContext.ToListAsync());
         }
 

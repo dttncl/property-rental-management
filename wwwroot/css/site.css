@@ -130,9 +130,18 @@ body {
     width: 100%;
 }
 
-.rs-apartments-container {
+.rs-properties-container {
     height: 100vh;
     display: flex;
     flex-direction: row;
     gap: 20px;
+}
+
+.rs-card-link {
+    text-decoration: none;
+    color: black;
+}
+
+.rs-card-link:hover {
+    color: black;
 }
