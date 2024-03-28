@@ -1,4 +1,4 @@
-﻿@model property_rental_management.Models.Manager
+﻿@model property_rental_management.Models.UserAccount
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,22 +6,27 @@
 
 <h1>Edit</h1>
 
-<h4>Manager</h4>
+<h4>UserAccount</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ManagerId" />
+            <input type="hidden" asp-for="UserAccountId" />
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <select asp-for="Email" class="form-control" asp-items="ViewBag.Email"></select>
+                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
-                <span asp-validation-for="CityId" class="text-danger"></span>
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserType" class="control-label"></label>
+                <input asp-for="UserType" class="form-control" />
+                <span asp-validation-for="UserType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -34,6 +39,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

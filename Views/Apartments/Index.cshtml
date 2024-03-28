@@ -1,0 +1,50 @@
+﻿@model IEnumerable<property_rental_management.Models.Apartment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main class="rs-apartments-container">
+    <div class="rs-map-container">
+        <div class="rs-map-container" id="map"></div>
+    </div>
+
+    <div class="rs-cards-container">
+        @foreach (var app in Model)
+        {
+            <div class="card rs-card">
+                <img class="card-img rs-card-img" src="~/images/sample.jpg" />
+                <div class="rs-card-right">
+                    <div class="card-header">
+                        @app.Properties.First().Address
+                    </div>
+
+                    <div class="card-text">
+                        Bedrooms: @app.Bedrooms
+                        <br />
+                        Bathrooms: @app.Bathrooms
+                        <br />
+                        Floor Area: @app.FloorArea sqm
+                        <br />
+                        $ @app.Price
+                        <br />
+                        Status: @app.Status.Description
+                        <br />
+                        <a asp-action="Details" asp-route-id="@app.ApartmentId">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhYZ4ntcdv5Zlx9K1VmCD2j3epIUGMHvs&callback=initMap" defer></script>-->
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8
+        });
+    }
+</script>
+

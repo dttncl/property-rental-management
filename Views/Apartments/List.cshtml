@@ -1,0 +1,58 @@
+﻿@model IEnumerable<property_rental_management.Models.Apartment>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Properties
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bedrooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bathrooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FloorArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>
+                    @app.Properties.First().Address
+                </td>
+                <td>
+                    @app.Bedrooms
+                </td>
+                <td>
+                    @app.Bathrooms
+                </td>
+                <td>
+                    @app.FloorArea
+                </td>
+                <td>
+                    @app.Status.StatusId
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@app.ApartmentId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

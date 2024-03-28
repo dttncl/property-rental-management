@@ -37,6 +37,10 @@
       "PackagePath": "staticwebassets\\images\\logo_text_nobg.png"
     },
     {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\sample.jpg",
+      "PackagePath": "staticwebassets\\images\\sample.jpg"
+    },
+    {
       "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\welcome.png",
       "PackagePath": "staticwebassets\\images\\welcome.png"
     },

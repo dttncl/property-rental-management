@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using property_rental_management.Models;
 
 namespace property_rental_management.Models;
 
@@ -59,6 +58,7 @@ public partial class RentaSpaceDbContext : DbContext
                 .HasConstraintName("FK__Admins__AdminID__59063A47");
 
             entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Admins)
+                .HasPrincipalKey(p => p.Email)
                 .HasForeignKey(d => d.Email)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Admins__Email__59FA5E80");
@@ -72,6 +72,7 @@ public partial class RentaSpaceDbContext : DbContext
                 .HasMaxLength(5)
                 .HasColumnName("ApartmentID");
             entity.Property(e => e.FloorArea).HasColumnType("decimal(4, 2)");
+            entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.StatusId)
                 .HasMaxLength(2)
                 .IsFixedLength()
@@ -187,6 +188,7 @@ public partial class RentaSpaceDbContext : DbContext
                 .HasConstraintName("FK__Managers__CityID__5629CD9C");
 
             entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Managers)
+                .HasPrincipalKey(p => p.Email)
                 .HasForeignKey(d => d.Email)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Managers__Email__5535A963");
@@ -324,14 +326,18 @@ public partial class RentaSpaceDbContext : DbContext
             entity.Property(e => e.Phone).HasMaxLength(10);
 
             entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Tenants)
+                .HasPrincipalKey(p => p.Email)
                 .HasForeignKey(d => d.Email)
                 .HasConstraintName("FK__Tenants__Email__3C69FB99");
         });
 
         modelBuilder.Entity<UserAccount>(entity =>
         {
-            entity.HasKey(e => e.Email).HasName("PK__UserAcco__A9D10535CD230647");
+            entity.HasKey(e => e.UserAccountId).HasName("PK__UserAcco__A9D10535CD230647");
 
+            entity.HasIndex(e => e.Email, "UQ__tmp_ms_x__A9D10534658E18A3").IsUnique();
+
+            entity.Property(e => e.UserAccountId).HasColumnName("UserAccount_Id");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.UserType).HasMaxLength(50);
@@ -341,8 +347,4 @@ public partial class RentaSpaceDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<property_rental_management.Models.Login> Login { get; set; } = default!;
-
-public DbSet<property_rental_management.Models.Register> Register { get; set; } = default!;
 }

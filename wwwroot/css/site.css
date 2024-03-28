@@ -93,4 +93,46 @@ body {
     justify-content: center;
     align-items: center;
     padding-right: 100px;
+    
+}
+
+.rs-card {
+    display: flex;
+    flex-direction: row;
+}
+
+.rs-card-right {
+    width: 60%;
+}
+
+.card-text {
+    padding: 10px;
+}
+
+.rs-card-img {
+    width: 40%;
+}
+
+.rs-cards-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: scroll;
+}
+
+.rs-map-container {
+    width:50%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.rs-apartments-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }

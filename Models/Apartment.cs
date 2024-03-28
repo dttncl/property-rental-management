@@ -15,6 +15,8 @@ public partial class Apartment
 
     public string StatusId { get; set; } = null!;
 
+    public decimal Price { get; set; }
+
     public virtual Status Status { get; set; } = null!;
 
     public virtual ICollection<Property> Properties { get; set; } = new List<Property>();

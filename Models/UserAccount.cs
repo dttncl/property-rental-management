@@ -5,6 +5,8 @@ namespace property_rental_management.Models;
 
 public partial class UserAccount
 {
+    public int UserAccountId { get; set; }
+
     public string Email { get; set; } = null!;
 
     public string Password { get; set; } = null!;
