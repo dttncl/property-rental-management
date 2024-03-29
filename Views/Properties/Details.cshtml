@@ -2,55 +2,37 @@
 
 @{
     ViewData["Title"] = "Details";
+    var tenantID = Context.Session.GetString("tenantID");
 }
 
-<h1>Details</h1>
+<div class="rs-properties-details-heading">
+    <h1>@Model.Address</h1>
+    <div>
+        @if (tenantID != null)
+        {
+            <form asp-controller="Msg" asp-action="Create" method="get">
+                <input type="hidden" name="managerId" value="@Model.Managers.First().ManagerId" />
+                <input type="hidden" name="tenantID" value="@tenantID" />
+                <button type="submit" class="rs-card-link btn">
+                    <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                </button>
+            </form>
+
+            <form asp-controller="BookAppointments" asp-action="Create" method="get">
+                <input type="hidden" name="managerId" value="@Model.Managers.First().ManagerId" />
+                <input type="hidden" name="tenantID" value="@tenantID" />
+                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
+            </form>
+        }
+    </div>
+</div>
+<p>
+    <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Address , @Model.City.CityName , QC  | 
+    <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @Model.YearEstablished
+</p>
 
 <div>
-    <h4>Property</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearEstablished)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearEstablished)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalUnits)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalUnits)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailableUnits)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvailableUnits)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City.CityName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status.Description)
-        </dd>
-    </dl>
-
-    <hr />
-
-    <table class="table">
+    <table class="table rs-table">
         <thead>
             <tr>
                 <th>
@@ -68,7 +50,6 @@
                 <th>
                     Floor Area
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -76,31 +57,22 @@
             {
                 <tr>
                     <td>
-                        @app.Bedrooms
+                        @app.Bedrooms Beds
                     </td>
                     <td>
-                        @app.Status.Description
+                        <div class="rs-status">@app.Status.Description</div>
                     </td>
                     <td>
                         $ @app.Price
                     </td>
                     <td>
-                        @app.Bathrooms
+                        @app.Bathrooms Baths
                     </td>
                     <td>
-                        @app.FloorArea
-                    </td>
-                    <td>
-                        <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@app.ApartmentId">Edit</a> |
-                        <a asp-controller="Apartments" asp-action="Details" asp-route-id="@app.ApartmentId">Details</a> |
-                        <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@app.ApartmentId">Delete</a>
+                        @app.FloorArea sqm
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.PropertyId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>

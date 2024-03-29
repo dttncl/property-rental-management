@@ -49,6 +49,7 @@ namespace property_rental_management.Controllers
 
             var @property = await _context.Properties
                 .Include(c => c.City)
+                .Include(m => m.Managers)
                 .Include(s => s.Status)
                 .Include(a => a.Apartments)
                     .ThenInclude(sa => sa.Status)
