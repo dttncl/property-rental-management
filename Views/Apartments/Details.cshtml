@@ -10,25 +10,6 @@
     <h4>Apartment</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            Property Address
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Properties.First().Address)
-        </dd>
-        <dt class="col-sm-2">
-            City
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Properties.First().City.CityName)
-        </dd>
-        <dt class="col-sm-2">
-            Year Established
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Properties.First().YearEstablished)
-        </dd>
-        <hr />
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Bedrooms)
         </dt>
@@ -51,7 +32,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class = "col-sm-10">
-            $ @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Status)

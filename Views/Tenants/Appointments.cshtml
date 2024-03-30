@@ -1,0 +1,56 @@
+﻿@model IEnumerable<property_rental_management.Models.Appointment>
+
+@{
+
+}
+
+<h1>All Appointments</h1>
+
+<table class="table rs-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Manager)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apartment)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Manager.ManagerNavigation.FirstName @item.Manager.ManagerNavigation.LastName
+            </td>
+            <td>
+                @item.AppointmentDate
+            </td>
+            <td>
+                @item.Schedule.StartTime - @item.Schedule.EndTime
+            </td>
+            <td>
+                @item.Apartment.Properties.FirstOrDefault().Address
+                <br />
+                @item.Apartment.Bedrooms Beds - @item.Apartment.Bathrooms Beds - @item.Apartment.FloorArea sqm
+            </td>
+            <td>
+                <div class="rs-status">
+                    @item.Status.Description
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

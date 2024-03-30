@@ -4,6 +4,7 @@
     var userEmail = Context.Session.GetString("userEmail");
     var userType = Context.Session.GetString("userType");
     var jobID = Context.Session.GetString("jobID");
+    var tenantID = Context.Session.GetString("tenantID");
 }
 
 <!DOCTYPE html>
@@ -11,7 +12,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RentaSpace</title>
+    <title>RentaSpace</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/property_rental_management.styles.css" asp-append-version="true" />
@@ -42,7 +43,7 @@
                                 if (userType == "Tenant")
                                 {
                                     <li class="nav-item">
-                                        @Html.ActionLink("My Profile", "Index", "Login", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                        @Html.ActionLink("My Profile", "Profile", "Tenants", new { area = "", id = tenantID }, new { @class = "btn btn-lg btn-rentaspace-full" })
                                     </li>
                                 } else
                                 {

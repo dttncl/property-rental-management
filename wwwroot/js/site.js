@@ -1,36 +1,23 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿console.log("Hi")
 
-// Write your JavaScript code.
+document.addEventListener('DOMContentLoaded', function () {
+    const textarea = document.getElementById('message');
+    const placeholder = textarea.getAttribute('placeholder');
 
-// Function to highlight weekdays in the AppointmentDate calendar based on selected ScheduleId
-function highlightWeekdays() {
-    // Get the selected ScheduleId from the dropdown
-    var selectedScheduleId = $("#ScheduleId").val();
+    // Set initial placeholder value
+    textarea.value = placeholder;
 
-    // Get the weekday corresponding to the selected ScheduleId
-    var selectedWeekday = $("option:selected", "#ScheduleId").text().split(" - ")[0];
-
-    // Highlight the corresponding weekday in the AppointmentDate calendar
-    // Get all the days in the calendar
-    var appointmentDateCalendar = $("#appointment-date");
-    var days = appointmentDateCalendar.find(".datepicker-days tbody td");
-
-    // Remove any existing highlight classes
-    days.removeClass("highlight-day");
-
-    // Loop through each day and add the highlight class to the matching weekday
-    days.each(function () {
-        var dayText = $(this).text();
-        if (dayText === selectedWeekday) {
-            $(this).addClass("highlight-day");
+    // When textarea is focused, clear the placeholder value
+    textarea.addEventListener('focus', function () {
+        if (textarea.value === placeholder) {
+            textarea.value = '';
         }
     });
-}
 
-// Call the highlightWeekdays function when the ScheduleId dropdown changes
-$(document).ready(function () {
-    $("#ScheduleId").change(function () {
-        highlightWeekdays();
+    // When textarea loses focus and is empty, restore the placeholder value
+    textarea.addEventListener('blur', function () {
+        if (textarea.value.trim() === '') {
+            textarea.value = placeholder;
+        }
     });
 });

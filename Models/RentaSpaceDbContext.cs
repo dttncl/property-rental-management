@@ -42,7 +42,6 @@ public partial class RentaSpaceDbContext : DbContext
 
     public virtual DbSet<UserAccount> UserAccounts { get; set; }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Admin>(entity =>
@@ -91,6 +90,9 @@ public partial class RentaSpaceDbContext : DbContext
             entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCA2E6E5CCE1");
 
             entity.Property(e => e.AppointmentId).HasColumnName("AppointmentID");
+            entity.Property(e => e.ApartmentId)
+                .HasMaxLength(5)
+                .HasColumnName("ApartmentID");
             entity.Property(e => e.ManagerId).HasColumnName("ManagerID");
             entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
             entity.Property(e => e.StatusId)
@@ -100,6 +102,11 @@ public partial class RentaSpaceDbContext : DbContext
             entity.Property(e => e.TenantId)
                 .HasMaxLength(5)
                 .HasColumnName("TenantID");
+
+            entity.HasOne(d => d.Apartment).WithMany(p => p.Appointments)
+                .HasForeignKey(d => d.ApartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Appointme__Apart__6AEFE058");
 
             entity.HasOne(d => d.Manager).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.ManagerId)
@@ -349,5 +356,8 @@ public partial class RentaSpaceDbContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
+public DbSet<property_rental_management.Models.Msg> Msg { get; set; } = default!;
+
 public DbSet<property_rental_management.Models.BookAppointment> BookAppointment { get; set; } = default!;
+
 }

@@ -57,8 +57,28 @@
       "PackagePath": "staticwebassets\\images\\logo_text_nobg.png"
     },
     {
-      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\sample.jpg",
-      "PackagePath": "staticwebassets\\images\\sample.jpg"
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\properties\\sample.jpg",
+      "PackagePath": "staticwebassets\\images\\properties\\sample.jpg"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\properties\\sample_1.jpg",
+      "PackagePath": "staticwebassets\\images\\properties\\sample_1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\properties\\sample_2.jpg",
+      "PackagePath": "staticwebassets\\images\\properties\\sample_2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\properties\\sample_3.jpg",
+      "PackagePath": "staticwebassets\\images\\properties\\sample_3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\properties\\sample_4.jpg",
+      "PackagePath": "staticwebassets\\images\\properties\\sample_4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\properties\\sample_5.jpg",
+      "PackagePath": "staticwebassets\\images\\properties\\sample_5.jpg"
     },
     {
       "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\welcome.png",

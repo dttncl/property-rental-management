@@ -43,7 +43,7 @@ namespace property_rental_management.Controllers
         }
 
         // GET: BookAppointments/Create
-        public IActionResult Create(String managerId, String tenantID)
+        public IActionResult Create(String managerId, String tenantID, String propertyID)
         {
             ViewData["tenantID"] = tenantID;
             ViewData["managerID"] = managerId;
@@ -55,7 +55,16 @@ namespace property_rental_management.Controllers
                 "ScheduleId",
                 "DisplayText");
 
-            //ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId");
+            ViewData["ApartmentId"] = new SelectList(_context.Apartments
+                .Where(a => a.Properties.Any(p => p.PropertyId == propertyID))
+                .Select(a => new
+                {
+                    a.ApartmentId,
+                    DisplayText = $"{a.Bedrooms} Beds - {a.Bathrooms} Baths - {a.FloorArea} sqm"
+                }),
+                "ApartmentId",
+                "DisplayText");
+
             ViewData["statusId"] = "S1";
 
             return View();
@@ -66,7 +75,7 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppointmentId,ManagerId,TenantId,ScheduleId,AppointmentDate,StatusId")] BookAppointment bookAppointment)
+        public async Task<IActionResult> Create([Bind("AppointmentId,ManagerId,TenantId,ScheduleId,AppointmentDate,StatusId,ApartmentId")] BookAppointment bookAppointment)
         {
             if (ModelState.IsValid)
             {
@@ -83,12 +92,29 @@ namespace property_rental_management.Controllers
                     TenantId = bookAppointment.TenantId,
                     ScheduleId = bookAppointment.ScheduleId,
                     AppointmentDate = bookAppointment.AppointmentDate,
-                    StatusId = bookAppointment.StatusId
+                    StatusId = bookAppointment.StatusId,
+                    ApartmentId = bookAppointment.ApartmentId
                 };
 
                 _context.Appointments.Add(newAppointment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+
+                //HttpContext.Session.SetString("userEmail", userAccount.Email);
+                //HttpContext.Session.SetString("userType", userAccount.UserType);
+                //HttpContext.Session.SetString("tenantID", tenant.TenantId);
+
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
 
             return View(bookAppointment);
@@ -102,7 +128,7 @@ namespace property_rental_management.Controllers
                 return NotFound();
             }
 
-            var bookAppointment = await _context.BookAppointment.FindAsync(id);
+            var bookAppointment = await _context.Appointments.FindAsync(id);
             if (bookAppointment == null)
             {
                 return NotFound();
@@ -115,7 +141,7 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,ManagerId,TenantId,ScheduleId,AppointmentDate,StatusId")] BookAppointment bookAppointment)
+        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,ManagerId,TenantId,ScheduleId,AppointmentDate,StatusId,ApartmentId")] BookAppointment bookAppointment)
         {
             if (id != bookAppointment.AppointmentId)
             {
@@ -153,7 +179,7 @@ namespace property_rental_management.Controllers
                 return NotFound();
             }
 
-            var bookAppointment = await _context.BookAppointment
+            var bookAppointment = await _context.Appointments
                 .FirstOrDefaultAsync(m => m.AppointmentId == id);
             if (bookAppointment == null)
             {
@@ -168,10 +194,10 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bookAppointment = await _context.BookAppointment.FindAsync(id);
+            var bookAppointment = await _context.Appointments.FindAsync(id);
             if (bookAppointment != null)
             {
-                _context.BookAppointment.Remove(bookAppointment);
+                _context.Appointments.Remove(bookAppointment);
             }
 
             await _context.SaveChangesAsync();
@@ -180,7 +206,7 @@ namespace property_rental_management.Controllers
 
         private bool BookAppointmentExists(int id)
         {
-            return _context.BookAppointment.Any(e => e.AppointmentId == id);
+            return _context.Appointments.Any(e => e.AppointmentId == id);
         }
     }
 }

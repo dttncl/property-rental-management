@@ -1,0 +1,44 @@
+﻿@model property_rental_management.Models.Tenant
+
+@{
+    TempData["returnUrl"] = (string)Context.Request.Path;
+}
+
+<h1>My Profile</h1>
+
+<div class="rs-profile-top">
+    <div class="rs-profile-top-left">
+        <dl class="row">
+            <dt class="col-sm-2">
+                First Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-sm-2">
+                Last Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-sm-2">
+                Email
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+                Phone
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </dl>
+    </div>
+    <div class="rs-profile-top-right">
+        <a asp-action="Edit" asp-route-id="@Model?.TenantId">Edit Profile</a> |
+        <a asp-action="Messages" asp-route-id="@Model?.TenantId">View Messages</a> |
+        <a asp-action="Appointments" asp-route-id="@Model?.TenantId">View Appointments</a>
+    </div>
+</div>
+

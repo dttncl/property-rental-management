@@ -26,30 +26,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\dette\source\repos\Winter2024\420_DW4_AS\property-rental-management
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Accounts/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudHNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Accounts/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudHNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Accounts/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudHNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Accounts/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudHNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Accounts/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Admin/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Apartments/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBhcnRtZW50c1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -72,6 +48,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Apartments/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBhcnRtZW50c1xMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Appointments/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Appointments/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Appointments/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Appointments/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Appointments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/BookAppointments/Create.cshtml]
@@ -110,36 +106,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Messages/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVzc2FnZXNcQ3JlYXRlLmNzaHRtbA==
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msgs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Messages/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVzc2FnZXNcRGVsZXRlLmNzaHRtbA==
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msgs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnc1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Messages/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVzc2FnZXNcRGV0YWlscy5jc2h0bWw=
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msgs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Messages/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVzc2FnZXNcRWRpdC5jc2h0bWw=
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msgs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Messages/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVzc2FnZXNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msg/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msg/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msg/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnXEluZGV4LmNzaHRtbA==
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Msgs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTXNnc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Properties/Create.cshtml]
@@ -176,6 +160,38 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Appointments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xBcHBvaW50bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Messages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xNZXNzYWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/Tenants/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50c1xQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/dette/source/repos/Winter2024/420_DW4_AS/property-rental-management/Views/_ViewImports.cshtml]

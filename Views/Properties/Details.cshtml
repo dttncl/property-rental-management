@@ -1,18 +1,22 @@
 ﻿@model property_rental_management.Models.Property
 
 @{
-    ViewData["Title"] = "Details";
+    var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
+    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <div class="rs-properties-details-heading">
+
     <h1>@Model.Address</h1>
+
     <div>
         @if (tenantID != null)
         {
-            <form asp-controller="Msg" asp-action="Create" method="get">
+            <form asp-controller="Msgs" asp-action="Create" method="get">
                 <input type="hidden" name="managerId" value="@Model.Managers.First().ManagerId" />
                 <input type="hidden" name="tenantID" value="@tenantID" />
+
                 <button type="submit" class="rs-card-link btn">
                     <img src="~/images/icon_mail.png" class="rs-icon-mail" />
                 </button>
@@ -21,13 +25,28 @@
             <form asp-controller="BookAppointments" asp-action="Create" method="get">
                 <input type="hidden" name="managerId" value="@Model.Managers.First().ManagerId" />
                 <input type="hidden" name="tenantID" value="@tenantID" />
+                <input type="hidden" name="propertyID" value="@Model.PropertyId" />
+
+                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
+            </form>
+        }
+        else
+        {
+
+            <form asp-controller="Login" asp-action="Index" method="get">
+                <button type="submit" class="rs-card-link btn">
+                    <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                </button>
+            </form>
+
+            <form asp-controller="Login" asp-action="Index" method="get">
                 <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
             </form>
         }
     </div>
 </div>
 <p>
-    <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Address , @Model.City.CityName , QC  | 
+    <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Address , @Model.City.CityName , QC  |
     <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @Model.YearEstablished
 </p>
 

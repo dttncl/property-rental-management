@@ -17,6 +17,8 @@ public partial class Apartment
 
     public decimal Price { get; set; }
 
+    public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
     public virtual Status Status { get; set; } = null!;
 
     public virtual ICollection<Property> Properties { get; set; } = new List<Property>();

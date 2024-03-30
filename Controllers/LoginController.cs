@@ -86,7 +86,15 @@ namespace property_rental_management.Controllers
 
                 }
 
-                return RedirectToAction("Index", "Home");
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             return View(login);

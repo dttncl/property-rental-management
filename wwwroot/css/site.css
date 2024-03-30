@@ -193,6 +193,7 @@ body {
 .rs-card {
     display: flex;
     flex-direction: column;
+    margin-right: 10px;
 }
 
 .rs-card-header-right {

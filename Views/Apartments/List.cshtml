@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                Properties
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Bedrooms)
             </th>
             <th>
@@ -25,34 +22,38 @@
                 @Html.DisplayNameFor(model => model.FloorArea)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var app in Model)
-        {
-            <tr>
-                <td>
-                    @app.Properties.First().Address
-                </td>
-                <td>
-                    @app.Bedrooms
-                </td>
-                <td>
-                    @app.Bathrooms
-                </td>
-                <td>
-                    @app.FloorArea
-                </td>
-                <td>
-                    @app.Status.StatusId
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@app.ApartmentId">Details</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bedrooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bathrooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FloorArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.StatusId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

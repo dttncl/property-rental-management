@@ -13,9 +13,13 @@ public partial class Appointment
 
     public int ScheduleId { get; set; }
 
-    public DateOnly? AppointmentDate { get; set; }
+    public DateOnly AppointmentDate { get; set; }
 
     public string StatusId { get; set; } = null!;
+
+    public string ApartmentId { get; set; } = null!;
+
+    public virtual Apartment Apartment { get; set; } = null!;
 
     public virtual Manager Manager { get; set; } = null!;
 
