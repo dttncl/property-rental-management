@@ -5,6 +5,8 @@
     var userType = Context.Session.GetString("userType");
     var jobID = Context.Session.GetString("jobID");
     var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
+    //TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <!DOCTYPE html>
@@ -50,13 +52,13 @@
                                     if (jobID == "500")
                                     {
                                         <li class="nav-item">
-                                            @Html.ActionLink("Admin", "Index", "Admin", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                            @Html.ActionLink("Admin", "Index", "Admin", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
                                         </li>
                                     }
                                     else if (jobID == "502")
                                     {
                                         <li class="nav-item">
-                                            @Html.ActionLink("Manager", "Index", "Manager", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                            @Html.ActionLink("Manager Dashboard", "Listings", "Managers", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
                                         </li>
                                     }
                                 }

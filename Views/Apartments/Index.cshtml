@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<property_rental_management.Models.Apartment>
 
 @{
-    ViewData["Title"] = "Index";
+    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <main class="rs-apartments-container">

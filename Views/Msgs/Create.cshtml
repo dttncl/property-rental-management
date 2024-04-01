@@ -1,38 +1,54 @@
 ﻿@model property_rental_management.Models.Msg
 
 @{
-    
+    var tenantID = ViewData["tenantID"];
+    var tenantIDList = ViewBag.tenantIDList;
 }
 
-<h1>Contact Property</h1>
+<h1>Create Message</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <input type="hidden" asp-for="ManagerId" class="form-control" value="@ViewData["managerID"]" />
-            <input type="hidden" asp-for="TenantId" class="form-control" value="@ViewData["tenantID"]" />
-
+            @if (tenantIDList == null)
+            {
+                <input type="hidden" asp-for="TenantId" class="form-control" value="@ViewData["tenantID"]" />
+            } else
+            {
+                <div class="form-group">
+                    <label class="control-label">To: </label>
+                    <select asp-com asp-for="TenantId" class="form-control" asp-items="@tenantIDList" id="tenantSelect"></select>
+                </div>
+            }
+            
             <div class="form-group">
                 <label class="control-label">Name: </label>
-                <input class="form-control" value="@ViewData["tenantName"]" disabled />
+                <input id="tenantName" class="form-control" value="@ViewData["tenantName"]" disabled />
             </div>
 
             <div class="form-group">
                 <label class="control-label">Email: </label>
-                <input class="form-control" value="@ViewData["tenantEmail"]" disabled />
+                <input id="tenantEmail" class="form-control" value="@ViewData["tenantEmail"]" disabled />
             </div>
 
             <div class="form-group">
-                <label class="control-label">Email: </label>
-                <input class="form-control" value="@ViewData["tenantPhone"]" disabled />
+                <label class="control-label">Phone: </label>
+                <input id="tenantPhone" class="form-control" value="@ViewData["tenantPhone"]" disabled />
             </div>
 
             <div class="form-group">
                 <label asp-for="Message1" class="control-label">Message</label>
-                <textarea asp-for="Message1" id="message" class="form-control" rows="5" placeholder="Hi! I am interested to see this place."></textarea>
+                @if (tenantIDList == null)
+                {
+                    <textarea asp-for="Message1" id="message" class="form-control" rows="5" placeholder="Hi! I am interested to see this place."></textarea>
+                } else
+                {
+                    <textarea asp-for="Message1" id="message" class="form-control" rows="5" placeholder="Hi! I have a new listing you could be interested in."></textarea>
+                }
+
                 <span asp-validation-for="Message1" class="text-danger"></span>
             </div>
 

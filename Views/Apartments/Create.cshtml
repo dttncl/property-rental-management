@@ -1,7 +1,7 @@
-﻿@model property_rental_management.Models.Apartment
+﻿@model property_rental_management.Models.ApartmentModel
 
 @{
-    ViewData["Title"] = "Create";
+
 }
 
 <h1>Create</h1>
@@ -12,11 +12,9 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ApartmentId" class="control-label"></label>
-                <input asp-for="ApartmentId" class="form-control" />
-                <span asp-validation-for="ApartmentId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="StatusId" class="form-control" value="A1" />
+            <input type="hidden" asp-for="ApartmentId" class="form-control" value="X"/>
+
             <div class="form-group">
                 <label asp-for="Bedrooms" class="control-label"></label>
                 <input asp-for="Bedrooms" class="form-control" />
@@ -33,15 +31,12 @@
                 <span asp-validation-for="FloorArea" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" name="id" value="@ViewBag.PropertyId" />
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

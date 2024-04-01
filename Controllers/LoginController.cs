@@ -42,6 +42,7 @@ namespace property_rental_management.Controllers
                 if (userAccount == null)
                 {
                     return NotFound();
+
                 } else
                 {
 
@@ -63,6 +64,8 @@ namespace property_rental_management.Controllers
                         else if (employee.JobId == 500)
                         {
                             HttpContext.Session.SetString("jobID", "500");
+                            HttpContext.Session.SetString("employeeID", employee.EmployeeId.ToString());
+
 
                         }
 
@@ -70,6 +73,8 @@ namespace property_rental_management.Controllers
                         else if (employee.JobId == 502)
                         {
                             HttpContext.Session.SetString("jobID", "502");
+                            HttpContext.Session.SetString("employeeID", employee.EmployeeId.ToString());
+
                         }
                     } else
                     {

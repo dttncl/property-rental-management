@@ -3,7 +3,9 @@
 @{
     var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
     TempData["returnUrl"] = (string)Context.Request.Path;
+    
 }
 
 <div class="rs-properties-details-heading">
@@ -30,6 +32,23 @@
                 <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
             </form>
         }
+        else if (employeeID != null)
+        {
+            <form asp-controller="Msgs" asp-action="Create" method="get">
+                <input type="hidden" name="managerId" value="@employeeID" />
+
+                <button type="submit" class="rs-card-link btn">
+                    <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                </button>
+            </form>
+
+            <form asp-controller="BookAppointments" asp-action="Create" method="get">
+                <input type="hidden" name="managerId" value="@employeeID" />
+                <input type="hidden" name="propertyID" value="@Model.PropertyId" />
+
+                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
+            </form>
+        }
         else
         {
 
@@ -47,7 +66,21 @@
 </div>
 <p>
     <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Address , @Model.City.CityName , QC  |
-    <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @Model.YearEstablished
+    <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @Model.YearEstablished |
+    <img src="~/images/icon_apartment.png" class="rs-card-detail-icon" /> @Model.AvailableUnits / @Model.TotalUnits units available 
+
+    @if (employeeID != null)
+    {
+        <form asp-controller="Properties" asp-action="Edit" method="get">
+            <input type="hidden" name="id" value="@Model.PropertyId" />
+            <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Manage</button>
+        </form>
+
+        <form asp-controller="Apartments" asp-action="Create" method="get">
+            <input type="hidden" name="id" value="@Model.PropertyId" />
+            <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Add Apartment</button>
+        </form>
+    }
 </p>
 
 <div>
@@ -69,6 +102,10 @@
                 <th>
                     Floor Area
                 </th>
+                @if (employeeID != null)
+                {
+                    <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -90,6 +127,15 @@
                     <td>
                         @app.FloorArea sqm
                     </td>
+                    @if (employeeID != null)
+                    {
+                        <td>
+                            <form asp-controller="Apartments" asp-action="Details" method="get">
+                                <input type="hidden" name="id" value="@app.ApartmentId" />
+                                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">View Details</button>
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

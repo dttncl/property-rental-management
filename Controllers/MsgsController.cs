@@ -45,17 +45,30 @@ namespace property_rental_management.Controllers
         // GET: Msgs/Create
         public IActionResult Create(String managerId, String tenantID)
         {
-            ViewData["tenantID"] = tenantID;
+            
             ViewData["managerID"] = managerId;
 
-            var tenant = _context.Tenants
-                .FirstOrDefault(t => t.TenantId == tenantID);
-
-            if (tenant != null)
+            if (tenantID != null)
             {
+
+                ViewData["tenantID"] = tenantID;
+
+                var tenant = _context.Tenants
+                    .FirstOrDefault(t => t.TenantId == tenantID);
+
                 ViewData["tenantName"] = tenant.FirstName;
                 ViewData["tenantEmail"] = tenant.Email;
                 ViewData["tenantPhone"] = tenant.Phone;
+
+            } else
+            {
+                var tenants = _context.Tenants.Select(t => new {
+                    TenantID = t.TenantId,
+                    TenantEmail = t.Email,
+                    TenantValue = $"{t.TenantId}|{t.Email}|{t.FirstName} {t.LastName}|{t.Phone}"
+                }).ToList();
+
+                ViewData["tenantIDList"] = new SelectList(tenants, "TenantValue", "TenantEmail");
             }
 
             return View();
@@ -79,7 +92,7 @@ namespace property_rental_management.Controllers
                 {
                     MessageId = msg.MessageId,
                     ManagerId = msg.ManagerId,
-                    TenantId = msg.TenantId,
+                    TenantId = msg.TenantId.Split('|')[0],
                     Message1 = msg.Message1
                 };
 

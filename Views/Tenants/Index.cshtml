@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<property_rental_management.Models.Tenant>
 
 @{
-    ViewData["Title"] = "Index";
+    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <h1>Index</h1>

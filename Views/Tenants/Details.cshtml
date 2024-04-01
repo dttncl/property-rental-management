@@ -1,7 +1,7 @@
 ﻿@model property_rental_management.Models.Tenant
 
 @{
-    ViewData["Title"] = "Details";
+    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <h1>Details</h1>

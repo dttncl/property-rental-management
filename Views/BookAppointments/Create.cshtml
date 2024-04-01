@@ -1,7 +1,8 @@
 ﻿@model property_rental_management.Models.BookAppointment
 
 @{
-
+    var tenantID = ViewData["tenantID"];
+    var tenantIDList = ViewBag.tenantIDList;
 }
 
 <h1>Book An Appointment</h1>
@@ -12,8 +13,18 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ManagerId" value="@ViewData["managerID"]" />
-            <input type="hidden" asp-for="TenantId" value="@ViewData["tenantID"]" />
             <input type="hidden" asp-for="StatusId" value="@ViewData["statusId"]" />
+
+            @if (tenantIDList == null)
+            {
+                <input type="hidden" asp-for="TenantId" value="@ViewData["tenantID"]" />
+            } else
+            {
+                <div class="form-group">
+                    <label class="control-label">To: </label>
+                    <select asp-com asp-for="TenantId" class="form-control" asp-items="@tenantIDList"></select>
+                </div>
+            }
 
             <div class="form-group">
                 <label asp-for="ApartmentId" class="control-label"></label>

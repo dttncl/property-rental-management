@@ -45,10 +45,19 @@ namespace property_rental_management.Controllers
         // GET: BookAppointments/Create
         public IActionResult Create(String managerId, String tenantID, String propertyID)
         {
-            ViewData["tenantID"] = tenantID;
             ViewData["managerID"] = managerId;
 
-            //ViewData["ScheduleId"] = new SelectList(_context.Schedules, "ScheduleId", "WeekDay");
+            if (tenantID != null)
+            {
+                ViewData["tenantID"] = tenantID;
+
+            } else
+            {
+                ViewData["tenantIDList"] = new SelectList(_context.Tenants.Select(t => new {
+                    TenantID = t.TenantId,
+                    FullNameWithEmail = $"{t.Email} [{t.FirstName} {t.LastName}]"
+                }), "TenantID", "FullNameWithEmail");
+            }
 
             ViewData["ScheduleId"] = new SelectList(_context.Schedules
                 .Select(s => new { s.ScheduleId, DisplayText = $"{s.StartTime} - {s.EndTime}" }),

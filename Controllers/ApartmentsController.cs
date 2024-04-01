@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using property_rental_management.Models;
 
 namespace property_rental_management.Controllers
@@ -16,6 +17,22 @@ namespace property_rental_management.Controllers
         public ApartmentsController(RentaSpaceDbContext context)
         {
             _context = context;
+        }
+
+        private async Task UpdatePropertyUnits (string appId)
+        {
+            var relatedProperty = await _context.Properties
+                .Include(p => p.Apartments)
+                .FirstOrDefaultAsync(p => p.Apartments.Any(a => a.ApartmentId == appId));
+
+            if (relatedProperty != null)
+            {
+                //  update available units
+                int availableUnits = relatedProperty.Apartments.Count(a => a.StatusId == "A1");
+                relatedProperty.AvailableUnits = availableUnits;
+                _context.Properties.Update(relatedProperty);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // GET: Apartments
@@ -55,13 +72,24 @@ namespace property_rental_management.Controllers
                 return NotFound();
             }
 
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString();
+
+
             return View(apartment);
         }
 
         // GET: Apartments/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId");
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.PropertyId = id;
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString();
+
+
             return View();
         }
 
@@ -70,15 +98,68 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApartmentId,Bedrooms,Bathrooms,FloorArea,StatusId,Price")] Apartment apartment)
+        public async Task<IActionResult> Create(string id, [Bind("ApartmentId,Bedrooms,Bathrooms,FloorArea,StatusId,Price")] ApartmentModel apartment)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(apartment);
+
+                string aID;
+                do
+                {
+                    aID = RandomIDGenerator.GenerateRandomID("A", 4);
+                }
+                while (_context.Apartments.Any(x => x.ApartmentId == aID));
+
+                Apartment newApartment = new Apartment
+                {
+                    ApartmentId = aID,
+                    Bedrooms = apartment.Bedrooms,
+                    Bathrooms = apartment.Bathrooms,
+                    FloorArea = apartment.FloorArea,
+                    StatusId = apartment.StatusId,
+                    Price = apartment.Price
+                };
+
+                _context.Apartments.Add(newApartment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // retrieve related property (before relationship change)
+                var relatedProperty = await _context.Properties.FindAsync(id);
+
+                await _context.Database.ExecuteSqlRawAsync("INSERT INTO PropertyApartments (PropertyId, ApartmentId) VALUES ({0}, {1})", id, newApartment.ApartmentId);
+                await _context.SaveChangesAsync();
+
+                if (relatedProperty != null)
+                {
+                    // after relationship change
+                    var modifyProperty = await _context.Properties
+                        .FindAsync(relatedProperty.PropertyId);
+
+                    modifyProperty.TotalUnits += 1;
+
+                    // Update available units to number of units with status "A1"
+                    int availableUnits = await _context.Apartments
+                        .CountAsync(a => a.Properties.FirstOrDefault().PropertyId == modifyProperty.PropertyId && a.StatusId == "A1");
+
+                    modifyProperty.AvailableUnits = availableUnits;
+
+                    _context.Properties.Update(modifyProperty);
+                    await _context.SaveChangesAsync();
+
+                }
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
+            //ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
             return View(apartment);
         }
 
@@ -95,7 +176,15 @@ namespace property_rental_management.Controllers
             {
                 return NotFound();
             }
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
+
+            var statuses = _context.Statuses
+                .Where(s => s.StatusId.StartsWith("A"))
+                .Select(s => new { StatusId = s.StatusId, Description = s.Description })
+                .ToList();
+
+            ViewData["StatusId"] = new SelectList(statuses, "StatusId", "Description", apartment.StatusId);
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString();
+
             return View(apartment);
         }
 
@@ -104,7 +193,7 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ApartmentId,Bedrooms,Bathrooms,FloorArea,StatusId,Price")] Apartment apartment)
+        public async Task<IActionResult> Edit(string id, [Bind("ApartmentId,Bedrooms,Bathrooms,FloorArea,StatusId,Price")] ApartmentModel apartment)
         {
             if (id != apartment.ApartmentId)
             {
@@ -115,8 +204,27 @@ namespace property_rental_management.Controllers
             {
                 try
                 {
-                    _context.Update(apartment);
-                    await _context.SaveChangesAsync();
+
+                    var existingApartment = await _context.Apartments.FindAsync(apartment.ApartmentId);
+
+                    if (existingApartment != null)
+                    {
+                        existingApartment.Bedrooms = apartment.Bedrooms;
+                        existingApartment.Bathrooms = apartment.Bathrooms;
+                        existingApartment.FloorArea = apartment.FloorArea;
+                        existingApartment.StatusId = apartment.StatusId;
+                        existingApartment.Price = apartment.Price;
+
+                        await _context.SaveChangesAsync();
+
+                        await UpdatePropertyUnits(existingApartment.ApartmentId);
+
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,7 +237,16 @@ namespace property_rental_management.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
             return View(apartment);
@@ -146,10 +263,12 @@ namespace property_rental_management.Controllers
             var apartment = await _context.Apartments
                 .Include(a => a.Status)
                 .FirstOrDefaultAsync(m => m.ApartmentId == id);
+
             if (apartment == null)
             {
                 return NotFound();
             }
+
 
             return View(apartment);
         }
@@ -160,14 +279,62 @@ namespace property_rental_management.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var apartment = await _context.Apartments.FindAsync(id);
-            if (apartment != null)
+
+            if (apartment == null)
             {
-                _context.Apartments.Remove(apartment);
+                return NotFound();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                // retrieve related property (before relationship change)
+                var relatedProperty = await _context.Properties
+                    .Include(p => p.Apartments)
+                    .FirstOrDefaultAsync(p => p.Apartments.Any(a => a.ApartmentId == apartment.ApartmentId));
+
+                // Manually delete records from PropertyApartments table
+                await _context.Database.ExecuteSqlRawAsync("DELETE FROM PropertyApartments WHERE ApartmentId = {0}", id);
+
+                await _context.SaveChangesAsync();
+
+                if (relatedProperty != null)
+                {
+                    // after relationship change
+                    var modifyProperty = await _context.Properties
+                        .FindAsync(relatedProperty.PropertyId);
+
+                    modifyProperty.TotalUnits -= 1;
+
+                    // Update available units to number of units with status "A1"
+                    int availableUnits = await _context.Apartments
+                        .CountAsync(a => a.Properties.FirstOrDefault().PropertyId == modifyProperty.PropertyId && a.StatusId == "A1");
+
+                    modifyProperty.AvailableUnits = availableUnits;
+
+                    _context.Properties.Update(relatedProperty);
+
+                }              
+
+                //_context.Apartments.Remove(apartment);
+
+                await _context.SaveChangesAsync();
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
         }
+
 
         private bool ApartmentExists(string id)
         {
