@@ -1,0 +1,47 @@
+﻿@model IEnumerable<property_rental_management.Models.Message>
+
+@{
+
+}
+
+
+<h1>All Messages</h1>
+<table class="table rs-table">
+    <thead>
+        <tr>
+            <th>
+                Tenant
+            </th>
+            <th>
+                Message
+            </th>
+            <th>
+                Reply
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tenant.FirstName) @Html.DisplayFor(modelItem => item.Tenant.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message1)
+                </td>
+                <td>
+                    <form asp-controller="Msgs" asp-action="Create" method="get">
+                        <input type="hidden" name="managerId" value="@item.ManagerId" />
+                        <input type="hidden" name="tenantID" value="@item.TenantId" />
+                        <input type="hidden" name="sender" value="employeeReply" />
+
+                        <button type="submit" class="rs-card-link btn">
+                            <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

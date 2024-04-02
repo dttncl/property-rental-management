@@ -18,6 +18,25 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
+        // GET:  Managers/Messages/5
+        public async Task<IActionResult> Messages(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            var messages = await _context.Messages
+                .Where(man => man.ManagerId.ToString() == id)
+                .Include(t => t.Tenant)
+                .ToListAsync();
+
+            messages.Reverse();
+
+            return View(messages);
+        }
+
         // GET: Managers/Listings/5
         public async Task<IActionResult> Listings(string id)
         {

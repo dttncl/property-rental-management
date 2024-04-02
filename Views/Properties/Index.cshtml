@@ -13,6 +13,8 @@
     var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
     var returnUrl = Context.Request.Path;
+    var employeeID = Context.Session.GetString("employeeID");
+
     TempData["returnUrl"] = (string)returnUrl;
     
 }
@@ -56,6 +58,25 @@
                                         <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
                                     </form>
 
+                                }
+                                else if (employeeID != null)
+                                {
+                                    <form asp-controller="Msgs" asp-action="Create" method="get">
+                                        <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="sender" value="employee" />
+
+                                        <button type="submit" class="rs-card-link btn">
+                                            <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                                        </button>
+                                    </form>
+
+                                    <form asp-controller="BookAppointments" asp-action="Create" method="get">
+                                        <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="tenantID" value="@tenantID" />
+                                        <input type="hidden" name="propertyID" value="@property.PropertyId" />
+
+                                        <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
+                                    </form>
                                 }
                                 else
                                 {
@@ -144,9 +165,7 @@
                         </div>
                     </div>
                 </a>
-            }
-            
-            
+            }  
         }
     </div>
 </main>

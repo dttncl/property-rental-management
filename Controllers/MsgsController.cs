@@ -43,24 +43,12 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Msgs/Create
-        public IActionResult Create(String managerId, String tenantID)
+        public IActionResult Create(String managerId, String tenantID, String sender)
         {
             
             ViewData["managerID"] = managerId;
 
-            if (tenantID != null)
-            {
-
-                ViewData["tenantID"] = tenantID;
-
-                var tenant = _context.Tenants
-                    .FirstOrDefault(t => t.TenantId == tenantID);
-
-                ViewData["tenantName"] = tenant.FirstName;
-                ViewData["tenantEmail"] = tenant.Email;
-                ViewData["tenantPhone"] = tenant.Phone;
-
-            } else
+            if (sender == "employee")
             {
                 var tenants = _context.Tenants.Select(t => new {
                     TenantID = t.TenantId,
@@ -69,6 +57,29 @@ namespace property_rental_management.Controllers
                 }).ToList();
 
                 ViewData["tenantIDList"] = new SelectList(tenants, "TenantValue", "TenantEmail");
+            } 
+            else if (sender == "employeeReply")
+            {
+                ViewData["tenantID"] = tenantID;
+                ViewData["sender"] = "employee";
+
+                var tenant = _context.Tenants
+                    .FirstOrDefault(t => t.TenantId == tenantID);
+
+                ViewData["tenantName"] = tenant.FirstName;
+                ViewData["tenantEmail"] = tenant.Email;
+                ViewData["tenantPhone"] = tenant.Phone;
+            }       
+            else
+            {
+                ViewData["tenantID"] = tenantID;
+
+                var tenant = _context.Tenants
+                    .FirstOrDefault(t => t.TenantId == tenantID);
+
+                ViewData["tenantName"] = tenant.FirstName;
+                ViewData["tenantEmail"] = tenant.Email;
+                ViewData["tenantPhone"] = tenant.Phone;
             }
 
             return View();

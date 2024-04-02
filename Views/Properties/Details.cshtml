@@ -36,6 +36,7 @@
         {
             <form asp-controller="Msgs" asp-action="Create" method="get">
                 <input type="hidden" name="managerId" value="@employeeID" />
+                <input type="hidden" name="sender" value="employee" />
 
                 <button type="submit" class="rs-card-link btn">
                     <img src="~/images/icon_mail.png" class="rs-icon-mail" />

@@ -45,126 +45,151 @@
 </div>
 
 <h3>Property Listings</h3>
-<div class="rs-cards-container">
-    @foreach (var property in Model.Properties)
-    {
 
-        <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.PropertyId" class="rs-card-link">
-            <div class="card rs-card">
+<main class="rs-properties-container">
+    <div class="rs-cards-container">
+        @foreach (var property in Model.Properties)
+        {
+    
+            <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.PropertyId" class="rs-card-link">
+                <div class="card rs-card">
+    
+                    <div class="card-header rs-card-header">
+                        <div class="rs-card-header-left">
+                            @property.Address
+                        </div>
+    
+                        <div class="rs-card-header-right">
+                            <form asp-controller="Msgs" asp-action="Create" method="get">
+                                <input type="hidden" name="managerId" value="@Model.ManagerId" />
+                                <input type="hidden" name="sender" value="employee" />
 
-                <div class="card-header rs-card-header">
-                    <div class="rs-card-header-left">
-                        @property.Address
+    
+                                <button type="submit" class="rs-card-link btn">
+                                    <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                                </button>
+                            </form>
+    
+                            <form asp-controller="BookAppointments" asp-action="Create" method="get">
+                                <input type="hidden" name="managerId" value="@Model.ManagerId" />
+                                <input type="hidden" name="propertyID" value="@property.PropertyId" />
+    
+                                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
+                            </form>
+                        </div>
                     </div>
-
-                    <div class="rs-card-header-right">
-                        <form asp-controller="Msgs" asp-action="Create" method="get">
-                            <input type="hidden" name="managerId" value="@Model.ManagerId" />
-
-                            <button type="submit" class="rs-card-link btn">
-                                <img src="~/images/icon_mail.png" class="rs-icon-mail" />
-                            </button>
-                        </form>
-
-                        <form asp-controller="BookAppointments" asp-action="Create" method="get">
-                            <input type="hidden" name="managerId" value="@Model.ManagerId" />
-                            <input type="hidden" name="propertyID" value="@property.PropertyId" />
-
-                            <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="rs-card-body">
-                    <div class="rs-card-left">
-                        @{
-                            string randomImageSrc = "";
-                            if (imageFiles.Count > 0)
-                            {
-                                Random random = new Random();
-                                int index = random.Next(imageFiles.Count);
-                                randomImageSrc += imageFiles[index];
-                            }
-                        }
-                        <img class="card-img rs-card-img" src=@randomImageSrc />
-                    </div>
-
-                    <div class="rs-card-right">
-                        <div class="card-text rs-card-price">
+    
+                    <div class="rs-card-body">
+                        <div class="rs-card-left">
                             @{
-                                decimal minPrice;
-                                decimal maxPrice;
-                                int minBed;
-                                int maxBed;
-                                int minBath;
-                                int maxBath;
-
-                                if (property.Apartments.Count != 0)
+                                string randomImageSrc = "";
+                                if (imageFiles.Count > 0)
                                 {
-                                    minPrice = property.Apartments.Min(p => p.Price);
-                                    maxPrice = property.Apartments.Max(p => p.Price);
-                                    minBed = property.Apartments.Min(p => p.Bedrooms);
-                                    maxBed = property.Apartments.Max(p => p.Bedrooms);
-                                    minBath = property.Apartments.Min(p => p.Bathrooms);
-                                    maxBath = property.Apartments.Max(p => p.Bathrooms);
-                                } else
-                                {
-                                    minPrice = 0;
-                                    maxPrice = 0;
-                                    minBed = 0;
-                                    maxBed = 0;
-                                    minBath = 0;
-                                    maxBath = 0;
+                                    Random random = new Random();
+                                    int index = random.Next(imageFiles.Count);
+                                    randomImageSrc += imageFiles[index];
                                 }
-
                             }
-
-                            @if (minPrice == maxPrice)
-                            {
-                                <text>$ @minPrice</text>
-                            }
-                            else
-                            {
-                                <text>$ @minPrice - $ @maxPrice</text>
-                            }
+                            <img class="card-img rs-card-img" src=@randomImageSrc />
                         </div>
-
-                        <div class="card-text rs-card-details">
-                            <div>
-                                <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @property.YearEstablished
-                            </div>
-                            <div>
-                                <img src="~/images/icon_bed.png" class="rs-card-detail-icon" />
-                                @if (minBed == maxBed)
+    
+                        <div class="rs-card-right">
+                            <div class="card-text rs-card-price">
+                                @{
+                                    decimal minPrice;
+                                    decimal maxPrice;
+                                    int minBed;
+                                    int maxBed;
+                                    int minBath;
+                                    int maxBath;
+    
+                                    if (property.Apartments.Count != 0)
+                                    {
+                                        minPrice = property.Apartments.Min(p => p.Price);
+                                        maxPrice = property.Apartments.Max(p => p.Price);
+                                        minBed = property.Apartments.Min(p => p.Bedrooms);
+                                        maxBed = property.Apartments.Max(p => p.Bedrooms);
+                                        minBath = property.Apartments.Min(p => p.Bathrooms);
+                                        maxBath = property.Apartments.Max(p => p.Bathrooms);
+                                    } else
+                                    {
+                                        minPrice = 0;
+                                        maxPrice = 0;
+                                        minBed = 0;
+                                        maxBed = 0;
+                                        minBath = 0;
+                                        maxBath = 0;
+                                    }
+    
+                                }
+    
+                                @if (minPrice == maxPrice)
                                 {
-                                    <text> @minBed Bedrooms</text>
+                                    <text>$ @minPrice</text>
                                 }
                                 else
                                 {
-                                    <text> @minBed - @maxBed Bedrooms</text>
+                                    <text>$ @minPrice - $ @maxPrice</text>
                                 }
                             </div>
-                            <div>
-                                <img src="~/images/icon_bath.png" class="rs-card-detail-icon" />
-                                @if (minBath == maxBath)
-                                {
-                                    <text> @minBath Bathrooms</text>
-                                }
-                                else
-                                {
-                                    <text> @minBath - @maxBath Bathrooms</text>
-                                }
+    
+                            <div class="card-text rs-card-details">
+                                <div>
+                                    <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" />    @property.YearEstablished
+                                </div>
+                                <div>
+                                    <img src="~/images/icon_bed.png" class="rs-card-detail-icon" />
+                                    @if (minBed == maxBed)
+                                    {
+                                        <text> @minBed Bedrooms</text>
+                                    }
+                                    else
+                                    {
+                                        <text> @minBed - @maxBed Bedrooms</text>
+                                    }
+                                </div>
+                                <div>
+                                    <img src="~/images/icon_bath.png" class="rs-card-detail-icon" />
+                                    @if (minBath == maxBath)
+                                    {
+                                        <text> @minBath Bathrooms</text>
+                                    }
+                                    else
+                                    {
+                                        <text> @minBath - @maxBath Bathrooms</text>
+                                    }
+                                </div>
+                                <div>
+                                    <img src="~/images/icon_location.png" class="rs-card-detail-icon" />    @property.Address, @property.City.CityName, QC
+                                </div>
+    
                             </div>
-                            <div>
-                                <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @property.Address, @property.City.CityName, QC
-                            </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        
-    }
-</div>
+            </a>
+            
+        }
+    </div>
 
+    <div class="rs-sidenav-container">
+        <div class="rs-sidenav-container">
+            <ul>
+                <li>
+                    <a asp-controller="Managers" asp-action="Messages" asp-route-id="@Model?.ManagerId">View Messages</a>
+                </li>
+                <li>
+                    <a asp-controller="Managers" asp-action="Appointments" asp-route-id="@Model?.ManagerId">View Appointments</a>
+                </li>
+                <li>
+                    <a asp-controller="Managers" asp-action="Messages" asp-route-id="@Model?.ManagerId">Report Event</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+
+<div>
+
+</div>

@@ -3,6 +3,7 @@
 @{
     var tenantID = ViewData["tenantID"];
     var tenantIDList = ViewBag.tenantIDList;
+    var sender = ViewData["sender"] as string;
 }
 
 <h1>Create Message</h1>
@@ -41,13 +42,14 @@
 
             <div class="form-group">
                 <label asp-for="Message1" class="control-label">Message</label>
-                @if (tenantIDList == null)
+                @if (tenantIDList == null && sender != "employee")
                 {
                     <textarea asp-for="Message1" id="message" class="form-control" rows="5" placeholder="Hi! I am interested to see this place."></textarea>
-                } else
+                }
+                else
                 {
                     <textarea asp-for="Message1" id="message" class="form-control" rows="5" placeholder="Hi! I have a new listing you could be interested in."></textarea>
-                }
+                } 
 
                 <span asp-validation-for="Message1" class="text-danger"></span>
             </div>
