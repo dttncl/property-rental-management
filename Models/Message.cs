@@ -7,13 +7,11 @@ public partial class Message
 {
     public int MessageId { get; set; }
 
-    public int ManagerId { get; set; }
+    public string Sender { get; set; } = null!;
 
-    public string TenantId { get; set; } = null!;
+    public string Receiver { get; set; } = null!;
 
     public string Message1 { get; set; } = null!;
 
-    public virtual Manager Manager { get; set; } = null!;
-
-    public virtual Tenant Tenant { get; set; } = null!;
+    public string Subject { get; set; } = null!;
 }

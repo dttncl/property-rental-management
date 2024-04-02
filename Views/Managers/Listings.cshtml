@@ -61,10 +61,9 @@
     
                         <div class="rs-card-header-right">
                             <form asp-controller="Msgs" asp-action="Create" method="get">
-                                <input type="hidden" name="managerId" value="@Model.ManagerId" />
+                                <input type="hidden" name="msgFrom" value="@Model.ManagerId" />
                                 <input type="hidden" name="sender" value="employee" />
 
-    
                                 <button type="submit" class="rs-card-link btn">
                                     <img src="~/images/icon_mail.png" class="rs-icon-mail" />
                                 </button>
@@ -182,7 +181,14 @@
                     <a asp-controller="Managers" asp-action="Appointments" asp-route-id="@Model?.ManagerId">View Appointments</a>
                 </li>
                 <li>
-                    <a asp-controller="Managers" asp-action="Messages" asp-route-id="@Model?.ManagerId">Report Event</a>
+                    <form asp-controller="Msgs" asp-action="Create" method="get">
+                        <input type="hidden" name="msgFrom" value="@Model?.ManagerId" />
+                        <input type="hidden" name="sender" value="employeeReport" />
+
+                        <button type="submit" class="rs-card-link btn">
+                            Report
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>

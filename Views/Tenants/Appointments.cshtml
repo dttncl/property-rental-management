@@ -21,8 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Apartment)
             </th>
-
-
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
@@ -41,7 +39,7 @@
                 @item.Schedule.StartTime - @item.Schedule.EndTime
             </td>
             <td>
-                @item.Apartment.Properties.FirstOrDefault().Address
+                @item.Apartment.Properties.FirstOrDefault()?.Address
                 <br />
                 @item.Apartment.Bedrooms Beds - @item.Apartment.Bathrooms Beds - @item.Apartment.FloorArea sqm
             </td>

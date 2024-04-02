@@ -250,3 +250,4 @@ C:\Users\dette\source\repos\Winter2024\420_DW4_AS\property-rental-management\bin
 C:\Users\dette\source\repos\Winter2024\420_DW4_AS\property-rental-management\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\Users\dette\source\repos\Winter2024\420_DW4_AS\property-rental-management\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\dette\source\repos\Winter2024\420_DW4_AS\property-rental-management\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\Users\dette\source\repos\Winter2024\420_DW4_AS\property-rental-management\obj\Debug\net8.0\property-rental-management.sourcelink.json

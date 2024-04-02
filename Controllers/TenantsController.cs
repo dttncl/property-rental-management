@@ -18,6 +18,27 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
+        private async Task<String> GetUserDetails(string userId)
+        {
+            bool isManager = await _context.Managers
+                .AnyAsync(m => m.ManagerId.ToString() == userId);
+
+            if (isManager)
+            {
+                var managerDetails = await _context.Employees
+                    .FirstOrDefaultAsync(m => m.EmployeeId.ToString() == userId);
+
+                return $"{managerDetails?.FirstName} {managerDetails?.LastName}";
+
+            }
+            else
+            {
+                var tenantDetails = await _context.Tenants
+                    .FirstOrDefaultAsync(t => t.TenantId == userId);
+
+                return $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+            }
+        }
 
 
         // GET: Tenants
@@ -138,14 +159,31 @@ namespace property_rental_management.Controllers
             }
 
             var messages = await _context.Messages
-                .Where(ten => ten.TenantId == id)
-                .Include(m => m.Manager)
-                    .ThenInclude(mn => mn.ManagerNavigation)
+                .Where(sr => sr.Sender == id || sr.Receiver == id)
                 .ToListAsync();
 
             messages.Reverse();
 
-            return View(messages);
+            List<Message> formattedMessages = new List<Message>();
+
+            foreach (var msg in messages)
+            {
+                var senderDetails = await GetUserDetails(msg.Sender);
+                var receiverDetails = await GetUserDetails(msg.Receiver);
+
+                Message foundMessage = new Message
+                {
+                    MessageId = msg.MessageId,
+                    Sender = $"{msg.Sender}|{senderDetails}",
+                    Receiver = $"{msg.Receiver}|{receiverDetails}",
+                    Subject = msg.Subject,
+                    Message1 = msg.Message1
+                };
+
+                formattedMessages.Add(foundMessage);
+            }
+
+            return View(formattedMessages);
         }
 
 

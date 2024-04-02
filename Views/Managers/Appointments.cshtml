@@ -1,0 +1,69 @@
+﻿@model IEnumerable<property_rental_management.Models.Appointment>
+
+@{
+    TempData["returnUrl"] = (string)Context.Request.Path;
+
+}
+
+<h1>All Appointments</h1>
+
+<table class="table rs-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apartment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Tenant.FirstName @item.Tenant.LastName
+                </td>
+                <td>
+                    @item.AppointmentDate
+                </td>
+                <td>
+                    @item.Schedule.StartTime - @item.Schedule.EndTime
+                </td>
+                <td>
+                    @item.Apartment.Properties.FirstOrDefault()?.Address
+                    <br />
+                    @item.Apartment.Bedrooms Beds - @item.Apartment.Bathrooms Beds - @item.Apartment.FloorArea sqm
+                </td>
+                <td>
+                    <div class="rs-status">
+                        @item.Status.Description
+                    </div>
+                </td>
+                <td>
+                    <!-- Form for updating status -->
+                    <form method="post" asp-controller="Appointments" asp-action="UpdateStatus">
+                        <!-- Assuming your action method is named UpdateStatus in AppointmentsController -->
+                        <input type="hidden" name="appointmentId" value="@item.AppointmentId" /> <!-- Hidden field to send appointment ID -->
+                        <select name="statusId">
+                            <option value="S2">CONFIRM</option>
+                            <option value="S3">CANCEL</option>
+                        </select>
+                        <button type="submit">Update Status</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using property_rental_management.Models;
 
 namespace property_rental_management.Models;
 
@@ -72,7 +71,7 @@ public partial class RentaSpaceDbContext : DbContext
             entity.Property(e => e.ApartmentId)
                 .HasMaxLength(5)
                 .HasColumnName("ApartmentID");
-            entity.Property(e => e.FloorArea).HasColumnType("decimal(4, 2)");
+            entity.Property(e => e.FloorArea).HasColumnType("decimal(5, 2)");
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.StatusId)
                 .HasMaxLength(2)
@@ -213,23 +212,12 @@ public partial class RentaSpaceDbContext : DbContext
             entity.HasKey(e => e.MessageId).HasName("PK__Messages__C87C037CDCB956B4");
 
             entity.Property(e => e.MessageId).HasColumnName("MessageID");
-            entity.Property(e => e.ManagerId).HasColumnName("ManagerID");
             entity.Property(e => e.Message1)
                 .HasMaxLength(250)
                 .HasColumnName("Message");
-            entity.Property(e => e.TenantId)
-                .HasMaxLength(5)
-                .HasColumnName("TenantID");
-
-            entity.HasOne(d => d.Manager).WithMany(p => p.Messages)
-                .HasForeignKey(d => d.ManagerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Messages__Manage__17036CC0");
-
-            entity.HasOne(d => d.Tenant).WithMany(p => p.Messages)
-                .HasForeignKey(d => d.TenantId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Messages__Tenant__17F790F9");
+            entity.Property(e => e.Receiver).HasMaxLength(50);
+            entity.Property(e => e.Sender).HasMaxLength(50);
+            entity.Property(e => e.Subject).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Property>(entity =>
@@ -356,8 +344,7 @@ public partial class RentaSpaceDbContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-public DbSet<property_rental_management.Models.Msg> Msg { get; set; } = default!;
+    public DbSet<Msg> Msg { get; set; } = default!;
 
-public DbSet<property_rental_management.Models.BookAppointment> BookAppointment { get; set; } = default!;
-
+    public DbSet<BookAppointment> BookAppointment { get; set; } = default!;
 }

@@ -41,9 +41,10 @@
                             <div class="rs-card-header-right">
                                 @if (tenantID != null)
                                 {
+                                    // SENDER: Tenant
                                     <form asp-controller="Msgs" asp-action="Create" method="get">
-                                        <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
-                                        <input type="hidden" name="tenantID" value="@tenantID" />
+                                        <input type="hidden" name="msgTo" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="msgFrom" value="@tenantID" />
 
                                         <button type="submit" class="rs-card-link btn">
                                             <img src="~/images/icon_mail.png" class="rs-icon-mail" />
@@ -61,8 +62,9 @@
                                 }
                                 else if (employeeID != null)
                                 {
+                                    // SENDER: Employee
                                     <form asp-controller="Msgs" asp-action="Create" method="get">
-                                        <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="msgFrom" value="@property.Managers.First().ManagerId" />
                                         <input type="hidden" name="sender" value="employee" />
 
                                         <button type="submit" class="rs-card-link btn">

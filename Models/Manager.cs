@@ -19,7 +19,5 @@ public partial class Manager
 
     public virtual Employee ManagerNavigation { get; set; } = null!;
 
-    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
-
     public virtual ICollection<Property> Properties { get; set; } = new List<Property>();
 }

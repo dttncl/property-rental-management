@@ -26,15 +26,54 @@ namespace property_rental_management.Controllers
                 return NotFound();
             }
 
-
             var messages = await _context.Messages
-                .Where(man => man.ManagerId.ToString() == id)
-                .Include(t => t.Tenant)
+                .Where(sr => sr.Sender == id || sr.Receiver == id)
                 .ToListAsync();
 
             messages.Reverse();
 
-            return View(messages);
+            List<Message> formattedMessages = new List<Message>();
+
+            foreach (var msg in messages)
+            {
+                Generator gen = new Generator(_context);
+                var senderDetails = await gen.GetUserDetails(msg.Sender);
+                var receiverDetails = await gen.GetUserDetails(msg.Receiver);
+
+                Message foundMessage = new Message
+                {
+                    MessageId = msg.MessageId,
+                    Sender = $"{msg.Sender}|{senderDetails}",
+                    Receiver = $"{msg.Receiver}|{receiverDetails}",
+                    Subject = msg.Subject,
+                    Message1 = msg.Message1
+                };
+
+                formattedMessages.Add(foundMessage);
+            }
+
+            return View(formattedMessages);
+        }
+
+        // GET:  Managers/Appointments/5
+        public async Task<IActionResult> Appointments(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointments = await _context.Appointments
+                .Where(man => man.ManagerId.ToString() == id)
+                .Include(t => t.Tenant)
+                .Include(a => a.Apartment)
+                    .ThenInclude(p => p.Properties)
+                .Include(sc => sc.Schedule)
+                .Include(s => s.Status)
+                .OrderByDescending(app => app.AppointmentDate)
+                .ToListAsync();
+
+            return View(appointments);
         }
 
         // GET: Managers/Listings/5

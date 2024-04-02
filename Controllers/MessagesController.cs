@@ -19,11 +19,11 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Messages
-        public async Task<IActionResult> Index()
-        {
-            var rentaSpaceDbContext = _context.Messages.Include(m => m.Manager).Include(m => m.Tenant);
-            return View(await rentaSpaceDbContext.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    var rentaSpaceDbContext = _context.Messages.Include(m => m.Manager).Include(m => m.Tenant);
+        //    return View(await rentaSpaceDbContext.ToListAsync());
+        //}
 
         // GET: Messages/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -34,8 +34,6 @@ namespace property_rental_management.Controllers
             }
 
             var message = await _context.Messages
-                .Include(m => m.Manager)
-                .Include(m => m.Tenant)
                 .FirstOrDefaultAsync(m => m.MessageId == id);
             if (message == null)
             {
@@ -66,8 +64,8 @@ namespace property_rental_management.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", message.ManagerId);
-            ViewData["TenantId"] = new SelectList(_context.Tenants, "TenantId", "TenantId", message.TenantId);
+            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", message.Sender);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "TenantId", "TenantId", message.Receiver);
             return View(message);
         }
 
@@ -84,8 +82,8 @@ namespace property_rental_management.Controllers
             {
                 return NotFound();
             }
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", message.ManagerId);
-            ViewData["TenantId"] = new SelectList(_context.Tenants, "TenantId", "TenantId", message.TenantId);
+            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", message.Sender);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "TenantId", "TenantId", message.Receiver);
             return View(message);
         }
 
@@ -121,8 +119,8 @@ namespace property_rental_management.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", message.ManagerId);
-            ViewData["TenantId"] = new SelectList(_context.Tenants, "TenantId", "TenantId", message.TenantId);
+            ViewData["ManagerId"] = new SelectList(_context.Managers, "ManagerId", "ManagerId", message.Sender);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "TenantId", "TenantId", message.Receiver);
             return View(message);
         }
 
@@ -135,9 +133,8 @@ namespace property_rental_management.Controllers
             }
 
             var message = await _context.Messages
-                .Include(m => m.Manager)
-                .Include(m => m.Tenant)
                 .FirstOrDefaultAsync(m => m.MessageId == id);
+
             if (message == null)
             {
                 return NotFound();

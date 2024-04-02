@@ -24,29 +24,72 @@ namespace property_rental_management.Controllers
             return View(await _context.Msg.ToListAsync());
         }
 
-        // GET: Msgs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        private async Task<String> GetUserDetails(string userId)
         {
-            if (id == null)
+            bool isManager = await _context.Managers
+                .AnyAsync(m => m.ManagerId.ToString() == userId);
+
+            if (isManager)
+            {
+                var managerDetails = await _context.Employees
+                    .FirstOrDefaultAsync(m => m.EmployeeId.ToString() == userId);
+
+                return $"{managerDetails?.FirstName} {managerDetails?.LastName}";
+                
+            }
+            else
+            {
+                var tenantDetails = await _context.Tenants
+                    .FirstOrDefaultAsync(t => t.TenantId == userId);
+
+                return $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+            }
+        }
+
+        // GET: Msgs/Details/5
+        public async Task<IActionResult> Details(int? msgID)
+        {
+            if (msgID == null)
             {
                 return NotFound();
             }
 
-            var msg = await _context.Msg
-                .FirstOrDefaultAsync(m => m.MessageId == id);
+            var msg = await _context.Messages
+                .FirstOrDefaultAsync(m => m.MessageId == msgID);
+
             if (msg == null)
             {
                 return NotFound();
             }
 
-            return View(msg);
+            var senderDetails = await GetUserDetails(msg.Sender);
+            var receiverDetails = await GetUserDetails(msg.Receiver);
+
+            Msg foundMessage = new Msg
+            {
+                MessageId = msg.MessageId,
+                Sender = $"{msg.Sender}|{senderDetails}",
+                Receiver = $"{msg.Receiver}|{receiverDetails}",
+                Subject = msg.Subject,
+                Message1 = msg.Message1
+            };
+
+            return View(foundMessage);
         }
 
         // GET: Msgs/Create
-        public IActionResult Create(String managerId, String tenantID, String sender)
+        public IActionResult Create(String msgTo, String msgFrom, String sender)
         {
+
+            if (sender == null)
+            {
+                // sender is tenant
+                ViewData["managerID"] = msgTo;
+            } else
+            {
+                ViewData["managerID"] = msgFrom;
+            }
             
-            ViewData["managerID"] = managerId;
 
             if (sender == "employee")
             {
@@ -60,22 +103,35 @@ namespace property_rental_management.Controllers
             } 
             else if (sender == "employeeReply")
             {
-                ViewData["tenantID"] = tenantID;
-                ViewData["sender"] = "employee";
+                ViewData["tenantID"] = msgFrom;
+                ViewData["sender"] = "employeeReply";
 
                 var tenant = _context.Tenants
-                    .FirstOrDefault(t => t.TenantId == tenantID);
+                    .FirstOrDefault(t => t.TenantId == msgTo);
 
                 ViewData["tenantName"] = tenant.FirstName;
                 ViewData["tenantEmail"] = tenant.Email;
                 ViewData["tenantPhone"] = tenant.Phone;
+
+            } else if (sender == "employeeReport")
+            {
+                ViewData["sender"] = "employeeReport";
+
+                var admins = _context.Admins
+                    .Select(a => new {
+                    AdminID = a.AdminId,
+                    AdminEmail = a.Email,
+                    AdminValue = $"{a.AdminId}|{a.Email}|{a.AdminNavigation.FirstName} {a.AdminNavigation.LastName}|{a.AdminNavigation.Phone}"
+                }).ToList();
+
+                ViewData["adminIDList"] = new SelectList(admins, "AdminValue", "AdminEmail");
             }       
             else
             {
-                ViewData["tenantID"] = tenantID;
+                ViewData["tenantID"] = msgFrom;
 
                 var tenant = _context.Tenants
-                    .FirstOrDefault(t => t.TenantId == tenantID);
+                    .FirstOrDefault(t => t.TenantId == msgFrom);
 
                 ViewData["tenantName"] = tenant.FirstName;
                 ViewData["tenantEmail"] = tenant.Email;
@@ -90,7 +146,7 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MessageId,ManagerId,TenantId,Message1")] Msg msg)
+        public async Task<IActionResult> Create(Msg msg)
         {
             if (ModelState.IsValid)
             {
@@ -102,8 +158,9 @@ namespace property_rental_management.Controllers
                 var newMessage = new Message
                 {
                     MessageId = msg.MessageId,
-                    ManagerId = msg.ManagerId,
-                    TenantId = msg.TenantId.Split('|')[0],
+                    Sender = msg.Sender,
+                    Receiver = msg.Receiver.Split('|')[0],
+                    Subject = msg.Subject,
                     Message1 = msg.Message1
                 };
 
@@ -121,8 +178,6 @@ namespace property_rental_management.Controllers
                 }
 
             }
-
-
 
             return View(msg);
         }
