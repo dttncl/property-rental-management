@@ -48,6 +48,7 @@
 <div class="rs-cards-container">
     @foreach (var property in Model.Properties)
     {
+
         <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.PropertyId" class="rs-card-link">
             <div class="card rs-card">
 
@@ -91,12 +92,31 @@
                     <div class="rs-card-right">
                         <div class="card-text rs-card-price">
                             @{
-                                decimal minPrice = property.Apartments.Min(p => p.Price);
-                                decimal maxPrice = property.Apartments.Max(p => p.Price);
-                                int minBed = property.Apartments.Min(p => p.Bedrooms);
-                                int maxBed = property.Apartments.Max(p => p.Bedrooms);
-                                int minBath = property.Apartments.Min(p => p.Bathrooms);
-                                int maxBath = property.Apartments.Max(p => p.Bathrooms);
+                                decimal minPrice;
+                                decimal maxPrice;
+                                int minBed;
+                                int maxBed;
+                                int minBath;
+                                int maxBath;
+
+                                if (property.Apartments.Count != 0)
+                                {
+                                    minPrice = property.Apartments.Min(p => p.Price);
+                                    maxPrice = property.Apartments.Max(p => p.Price);
+                                    minBed = property.Apartments.Min(p => p.Bedrooms);
+                                    maxBed = property.Apartments.Max(p => p.Bedrooms);
+                                    minBath = property.Apartments.Min(p => p.Bathrooms);
+                                    maxBath = property.Apartments.Max(p => p.Bathrooms);
+                                } else
+                                {
+                                    minPrice = 0;
+                                    maxPrice = 0;
+                                    minBed = 0;
+                                    maxBed = 0;
+                                    minBath = 0;
+                                    maxBath = 0;
+                                }
+
                             }
 
                             @if (minPrice == maxPrice)
@@ -144,6 +164,7 @@
                 </div>
             </div>
         </a>
+        
     }
 </div>
 

@@ -1,7 +1,8 @@
-﻿@model property_rental_management.Models.Property
+﻿@model property_rental_management.Models.PropertyModel
 
 @{
-    ViewData["Title"] = "Edit";
+    var cityName = ViewData["cityName"];
+    var statusDesc  = ViewData["statusDesc"];
 }
 
 <h1>Edit</h1>
@@ -10,38 +11,44 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-controller="Properties" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PropertyId" />
+            <input type="hidden" asp-for="CityId" class="form-control" />
+            <input type="hidden" asp-for="StatusId" class="form-control" />
+            <input type="hidden" asp-for="TotalUnits" class="form-control" />
+            <input type="hidden" asp-for="AvailableUnits" class="form-control" />
+
+            <dl class="row">
+                <dt class="col-sm-2">
+                    City
+                </dt>
+                <dd class="col-sm-10">
+                    @cityName
+                </dd>
+                <dt class="col-sm-2">
+                    Status
+                </dt>
+                <dd class="col-sm-10">
+                    @statusDesc
+                </dd>
+                <dt class="col-sm-2">
+                    Available Units
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.AvailableUnits / @Model.TotalUnits
+                </dd>
+            </dl>
+
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
-                <span asp-validation-for="CityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="YearEstablished" class="control-label"></label>
                 <input asp-for="YearEstablished" class="form-control" />
                 <span asp-validation-for="YearEstablished" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalUnits" class="control-label"></label>
-                <input asp-for="TotalUnits" class="form-control" />
-                <span asp-validation-for="TotalUnits" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailableUnits" class="control-label"></label>
-                <input asp-for="AvailableUnits" class="form-control" />
-                <span asp-validation-for="AvailableUnits" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
-                <span asp-validation-for="StatusId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -51,6 +58,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Properties" asp-action="Delete" asp-route-id="@Model?.PropertyId">Delete</a>
 </div>
 

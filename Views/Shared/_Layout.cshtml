@@ -58,6 +58,9 @@
                                     else if (jobID == "502")
                                     {
                                         <li class="nav-item">
+                                            @Html.ActionLink("Add Property", "Create", "Properties", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
+                                        </li>
+                                        <li class="nav-item">
                                             @Html.ActionLink("Manager Dashboard", "Listings", "Managers", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
                                         </li>
                                     }

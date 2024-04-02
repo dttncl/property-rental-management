@@ -63,10 +63,19 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Properties/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync(string id)
         {
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId");
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId");
+            var manager = await _context.Managers
+                                        .Include(m => m.City)
+                                        .FirstOrDefaultAsync(m => m.ManagerId == Convert.ToInt32(id));
+
+            if (manager == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["manager"] = manager;
+
             return View();
         }
 
@@ -75,17 +84,49 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyId,Address,CityId,YearEstablished,TotalUnits,AvailableUnits,StatusId")] Property @property)
+        public async Task<IActionResult> Create(string managerId, [Bind("PropertyId,Address,CityId,YearEstablished,TotalUnits,AvailableUnits,StatusId")] PropertyModel prop)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@property);
+
+                string pID;
+                do
+                {
+                    pID = RandomIDGenerator.GenerateRandomID("P", 4);
+                }
+                while (_context.Properties.Any(x => x.PropertyId == pID));
+
+                Property newProperty = new Property
+                {
+                    PropertyId = pID,
+                    Address = prop.Address,
+                    CityId = prop.CityId,
+                    YearEstablished = prop.YearEstablished,
+                    TotalUnits = prop.TotalUnits,
+                    AvailableUnits = prop.AvailableUnits,
+                    StatusId = prop.StatusId
+                };
+
+                _context.Properties.Add(newProperty);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                var mId = managerId;
+                await _context.Database.ExecuteSqlRawAsync("INSERT INTO PropertyManagers (ManagerId, PropertyId) VALUES ({0}, {1})", mId, newProperty.PropertyId);
+                await _context.SaveChangesAsync();
+
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", @property.CityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", @property.StatusId);
-            return View(@property);
+
+            return View(prop);
         }
 
         // GET: Properties/Edit/5
@@ -93,17 +134,35 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
+
                 return NotFound();
             }
 
-            var @property = await _context.Properties.FindAsync(id);
-            if (@property == null)
+            var prop = await _context.Properties.FindAsync(id);
+            
+
+            if (prop == null)
             {
                 return NotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", @property.CityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", @property.StatusId);
-            return View(@property);
+
+            PropertyModel updatedProperty = new PropertyModel
+            {
+                PropertyId = prop.PropertyId,
+                Address = prop.Address,
+                CityId = prop.CityId,
+                YearEstablished = prop.YearEstablished,
+                TotalUnits = prop.TotalUnits,
+                AvailableUnits = prop.AvailableUnits,
+                StatusId = prop.StatusId
+            };
+
+            var city = await _context.Cities.FindAsync(prop.CityId);
+            var status = await _context.Statuses.FindAsync(prop.StatusId);
+
+            ViewData["cityName"] = city.CityName;
+            ViewData["statusDesc"] = status.Description;
+            return View(updatedProperty);
         }
 
         // POST: Properties/Edit/5
@@ -111,23 +170,29 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("PropertyId,Address,CityId,YearEstablished,TotalUnits,AvailableUnits,StatusId")] Property @property)
+        public async Task<IActionResult> Edit([Bind("PropertyId,Address,CityId,YearEstablished,TotalUnits,AvailableUnits,StatusId")] PropertyModel prop)
         {
-            if (id != @property.PropertyId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(@property);
+                    var existingProperty = await _context.Properties.FindAsync(prop.PropertyId);
+
+                    if (existingProperty == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingProperty.Address = prop.Address;
+                    existingProperty.YearEstablished = prop.YearEstablished;
+
+                    _context.Properties.Update(existingProperty);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PropertyExists(@property.PropertyId))
+                    if (!PropertyExists(prop.PropertyId))
                     {
                         return NotFound();
                     }
@@ -138,9 +203,9 @@ namespace property_rental_management.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", @property.CityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", @property.StatusId);
-            return View(@property);
+            //ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", prop.CityId);
+            //ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", prop.StatusId);
+            return View(prop);
         }
 
         // GET: Properties/Delete/5
@@ -168,14 +233,48 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var @property = await _context.Properties.FindAsync(id);
-            if (@property != null)
-            {
-                _context.Properties.Remove(@property);
-            }
+            var prop = await _context.Properties.FindAsync(id);
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (prop == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var apartments = await _context.Apartments
+                    .Where(a => a.Properties.Any(p => p.PropertyId == id))
+                    .ToListAsync();
+
+                // manually delete records from PropertyApartments table
+                await _context.Database.ExecuteSqlRawAsync("DELETE FROM PropertyApartments WHERE PropertyId = {0}", id);
+
+                foreach (var apartment in apartments)
+                {
+                    _context.Apartments.Remove(apartment);
+                }
+
+                // manually delete records from PropertyManagers table
+                await _context.Database.ExecuteSqlRawAsync("DELETE FROM PropertyManagers WHERE PropertyId = {0}", id);
+
+                _context.Properties.Remove(prop);
+
+                await _context.SaveChangesAsync();
+
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
         }
 
         private bool PropertyExists(string id)

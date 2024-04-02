@@ -1,7 +1,8 @@
-﻿@model property_rental_management.Models.Property
+﻿@model property_rental_management.Models.PropertyModel
 
 @{
-    ViewData["Title"] = "Create";
+    var manager = ViewData["manager"] as Manager;
+
 }
 
 <h1>Create</h1>
@@ -12,39 +13,31 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PropertyId" class="control-label"></label>
-                <input asp-for="PropertyId" class="form-control" />
-                <span asp-validation-for="PropertyId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="PropertyId" class="form-control" value="X"/>
+            <input type="hidden" asp-for="StatusId" class="form-control" value="P2"/>
+            <input type="hidden" asp-for="CityId" class="form-control" value="@manager?.City?.CityId"/>
+            <input type="hidden" asp-for="TotalUnits" class="form-control" value="0"/>
+            <input type="hidden" asp-for="AvailableUnits" class="form-control" value="0" />
+            <input type="hidden" name="managerId" value="@manager?.ManagerId" />
+
+
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class ="form-control" asp-items="ViewBag.CityId"></select>
+                <label class="control-label">City</label>
+                <input class="form-control" value="@manager?.City?.CityName" disabled/>
             </div>
+
             <div class="form-group">
                 <label asp-for="YearEstablished" class="control-label"></label>
                 <input asp-for="YearEstablished" class="form-control" />
                 <span asp-validation-for="YearEstablished" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TotalUnits" class="control-label"></label>
-                <input asp-for="TotalUnits" class="form-control" />
-                <span asp-validation-for="TotalUnits" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailableUnits" class="control-label"></label>
-                <input asp-for="AvailableUnits" class="form-control" />
-                <span asp-validation-for="AvailableUnits" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -52,7 +45,4 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

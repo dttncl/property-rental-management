@@ -30,6 +30,12 @@ namespace property_rental_management.Controllers
                 //  update available units
                 int availableUnits = relatedProperty.Apartments.Count(a => a.StatusId == "A1");
                 relatedProperty.AvailableUnits = availableUnits;
+
+                if (availableUnits == 0)
+                {
+                    relatedProperty.StatusId = "P1";
+                }
+
                 _context.Properties.Update(relatedProperty);
                 await _context.SaveChangesAsync();
             }
@@ -137,11 +143,16 @@ namespace property_rental_management.Controllers
 
                     modifyProperty.TotalUnits += 1;
 
-                    // Update available units to number of units with status "A1"
+                    // update available units to number of units with status "A1"
                     int availableUnits = await _context.Apartments
                         .CountAsync(a => a.Properties.FirstOrDefault().PropertyId == modifyProperty.PropertyId && a.StatusId == "A1");
 
                     modifyProperty.AvailableUnits = availableUnits;
+
+                    if (availableUnits == 0)
+                    {
+                        modifyProperty.StatusId = "P1";
+                    }
 
                     _context.Properties.Update(modifyProperty);
                     await _context.SaveChangesAsync();
@@ -159,7 +170,7 @@ namespace property_rental_management.Controllers
                 }
 
             }
-            //ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
+
             return View(apartment);
         }
 
