@@ -1,0 +1,13 @@
+﻿@model IEnumerable<property_rental_management.Models.Admin>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@Html.ActionLink("Managers", "Index", "Managers", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+
+<br />
+
+@Html.ActionLink("Tenants", "Index", "Tenants", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })

@@ -132,9 +132,19 @@ namespace property_rental_management.Controllers
         // GET: Managers/Create
         public IActionResult Create()
         {
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId");
-            ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email");
-            ViewData["ManagerId"] = new SelectList(_context.Employees, "EmployeeId", "EmployeeId");
+            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityName");
+
+            var supervisors = _context.Employees
+                .Where(e => e.JobId == 501)
+                .Select(e => new
+                {
+                    EmployeeId = e.EmployeeId,
+                    FullName = $"{e.FirstName} {e.LastName}"
+                })
+                .ToList();
+
+            ViewData["SupervisorId"] = new SelectList(supervisors, "EmployeeId", "FullName");
+
             return View();
         }
 
@@ -143,17 +153,72 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,Email,CityId")] Manager manager)
+        public async Task<IActionResult> Create(ManagerModel manager)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manager);
+                UserAccount newAccount = new UserAccount
+                {
+                    Email = manager.Email,
+                    Password = manager.Password,
+                    UserType = "Employee"
+                };
+
+                _context.UserAccounts.Add(newAccount);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                Employee newEmployee = new Employee
+                {
+                    JobId = 502,
+                    FirstName = manager.FirstName,
+                    LastName = manager.LastName,
+                    Email = manager.Email,
+                    Phone = manager.Phone,
+                    Salary = manager.Salary,
+                    StatusId = "E1",
+                    SupervisorId = manager.SupervisorId
+                };
+
+                _context.Employees.Add(newEmployee);
+                await _context.SaveChangesAsync();
+
+                var newEmp = await _context.Employees
+                                .Where(e => e.Email == newEmployee.Email)
+                                .FirstOrDefaultAsync();
+
+                Manager newManager = new Manager
+                {
+                    ManagerId = newEmp.EmployeeId,
+                    Email = manager.Email,
+                    CityId = manager.CityId
+                };
+
+                _context.Managers.Add(newManager);
+                await _context.SaveChangesAsync();
+
+                var propertiesInCity = await _context.Properties
+                                        .Where(p => p.CityId == manager.CityId)
+                                        .ToListAsync();
+
+                foreach (var property in propertiesInCity)
+                {
+                    string insertSql = @"INSERT INTO PropertyManagers (PropertyId, ManagerId) VALUES ({0}, {1});";
+                    await _context.Database.ExecuteSqlRawAsync(insertSql, property.PropertyId, newManager.ManagerId);
+                }
+
+                await _context.SaveChangesAsync();
+
+                var returnUrl = TempData["returnUrl"] as string;
+                if (returnUrl != null)
+                {
+                    return Redirect((string)returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", manager.CityId);
-            ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email", manager.Email);
-            ViewData["ManagerId"] = new SelectList(_context.Employees, "EmployeeId", "EmployeeId", manager.ManagerId);
+
             return View(manager);
         }
 

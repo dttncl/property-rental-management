@@ -13,33 +13,39 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmailNavigation)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ManagerNavigation)
+                City
+            </th>
+            <th>
+                Phone
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var manager in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.City.CityId)
+                @manager.EmailNavigation.Email
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EmailNavigation.Email)
+                @manager.ManagerNavigation.FirstName @manager.ManagerNavigation.LastName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ManagerNavigation.EmployeeId)
+                @manager?.City?.CityName
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
+                @manager?.ManagerNavigation.Phone
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@manager?.ManagerId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@manager?.ManagerId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@manager?.ManagerId">Delete</a>
             </td>
         </tr>
 }
