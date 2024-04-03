@@ -102,14 +102,32 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Managers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var rentaSpaceDbContext = _context.Managers
-                .Include(m => m.City)
-                .Include(m => m.EmailNavigation)
-                .Include(m => m.ManagerNavigation)
-                    .ThenInclude(s => s.Status);
-            return View(await rentaSpaceDbContext.ToListAsync());
+            var managers = _context.Managers.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                managers = _context.Managers
+                                .Where(q => 
+                                    q.ManagerNavigation.FirstName.Contains(searchString) ||
+                                    q.ManagerNavigation.LastName.Contains(searchString) ||
+                                    q.Email.Contains(searchString))
+                                .Include(m => m.City)
+                                .Include(m => m.EmailNavigation)
+                                .Include(m => m.ManagerNavigation)
+                                    .ThenInclude(s => s.Status);
+
+            } else
+            {
+                managers = _context.Managers
+                                .Include(m => m.City)
+                                .Include(m => m.EmailNavigation)
+                                .Include(m => m.ManagerNavigation)
+                                    .ThenInclude(s => s.Status);
+            }
+
+            return View(await managers.ToListAsync());
         }
 
         // GET: Managers/Details/5
