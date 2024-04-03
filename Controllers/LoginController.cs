@@ -55,7 +55,7 @@ namespace property_rental_management.Controllers
                             .FirstOrDefaultAsync(e => e.Email == userAccount.Email);
 
 
-                        if (employee == null)
+                        if (employee == null || employee.StatusId == "E2")
                         {
                             return NotFound();
                         }

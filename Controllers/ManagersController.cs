@@ -104,7 +104,11 @@ namespace property_rental_management.Controllers
         // GET: Managers
         public async Task<IActionResult> Index()
         {
-            var rentaSpaceDbContext = _context.Managers.Include(m => m.City).Include(m => m.EmailNavigation).Include(m => m.ManagerNavigation);
+            var rentaSpaceDbContext = _context.Managers
+                .Include(m => m.City)
+                .Include(m => m.EmailNavigation)
+                .Include(m => m.ManagerNavigation)
+                    .ThenInclude(s => s.Status);
             return View(await rentaSpaceDbContext.ToListAsync());
         }
 
@@ -250,8 +254,8 @@ namespace property_rental_management.Controllers
                 SupervisorId = manager.ManagerNavigation.SupervisorId,
                 Password = manager.EmailNavigation.Password,
                 Email = manager.EmailNavigation.Email,
-                CityId = manager.CityId
-
+                CityId = manager.CityId,
+                StatusId = manager.ManagerNavigation.StatusId
             };
 
             ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityName");
@@ -266,6 +270,13 @@ namespace property_rental_management.Controllers
                 .ToList();
 
             ViewData["SupervisorId"] = new SelectList(supervisors, "EmployeeId", "FullName");
+
+            var filteredStatuses = _context.Statuses
+                                    .Where(s => s.StatusId.StartsWith("E"))
+                                    .ToList();
+
+            // Create SelectList with filtered Statuses
+            ViewData["StatusId"] = new SelectList(filteredStatuses, "StatusId", "Description");
 
             return View(modifyManager);
         }
@@ -298,6 +309,7 @@ namespace property_rental_management.Controllers
                     existingEmployee.Phone = manager.Phone;
                     existingEmployee.Salary = manager.Salary;
                     existingEmployee.SupervisorId = manager.SupervisorId;
+                    existingEmployee.StatusId = manager.StatusId;
 
                     _context.Employees.Update(existingEmployee);
                     await _context.SaveChangesAsync();
@@ -351,7 +363,6 @@ namespace property_rental_management.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
 
             return View(manager);
@@ -366,16 +377,34 @@ namespace property_rental_management.Controllers
             }
 
             var manager = await _context.Managers
-                .Include(m => m.City)
-                .Include(m => m.EmailNavigation)
+                .Include(c => c.City)
                 .Include(m => m.ManagerNavigation)
+                    .ThenInclude(x => x.Supervisor)
+                .Include(e => e.EmailNavigation)
                 .FirstOrDefaultAsync(m => m.ManagerId == id);
+
             if (manager == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            ManagerModel modifyManager = new ManagerModel
+            {
+                EmployeeId = (int)id,
+                FirstName = manager.ManagerNavigation.FirstName,
+                LastName = manager.ManagerNavigation.LastName,
+                Phone = manager.ManagerNavigation.Phone,
+                Salary = manager.ManagerNavigation.Salary,
+                SupervisorId = manager.ManagerNavigation.SupervisorId,
+                Password = manager.EmailNavigation.Password,
+                Email = manager.EmailNavigation.Email,
+                CityId = manager.CityId
+            };
+
+            ViewData["CityName"] = manager.City.CityName;
+            ViewData["SupervisorName"] = $"{manager.ManagerNavigation.Supervisor.FirstName} {manager.ManagerNavigation.Supervisor.LastName}";
+
+            return View(modifyManager);
         }
 
         // POST: Managers/Delete/5
@@ -383,14 +412,25 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manager = await _context.Managers.FindAsync(id);
-            if (manager != null)
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee != null)
             {
-                _context.Managers.Remove(manager);
+                employee.StatusId = "E2";
+                _context.Employees.Update(employee);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            var returnUrl = TempData["returnUrl"] as string;
+            if (returnUrl != null)
+            {
+                return Redirect((string)returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private bool ManagerExists(int id)

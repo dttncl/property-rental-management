@@ -24,6 +24,9 @@
             <th>
                 Phone
             </th>
+            <th>
+                Status
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,6 +44,9 @@
             </td>
             <td>
                 @manager?.ManagerNavigation.Phone
+            </td>
+            <td>
+                @manager?.ManagerNavigation.Status.Description
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@manager?.ManagerId">Edit</a> |

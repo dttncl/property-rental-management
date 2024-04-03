@@ -32,6 +32,8 @@ namespace property_rental_management.Models
         public string Email { get; set; } = null!;
 
         public int? CityId { get; set; }
-         
+
+        public string StatusId { get; set; }
+
     }
 }
