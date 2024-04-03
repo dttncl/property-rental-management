@@ -19,7 +19,7 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Admins
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }

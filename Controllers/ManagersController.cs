@@ -230,15 +230,44 @@ namespace property_rental_management.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Managers.FindAsync(id);
+            var manager = await _context.Managers
+                .Include(m => m.ManagerNavigation)
+                .Include(e => e.EmailNavigation)
+                .FirstOrDefaultAsync(m => m.ManagerId == id);
+
             if (manager == null)
             {
                 return NotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", manager.CityId);
-            ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email", manager.Email);
-            ViewData["ManagerId"] = new SelectList(_context.Employees, "EmployeeId", "EmployeeId", manager.ManagerId);
-            return View(manager);
+
+            ManagerModel modifyManager = new ManagerModel
+            {
+                EmployeeId = (int)id,
+                FirstName = manager.ManagerNavigation.FirstName,
+                LastName = manager.ManagerNavigation.LastName,
+                Phone = manager.ManagerNavigation.Phone,
+                Salary = manager.ManagerNavigation.Salary,
+                SupervisorId = manager.ManagerNavigation.SupervisorId,
+                Password = manager.EmailNavigation.Password,
+                Email = manager.EmailNavigation.Email,
+                CityId = manager.CityId
+
+            };
+
+            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityName");
+
+            var supervisors = _context.Employees
+                .Where(e => e.JobId == 501)
+                .Select(e => new
+                {
+                    EmployeeId = e.EmployeeId,
+                    FullName = $"{e.FirstName} {e.LastName}"
+                })
+                .ToList();
+
+            ViewData["SupervisorId"] = new SelectList(supervisors, "EmployeeId", "FullName");
+
+            return View(modifyManager);
         }
 
         // POST: Managers/Edit/5
@@ -246,23 +275,74 @@ namespace property_rental_management.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,Email,CityId")] Manager manager)
+        public async Task<IActionResult> Edit(ManagerModel manager)
         {
-            if (id != manager.ManagerId)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(manager);
+                    // before update
+                    var existingManager = await _context.Managers
+                                    .Include(m => m.ManagerNavigation)
+                                    .Include(e => e.EmailNavigation)
+                                    .FirstOrDefaultAsync(m => m.ManagerId == manager.EmployeeId);
+
+                    // after update
+                    // employee
+                    var existingEmployee = await _context.Employees
+                                .FirstOrDefaultAsync(e => e.Email == manager.Email);
+
+                    existingEmployee.FirstName = manager.FirstName;
+                    existingEmployee.LastName = manager.LastName;
+                    existingEmployee.Phone = manager.Phone;
+                    existingEmployee.Salary = manager.Salary;
+                    existingEmployee.SupervisorId = manager.SupervisorId;
+
+                    _context.Employees.Update(existingEmployee);
                     await _context.SaveChangesAsync();
+
+                    // manager
+                    if (existingManager.CityId != manager.CityId)
+                    {
+                        existingManager.CityId = manager.CityId;
+
+                        _context.Managers.Update(existingManager);
+                        await _context.SaveChangesAsync();
+
+                        // delete old manage properties
+                        string sql = $"DELETE FROM PropertyManagers WHERE ManagerId = {manager.EmployeeId}";
+                        await _context.Database.ExecuteSqlRawAsync(sql);
+
+                        var newManageProperties = await _context.Properties
+                                        .Where(p => p.CityId == manager.CityId)
+                                        .ToListAsync();
+
+                        foreach (var property in newManageProperties)
+                        {
+                            string insertSql = @"INSERT INTO PropertyManagers (PropertyId, ManagerId) VALUES ({0}, {1});";
+                            await _context.Database.ExecuteSqlRawAsync(insertSql, property.PropertyId, manager.EmployeeId);
+                        }
+
+                        await _context.SaveChangesAsync();
+
+                    }
+
+
+                    var returnUrl = TempData["returnUrl"] as string;
+                    if (returnUrl != null)
+                    {
+                        return Redirect((string)returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.ManagerId))
+                    if (!ManagerExists(manager.EmployeeId))
                     {
                         return NotFound();
                     }
@@ -273,9 +353,7 @@ namespace property_rental_management.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", manager.CityId);
-            ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email", manager.Email);
-            ViewData["ManagerId"] = new SelectList(_context.Employees, "EmployeeId", "EmployeeId", manager.ManagerId);
+
             return View(manager);
         }
 
