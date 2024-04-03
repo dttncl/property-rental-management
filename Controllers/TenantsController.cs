@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using property_rental_management.Models;
 
 namespace property_rental_management.Controllers
@@ -42,10 +43,28 @@ namespace property_rental_management.Controllers
 
 
         // GET: Tenants
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var rentaSpaceDbContext = _context.Tenants.Include(t => t.EmailNavigation);
-            return View(await rentaSpaceDbContext.ToListAsync());
+
+            var tenants = _context.Tenants.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+
+                tenants = _context.Tenants
+                            .Where(q =>
+                                q.FirstName.Contains(searchString) ||
+                                q.LastName.Contains(searchString) ||
+                                q.EmailNavigation.Email.Contains(searchString))
+                            .Include(e => e.EmailNavigation);
+            } else
+            {
+                tenants = _context.Tenants
+                            .Include(t => t.EmailNavigation);
+            }
+
+            return View(await tenants.ToListAsync());
+
         }
 
 
@@ -272,6 +291,7 @@ namespace property_rental_management.Controllers
             var tenant = await _context.Tenants
                 .Include(t => t.EmailNavigation)
                 .FirstOrDefaultAsync(m => m.TenantId == id);
+
             if (tenant == null)
             {
                 return NotFound();
@@ -285,14 +305,34 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+
+            var appointments = await _context.Appointments
+                        .Where(t => t.TenantId == id)
+                        .ToListAsync();
+
+            foreach (var item in appointments)
+            {
+                _context.Appointments.Remove(item);
+            }
+
             var tenant = await _context.Tenants.FindAsync(id);
+
             if (tenant != null)
             {
                 _context.Tenants.Remove(tenant);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            var returnUrl = TempData["returnUrl"] as string;
+            if (returnUrl != null)
+            {
+                return Redirect((string)returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private bool TenantExists(string id)

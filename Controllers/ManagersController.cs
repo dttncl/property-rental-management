@@ -112,7 +112,8 @@ namespace property_rental_management.Controllers
                                 .Where(q => 
                                     q.ManagerNavigation.FirstName.Contains(searchString) ||
                                     q.ManagerNavigation.LastName.Contains(searchString) ||
-                                    q.Email.Contains(searchString))
+                                    q.Email.Contains(searchString) ||
+                                    q.City.CityName.Contains(searchString))
                                 .Include(m => m.City)
                                 .Include(m => m.EmailNavigation)
                                 .Include(m => m.ManagerNavigation)
