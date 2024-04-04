@@ -18,6 +18,28 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
+        private async Task<String> GetUserDetails(string userId)
+        {
+            bool isManager = await _context.Managers
+                .AnyAsync(m => m.ManagerId.ToString() == userId);
+
+            if (isManager)
+            {
+                var managerDetails = await _context.Employees
+                    .FirstOrDefaultAsync(m => m.EmployeeId.ToString() == userId);
+
+                return $"{managerDetails?.FirstName} {managerDetails?.LastName}";
+
+            }
+            else
+            {
+                var tenantDetails = await _context.Tenants
+                    .FirstOrDefaultAsync(t => t.TenantId == userId);
+
+                return $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+            }
+        }
+
         // GET:  Managers/Messages/5
         public async Task<IActionResult> Messages(string id)
         {
@@ -36,9 +58,8 @@ namespace property_rental_management.Controllers
 
             foreach (var msg in messages)
             {
-                Generator gen = new Generator(_context);
-                var senderDetails = await gen.GetUserDetails(msg.Sender);
-                var receiverDetails = await gen.GetUserDetails(msg.Receiver);
+                var senderDetails = await GetUserDetails(msg.Sender);
+                var receiverDetails = await GetUserDetails(msg.Receiver);
 
                 Message foundMessage = new Message
                 {
@@ -102,18 +123,18 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Managers
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string s)
         {
             var managers = _context.Managers.AsQueryable();
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(s))
             {
                 managers = _context.Managers
                                 .Where(q => 
-                                    q.ManagerNavigation.FirstName.Contains(searchString) ||
-                                    q.ManagerNavigation.LastName.Contains(searchString) ||
-                                    q.Email.Contains(searchString) ||
-                                    q.City.CityName.Contains(searchString))
+                                    q.ManagerNavigation.FirstName.Contains(s) ||
+                                    q.ManagerNavigation.LastName.Contains(s) ||
+                                    q.Email.Contains(s) ||
+                                    q.City.CityName.Contains(s))
                                 .Include(m => m.City)
                                 .Include(m => m.EmailNavigation)
                                 .Include(m => m.ManagerNavigation)

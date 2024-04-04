@@ -43,19 +43,19 @@ namespace property_rental_management.Controllers
 
 
         // GET: Tenants
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string s)
         {
 
             var tenants = _context.Tenants.AsQueryable();
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(s))
             {
 
                 tenants = _context.Tenants
                             .Where(q =>
-                                q.FirstName.Contains(searchString) ||
-                                q.LastName.Contains(searchString) ||
-                                q.EmailNavigation.Email.Contains(searchString))
+                                q.FirstName.Contains(s) ||
+                                q.LastName.Contains(s) ||
+                                q.EmailNavigation.Email.Contains(s))
                             .Include(e => e.EmailNavigation);
             } else
             {

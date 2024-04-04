@@ -12,9 +12,9 @@
 
     var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
-    var returnUrl = Context.Request.Path;
     var employeeID = Context.Session.GetString("employeeID");
 
+    var returnUrl = Context.Request.Path;
     TempData["returnUrl"] = (string)returnUrl;
     
 }
@@ -43,7 +43,7 @@
                                 {
                                     // SENDER: Tenant
                                     <form asp-controller="Msgs" asp-action="Create" method="get">
-                                        <input type="hidden" name="msgTo" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="msgTo" value="@property.PropertyId" />
                                         <input type="hidden" name="msgFrom" value="@tenantID" />
 
                                         <button type="submit" class="rs-card-link btn">
@@ -52,7 +52,7 @@
                                     </form>
 
                                     <form asp-controller="BookAppointments" asp-action="Create" method="get">
-                                        <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                        @* <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" /> *@
                                         <input type="hidden" name="tenantID" value="@tenantID" />
                                         <input type="hidden" name="propertyID" value="@property.PropertyId" />
 
@@ -64,7 +64,7 @@
                                 {
                                     // SENDER: Employee
                                     <form asp-controller="Msgs" asp-action="Create" method="get">
-                                        <input type="hidden" name="msgFrom" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="msgFrom" value="@employeeID" />
                                         <input type="hidden" name="sender" value="employee" />
 
                                         <button type="submit" class="rs-card-link btn">
@@ -73,7 +73,7 @@
                                     </form>
 
                                     <form asp-controller="BookAppointments" asp-action="Create" method="get">
-                                        <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" />
+                                        <input type="hidden" name="managerId" value="@employeeID" />
                                         <input type="hidden" name="tenantID" value="@tenantID" />
                                         <input type="hidden" name="propertyID" value="@property.PropertyId" />
 

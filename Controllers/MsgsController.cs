@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using property_rental_management.Models;
 
 namespace property_rental_management.Controllers
@@ -83,9 +84,26 @@ namespace property_rental_management.Controllers
 
             if (sender == null)
             {
-                // sender is tenant
-                ViewData["managerID"] = msgTo;
-            } else
+                var isManager = _context.Managers.Any(m => m.ManagerId.ToString() == msgTo);
+                if (isManager)
+                {
+                    ViewData["managerID"] = msgTo;
+                }
+                else
+                {
+                    var managers = _context.Managers
+                                        .Where(m => m.Properties.Any(p => p.PropertyId == msgTo))
+                                        .Select(p => new
+                                        {
+                                            ManagerID = p.ManagerId,
+                                            ManagerValue = $"{p.ManagerNavigation.FirstName} {p.ManagerNavigation.LastName}"
+                                        })
+                                        .ToList();
+
+                    ViewData["managersList"] = new SelectList(managers, "ManagerID", "ManagerValue");
+                }
+            }
+            else
             {
                 ViewData["managerID"] = msgFrom;
             }
@@ -109,9 +127,9 @@ namespace property_rental_management.Controllers
                 var tenant = _context.Tenants
                     .FirstOrDefault(t => t.TenantId == msgTo);
 
-                ViewData["tenantName"] = tenant.FirstName;
-                ViewData["tenantEmail"] = tenant.Email;
-                ViewData["tenantPhone"] = tenant.Phone;
+                ViewData["txtName"] = tenant.FirstName;
+                ViewData["txtEmail"] = tenant.Email;
+                ViewData["txtPhone"] = tenant.Phone;
 
             } else if (sender == "employeeReport")
             {
@@ -133,9 +151,9 @@ namespace property_rental_management.Controllers
                 var tenant = _context.Tenants
                     .FirstOrDefault(t => t.TenantId == msgFrom);
 
-                ViewData["tenantName"] = tenant.FirstName;
-                ViewData["tenantEmail"] = tenant.Email;
-                ViewData["tenantPhone"] = tenant.Phone;
+                ViewData["txtName"] = tenant.FirstName;
+                ViewData["txtEmail"] = tenant.Email;
+                ViewData["txtPhone"] = tenant.Phone;
             }
 
             return View();

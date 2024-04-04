@@ -19,14 +19,34 @@ namespace property_rental_management.Controllers
         }
 
         // GET: Properties
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string s)
         {
-            var rentaSpaceDbContext = _context.Properties
-                .Include(c => c.City)
-                .Include(s => s.Status)
-                .Include(a => a.Apartments)
-                .Include(m => m.Managers);
-            return View(await rentaSpaceDbContext.ToListAsync());
+
+            var properties = _context.Properties.AsQueryable();
+
+            if (!string.IsNullOrEmpty(s))
+            {
+
+                properties = _context.Properties
+                                .Where(q =>
+                                    q.City.CityName.Contains(s) ||
+                                    q.Address.Contains(s))
+                                .Include(c => c.City)
+                                .Include(s => s.Status)
+                                .Include(a => a.Apartments)
+                                .Include(m => m.Managers);
+            }
+            else
+            {
+                properties = _context.Properties
+                                .Include(c => c.City)
+                                .Include(s => s.Status)
+                                .Include(a => a.Apartments)
+                                .Include(m => m.Managers);
+            }
+
+            return View(await properties.ToListAsync());
+
         }
 
         // GET: Properties/List

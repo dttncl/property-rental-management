@@ -13,8 +13,9 @@ namespace property_rental_management.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
+
             return View();
         }
 

@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\controllers\\tenantscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:controllers\\tenantscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\controllers\\msgscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:controllers\\msgscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\controllers\\managerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:controllers\\managerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\views\\msgs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:views\\msgs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\views\\managers\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:views\\managers\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\views\\tenants\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:views\\tenants\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\views\\properties\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:views\\properties\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\controllers\\propertiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:controllers\\propertiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|c:\\users\\dette\\source\\repos\\winter2024\\420_dw4_as\\property-rental-management\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A39AE615-D956-4616-9EAF-2D96D3FE0519}|property-rental-management.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -25,7 +33,7 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 1081,
+          "DockedWidth": 660,
           "SelectedChildIndex": 6,
           "Children": [
             {
@@ -54,48 +62,35 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TenantsController.cs",
-              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\TenantsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\TenantsController.cs",
-              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\TenantsController.cs",
-              "RelativeToolTip": "Controllers\\TenantsController.cs",
-              "ViewState": "AQIAAB0BAAAAAAAAAAAYwEUBAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-03T15:48:52.92Z",
+              "DocumentIndex": 1,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Msgs\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\Msgs\\Create.cshtml",
+              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Msgs\\Create.cshtml",
+              "RelativeToolTip": "Views\\Msgs\\Create.cshtml",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAAEAAAABUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-04-04T22:44:24.68Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Tenants\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Tenants\\Index.cshtml",
-              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Tenants\\Index.cshtml",
-              "RelativeToolTip": "Views\\Tenants\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAVAAAA",
+              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Properties\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Properties\\Index.cshtml",
+              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Properties\\Index.cshtml",
+              "RelativeToolTip": "Views\\Properties\\Index.cshtml",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAADYAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-03T15:39:40.899Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Managers\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Managers\\Index.cshtml",
-              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Views\\Managers\\Index.cshtml",
-              "RelativeToolTip": "Views\\Managers\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAARAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-03T01:53:52.429Z",
+              "WhenOpened": "2024-04-04T21:45:43.119Z",
               "EditorCaption": ""
             }
           ]
         },
         {
-          "DockedWidth": 1395,
-          "SelectedChildIndex": 2,
+          "DockedWidth": 682,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -107,21 +102,60 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ManagersController.cs",
-              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\ManagersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ManagersController.cs",
-              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\ManagersController.cs",
-              "RelativeToolTip": "Controllers\\ManagersController.cs",
-              "ViewState": "AQIAAJUBAAAAAAAAAAAAALsBAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\site.js",
+              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "wwwroot\\js\\site.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-04-04T22:48:18.065Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MsgsController.cs",
+              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\MsgsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MsgsController.cs",
+              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\MsgsController.cs",
+              "RelativeToolTip": "Controllers\\MsgsController.cs",
+              "ViewState": "AQIAAFMAAAAAAAAAAAAAAJcAAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-03T01:54:32.149Z",
+              "WhenOpened": "2024-04-04T22:32:26.568Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AQIAANUAAAAAAAAAAAAAAOkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-04-04T21:38:56.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PropertiesController.cs",
+              "DocumentMoniker": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\PropertiesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PropertiesController.cs",
+              "ToolTip": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\Controllers\\PropertiesController.cs",
+              "RelativeToolTip": "Controllers\\PropertiesController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T21:36:29.184Z",
               "EditorCaption": ""
             }
           ]
         },
         {
-          "DockedWidth": 879,
+          "DockedWidth": 1231,
           "SelectedChildIndex": -1,
           "Children": [
             {

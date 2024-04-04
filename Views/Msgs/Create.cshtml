@@ -1,10 +1,12 @@
 ﻿@model property_rental_management.Models.Msg
 
 @{
-    var tenantID = ViewData["tenantID"];
+    var sender = ViewData["sender"] as string;
+
     var tenantIDList = ViewBag.tenantIDList;
     var adminIDList = ViewBag.adminIDList;
-    var sender = ViewData["sender"] as string;
+    var managersList = ViewBag.managersList;
+
 }
 
 <h1>Create Message</h1>
@@ -15,57 +17,68 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+            @* FILING A REPORT *@ 
             @if (tenantIDList == null && sender == "employeeReport")
             {
                 <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
                 <div class="form-group">
                     <label class="control-label">To: </label>
-                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@adminIDList" id="tenantSelect"></select>
+                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@adminIDList" id="optionSelect"></select>
                 </div>
 
-            } else if (tenantIDList == null)
+            }
+            @* FROM TENANT *@
+            else if (tenantIDList == null)
             {
                 <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["tenantID"]" />
-                <input type="hidden" asp-for="Receiver" class="form-control" value="@ViewData["managerID"]" />
+                <h6>To</h6>
+                <div class="form-group">
+                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@managersList" id="optionSelect"></select>
+                </div>
             }
+            @* FROM MANAGER *@
             else
             {
                 <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
                 <div class="form-group">
                     <label class="control-label">To: </label>
-                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@tenantIDList" id="tenantSelect"></select>
+                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@tenantIDList" id="optionSelect"></select>
                 </div>
             }
             
+            @if (tenantIDList == null)
+            {
+                <h6>From</h6>
+            }
             <div class="form-group">
-                <label class="control-label">Name: </label>
-                <input id="tenantName" class="form-control" value="@ViewData["tenantName"]" disabled />
+                <label class="control-label">Name</label>
+                <input id="txtName" class="form-control" value="@ViewData["txtName"]" disabled />
             </div>
 
             <div class="form-group">
-                <label class="control-label">Email: </label>
-                <input id="tenantEmail" class="form-control" value="@ViewData["tenantEmail"]" disabled />
+                <label class="control-label">Email</label>
+                <input id="txtEmail" class="form-control" value="@ViewData["txtEmail"]" disabled />
             </div>
 
             <div class="form-group">
-                <label class="control-label">Phone: </label>
-                <input id="tenantPhone" class="form-control" value="@ViewData["tenantPhone"]" disabled />
+                <label class="control-label">Phone</label>
+                <input id="txtPhone" class="form-control" value="@ViewData["txtPhone"]" disabled />
             </div>
 
             <div class="form-group">
-                <label class="control-label">Subject: </label>
+                <label class="control-label">Subject</label>
                 @if (sender == "employeeReport")
                 {
-                    <input asp-for="Subject" class="form-control" placeholder="Property Incident Report" />
+                    <input asp-for="Subject" class="form-control" placeholder="Property Incident Report" id="subject"/>
 
                 }
                 else if (tenantIDList == null && sender != "employee")
                 {
-                    <input asp-for="Subject" class="form-control" placeholder="Apartment Inquiry" />
+                    <input asp-for="Subject" class="form-control" placeholder="Apartment Inquiry" id="subject" />
                 }
                 else
                 {
-                    <input asp-for="Subject" class="form-control" placeholder="New Listing!" />
+                    <input asp-for="Subject" class="form-control" placeholder="New Listing!" id="subject"/>
                 }
             </div>
 

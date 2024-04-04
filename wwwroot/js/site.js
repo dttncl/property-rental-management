@@ -1,26 +1,47 @@
 ﻿console.log("Hi")
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    // textarea
     const textarea = document.getElementById('message');
     const placeholder = textarea.getAttribute('placeholder');
 
-    // Set initial placeholder value
     textarea.value = placeholder;
 
-    // When textarea is focused, clear the placeholder value
+    // textarea is focused, clear the placeholder value
     textarea.addEventListener('focus', function () {
         if (textarea.value === placeholder) {
             textarea.value = '';
         }
     });
 
-    // When textarea loses focus and is empty, restore the placeholder value
+    // textarea loses focus and is empty, restore the placeholder value
     textarea.addEventListener('blur', function () {
         if (textarea.value.trim() === '') {
             textarea.value = placeholder;
         }
     });
 
+    // subject
+    const subject = document.getElementById('subject');
+    const subplaceholder = subject.getAttribute('placeholder');
+
+    subject.value = subplaceholder;
+
+    subject.addEventListener('focus', function () {
+        if (subject.value === subplaceholder) {
+            subject.value = '';
+        }
+    });
+
+    subject.addEventListener('blur', function () {
+        if (subject.value.trim() === '') {
+            subject.value = subplaceholder;
+        }
+    });
+
+
+    // dropdowns
     var tenantSelect = document.getElementById('tenantSelect');
     var tenantNameTextbox = document.getElementById('tenantName');
     var tenantEmailTextbox = document.getElementById('tenantEmail');
@@ -48,6 +69,37 @@ document.addEventListener('DOMContentLoaded', function () {
         tenantPhoneTextbox.value = tenantPhone;
 
     });
+
+
+    // NEW ONE
+    var optionSelect = document.getElementById('optionSelect');
+    var txtName = document.getElementById('txtName');
+    var txtEmail = document.getElementById('txtEmail');
+    var txtPhone = document.getElementById('txtPhone');
+
+    var selectedValue = optionSelect.value;
+    var userID = selectedValue.split('|')[0];
+    var txtName = userID = selectedValue.split('|')[2];
+    var txtEmail = userID = selectedValue.split('|')[1];
+    var txtPhone = userID = selectedValue.split('|')[3];
+
+    txtName.value = txtName;
+    txtEmail.value = txtEmail;
+    txtPhone.value = txtPhone;
+
+    optionSelect.addEventListener('change', function () {
+        var selectedValue = optionSelect.value;
+        var userID = selectedValue.split('|')[0];
+        var txtName = userID = selectedValue.split('|')[2];
+        var txtEmail = userID = selectedValue.split('|')[1];
+        var txtPhone = userID = selectedValue.split('|')[3];
+
+        txtName.value = txtName;
+        txtEmail.value = txtEmail;
+        txtPhone.value = txtPhone;
+
+    });
+
 
 
 
