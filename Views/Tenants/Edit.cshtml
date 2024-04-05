@@ -5,46 +5,41 @@
 }
 
 <h1>Edit Profile</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row rs-form-edit">
+    <div class="col-md-5">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TenantId" />
             <input type="hidden" asp-for="Email" class="form-control" value="@ViewData["Email"]" />
-            <div>
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        Email
-                    </dt>
-                    <dd class="col-sm-10">
-                        @ViewData["Email"]
-                    </dd>
-                </dl>
+
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <label class="control-label">Email</label>
+                <input class="form-control" value="@ViewData["Email"]" disabled/>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-lg btn-rentaspace-full" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <!--<a asp-action="Index">Back to List</a>-->
 </div>
 

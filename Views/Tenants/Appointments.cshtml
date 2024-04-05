@@ -1,28 +1,31 @@
 ﻿@model IEnumerable<property_rental_management.Models.Appointment>
 
 @{
-
+    var userEmail = Context.Session.GetString("userEmail");
+    var tenantID = Context.Session.GetString("tenantID");
+    var returnUrl = Context.Request.Path;
+    TempData["returnUrl"] = (string)returnUrl;
 }
 
-<h1>All Appointments</h1>
+<h1>My Appointments</h1>
 
 <table class="table rs-table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Manager)
+                Manager
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppointmentDate)
+                Appointment Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Schedule)
+                Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Apartment)
+                Apartment
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Appointment Status
             </th>
         </tr>
     </thead>

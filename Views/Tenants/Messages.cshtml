@@ -7,11 +7,13 @@
     TempData["returnUrl"] = (string)returnUrl;
 }
 
-<h1>All Messages</h1>
-
+<h1>Inbox</h1>
 <table class="table rs-table">
     <thead>
         <tr>
+            <th>
+                Subject
+            </th>
             <th>
                 From
             </th>
@@ -19,7 +21,7 @@
                 To
             </th>
             <th>
-                Subject
+                Read
             </th>
             <th>
                 Reply
@@ -30,13 +32,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @item.Subject
+            </td>
+            <td>
                 @item.Sender.Split('|')[1]
             </td>
             <td>
                 @item.Receiver.Split('|')[1]
             </td>
             <td>
-                @item.Subject
+                <form asp-controller="Msgs" asp-action="Details" method="get">
+                    <input type="hidden" name="msgID" value="@item.MessageId" />
+                    <button type="submit" class="rs-card-link btn">
+                        <img src="~/images/icon_open_msg.png" class="rs-iconmail" />
+                    </button>
+                </form>
             </td>
             <td>
                 <form asp-controller="Msgs" asp-action="Create" method="get">
@@ -50,15 +60,9 @@
                     } else
                     {
                         <button type="submit" class="rs-card-link btn"disabled>
-                            <img src="~/images/icon_reply_disabled.png"class="rs-icon-  mail" />
+                            <img src="~/images/icon_reply_disabled.png"class="rs-icon-mail" />
                         </button>
                     }
-                </form>
-                <form asp-controller="Msgs" asp-action="Details" method="get">
-                    <input type="hidden" name="msgID" value="@item.MessageId" />
-                    <button type="submit" class="rs-card-link btn">
-                        <img src="~/images/icon_open_msg.png" class="rs-iconmail" />
-                    </button>
                 </form>
             </td>
         </tr>

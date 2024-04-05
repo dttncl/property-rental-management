@@ -252,9 +252,12 @@ body {
     flex-direction: row;
 }
 
+.rs-form-edit {
+    margin-top: 30px;
+}
 
-
-.rs-form > form {
+.rs-form > form,
+.rs-form-edit form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -268,7 +271,8 @@ body {
 }
 
 .rs-login,
-.rs-register {
+.rs-register
+{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -355,4 +359,8 @@ body {
     gap: 20px;
     padding-left: 40px;
     border-left: 1px solid black;
+}
+
+.rs-iconmail {
+    width: 40px;
 }
