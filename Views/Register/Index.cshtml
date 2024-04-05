@@ -1,49 +1,56 @@
 ﻿@model property_rental_management.Models.Register
 
 @{
-    ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Register</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row rs-register">
+    <div class="rs-login-img">
+        <img src="~/images/welcome.png" alt="Rentaspace Login" class="img-home" />
+    </div>
+    <div class="rs-register-input">
+        <h1>
+            Register
+        </h1>
+        <p>
+            Register to view our exclusive rentals.
+        </p>
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name"/>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name"/>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="Email"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
+                <input asp-for="Phone" class="form-control" placeholder="Phone"/>
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <input asp-for="Password" class="form-control" placeholder="Password"/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password"/>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Register Account" class="btn btn-primary" />
+
+            <div class="form-group rs-button-caption">
+                <input type="submit" value="Register" class="btn btn-lg btn-rentaspace-full" />
+                <p>
+                    Already have an account? <a asp-controller="Login" asp-action="Index" class="rs-text-link">Login</a>
+                </p>
             </div>
         </form>
     </div>

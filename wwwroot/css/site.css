@@ -40,6 +40,11 @@ body {
   font-family: var(--rs-font-body);
 }
 
+.text-danger,
+.field-validation-error {
+    font-size: 0.8rem;
+}
+
 /* CUSTOM */
 
 .rs-card-link {
@@ -262,9 +267,12 @@ body {
     justify-content: space-between;
 }
 
-.rs-login {
+.rs-login,
+.rs-register {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .rs-login-img {
@@ -272,7 +280,8 @@ body {
     padding: 50px;
 }
 
-.rs-login-input {
+.rs-login-input,
+.rs-register-input {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -280,12 +289,14 @@ body {
     padding: 50px;
 }
 
-.rs-login-input > h1 {
+.rs-login-input > h1,
+.rs-register-input > h1 {
     color: var(--rs-orange);
     font-weight: bold;
 }
 
-.rs-login-input > form {
+.rs-login-input > form,
+.rs-register-input > form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -307,4 +318,41 @@ body {
 
 .rs-button-caption > input {
     width: 100%;
+}
+
+.img-profile {
+    width: 100px;
+}
+
+.rs-profile-top-left {
+    border: 3px solid black;
+    padding: 10px;
+}
+
+.rs-profile-top {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+}
+
+.rs-profile-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.rs-profile-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rs-profile-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 40px;
+    border-left: 1px solid black;
 }
