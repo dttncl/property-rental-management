@@ -7,7 +7,17 @@
     var adminIDList = ViewBag.adminIDList;
     var managersList = ViewBag.managersList;
 
+    var txtName = ViewData["txtName"] as string;
+    var txtEmail = ViewData["txtEmail"] as string;
+    var txtPhone = ViewData["txtPhone"] as string;
+
+    var isViewDataEmpty = string.IsNullOrEmpty(txtName)
+                            && string.IsNullOrEmpty(txtEmail)
+                            && string.IsNullOrEmpty(txtPhone);
+
 }
+
+
 
 <h1>Send Message</h1>
 <div class="row">
@@ -28,25 +38,58 @@
             @* FROM TENANT *@
             else if (tenantIDList == null)
             {
-                <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["tenantID"]" />
-                <div class="form-group">
-                    <h5>To</h5>
-                    <label asp-for="Receiver" class="control-label">Manager</label>
-                    <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@managersList" id="optionSelect"></select>
-                </div>
+                <h5>To</h5>
+                <label asp-for="Receiver" class="control-label">Manager</label>
+                if (sender == "reply")
+                {
+                    <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["tenantID"]" />
+                    <input type="hidden" asp-for="Receiver" class="form-control" value="@ViewData["managerID"]" />
+
+                    <div class="form-group">
+                        <select class="form-select" class="form-control" asp-items="@managersList" id="optionSelect" disabled></select>
+                    </div>
+
+                } else
+                {
+                    <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["tenantID"]" />
+                    <div class="form-group">
+                        <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@managersList" id="optionSelect"></select>
+                    </div>
+                }
+
             }
             @* FROM MANAGER *@
             else
             {
-                <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
-                <div class="form-group">
-                    <h6>To</h6>
-                    <label asp-for="Receiver" class="control-label">Tenant</label>
-                    <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@tenantIDList" id="optionSelect"></select>
-                </div>
+
+                <h5>To</h5>
+                <label asp-for="Receiver" class="control-label">Tenant</label>
+                if (sender == "reply")
+                {
+                    <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
+                    <input type="hidden" asp-for="Receiver" class="form-control" value="@ViewData["tenantID"]" />
+
+                    <div class="form-group">
+                        <select class="form-select" class="form-control" asp-items="@tenantIDList" id="optionSelect" disabled></select>
+                    </div>
+
+                }
+                else if (sender == "employeeReport")
+                {
+                    <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
+                    <div class="form-group">
+                        <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@adminIDList" id="optionSelect"></select>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
+                    <div class="form-group">
+                        <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@tenantIDList" id="optionSelect"></select>
+                    </div>
+                }
             }
             
-            <h5>From</h5>
             <div class="form-group">
                 <label class="control-label">Name</label>
                 <input id="txtName" class="form-control" value="@ViewData["txtName"]" disabled />
@@ -107,3 +150,37 @@
         </form>
     </div>
 </div>
+
+@if (isViewDataEmpty)
+{
+    <script>
+        var optionSelect = document.getElementById('optionSelect');
+        var txtNameInput = document.getElementById('txtName');
+        var txtEmailInput = document.getElementById('txtEmail');
+        var txtPhoneInput = document.getElementById('txtPhone');
+
+        console.log(txtNameInput);
+        var selectedValue = optionSelect.value;
+        var userID = selectedValue.split('|')[0];
+        var txtName = selectedValue.split('|')[2];
+        var txtEmail = selectedValue.split('|')[1];
+        var txtPhone = selectedValue.split('|')[3];
+
+        txtNameInput.value = txtName;
+        txtEmailInput.value = txtEmail;
+        txtPhoneInput.value = txtPhone;
+
+        optionSelect.addEventListener('change', function () {
+            selectedValue = optionSelect.value;
+            userID = selectedValue.split('|')[0];
+            txtName = selectedValue.split('|')[2];
+            txtEmail = selectedValue.split('|')[1];
+            txtPhone = selectedValue.split('|')[3];
+
+            txtNameInput.value = txtName;
+            txtEmailInput.value = txtEmail;
+            txtPhoneInput.value = txtPhone;
+        });
+
+    </script>
+}

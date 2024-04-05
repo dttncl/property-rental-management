@@ -44,18 +44,20 @@
                 <form asp-controller="Msgs" asp-action="Details" method="get">
                     <input type="hidden" name="msgID" value="@item.MessageId" />
                     <button type="submit" class="rs-card-link btn">
-                        <img src="~/images/icon_open_msg.png" class="rs-iconmail" />
+                        <img src="~/images/icon_open_msg.png" class="rs-icon-mail" />
                     </button>
                 </form>
             </td>
             <td>
                 <form asp-controller="Msgs" asp-action="Create" method="get">
                     <input type="hidden" name="msgTo" value="@item.Sender.Split('|')[0]" />
-                        <input type="hidden" name="msgFrom" value="@item.Receiver.Split('|')[0]" />
+                    <input type="hidden" name="msgFrom" value="@item.Receiver.Split('|')[0]" />
+                    <input type="hidden" name="sender" value="reply" />
+
                     @if (item.Receiver.Split('|')[0] == tenantID)
                     {
                         <button type="submit" class="rs-card-link btn">
-                            <img src="~/images/icon_reply.png" class="rs-iconmail" />
+                            <img src="~/images/icon_reply.png" class="rs-icon-mail" />
                         </button>
                     } else
                     {

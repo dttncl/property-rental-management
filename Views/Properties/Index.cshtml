@@ -45,6 +45,8 @@
                                     <form asp-controller="Msgs" asp-action="Create" method="get">
                                         <input type="hidden" name="msgTo" value="@property.PropertyId" />
                                         <input type="hidden" name="msgFrom" value="@tenantID" />
+                                        <input type="hidden" name="sender" value="tenant" />
+
 
                                         <button type="submit" class="rs-card-link btn">
                                             <img src="~/images/icon_mail.png" class="rs-icon-mail" />

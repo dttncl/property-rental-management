@@ -15,7 +15,9 @@ namespace property_rental_management.Controllers
         public IActionResult Index()
         {
             HttpContext.Session.Clear();
+            TempData.Clear();
             return RedirectToAction("Index", "Home");
         }
+
     }
 }

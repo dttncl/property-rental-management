@@ -18,12 +18,6 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
-        // GET: Messages
-        //public async Task<IActionResult> Index()
-        //{
-        //    var rentaSpaceDbContext = _context.Messages.Include(m => m.Manager).Include(m => m.Tenant);
-        //    return View(await rentaSpaceDbContext.ToListAsync());
-        //}
 
         // GET: Messages/Details/5
         public async Task<IActionResult> Details(int? id)

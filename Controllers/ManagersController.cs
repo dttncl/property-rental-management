@@ -20,24 +20,36 @@ namespace property_rental_management.Controllers
 
         private async Task<String> GetUserDetails(string userId)
         {
+            string userDetails;
             bool isManager = await _context.Managers
                 .AnyAsync(m => m.ManagerId.ToString() == userId);
 
-            if (isManager)
+            bool isAdmin = await _context.Admins
+                .AnyAsync(m => m.AdminId.ToString() == userId);
+
+            bool isTenant = await _context.Tenants
+                .AnyAsync(m => m.TenantId.ToString() == userId);
+
+            if (isManager || isAdmin)
             {
                 var managerDetails = await _context.Employees
                     .FirstOrDefaultAsync(m => m.EmployeeId.ToString() == userId);
 
-                return $"{managerDetails?.FirstName} {managerDetails?.LastName}";
+                userDetails = $"{managerDetails?.FirstName} {managerDetails?.LastName}";
 
-            }
-            else
+            } 
+            else if (isTenant)
             {
                 var tenantDetails = await _context.Tenants
                     .FirstOrDefaultAsync(t => t.TenantId == userId);
 
-                return $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+                userDetails = $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+            } else
+            {
+                userDetails = "[Account Not Found]";
             }
+
+            return userDetails;
         }
 
         // GET:  Managers/Messages/5

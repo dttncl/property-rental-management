@@ -17,42 +17,25 @@
 
 }
 
-<h1>Listings</h1>
-
 <div>
-    <h4>Manager</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            City
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.City.CityName
-        </dd>
-        <dt class = "col-sm-2">
-            Email
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.EmailNavigation.Email
-        </dd>
-        <dt class = "col-sm-2">
-            Name
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.ManagerNavigation.FirstName @Model.ManagerNavigation.LastName
-        </dd>
-    </dl>
+    <h2>@Model.City.CityName Listings</h2>
+    <p>Managed by <b>@Model.ManagerNavigation.FirstName @Model.ManagerNavigation.LastName</b> | @Model.EmailNavigation.Email</p>
 </div>
 
-<h3>Property Listings</h3>
+<div class="rs-listings">
+    <div class="rs-listings-header">
+        <h3>
+            Properties
+        </h3>
+        <a class="rs-text-link" asp-action="Create" asp-controller="Properties" asp-route-id="@employeeID"><img class="rs-iconmail" src="~/images/icon_add.png" /></a>
+    </div>
 
-<main class="rs-properties-container">
-    <div class="rs-cards-container">
+    <div class="rs-cards-listings">
         @foreach (var property in Model.Properties)
         {
     
             <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.PropertyId" class="rs-card-link">
-                <div class="card rs-card">
+                <div class="card rs-card-list">
     
                     <div class="card-header rs-card-header">
                         <div class="rs-card-header-left">
@@ -170,32 +153,6 @@
             
         }
     </div>
-
-    <div class="rs-sidenav-container">
-        <div class="rs-sidenav-container">
-            <ul>
-                <li>
-                    <a asp-controller="Managers" asp-action="Messages" asp-route-id="@Model?.ManagerId">View Messages</a>
-                </li>
-                <li>
-                    <a asp-controller="Managers" asp-action="Appointments" asp-route-id="@Model?.ManagerId">View Appointments</a>
-                </li>
-                <li>
-                    <form asp-controller="Msgs" asp-action="Create" method="get">
-                        <input type="hidden" name="msgFrom" value="@Model?.ManagerId" />
-                        <input type="hidden" name="sender" value="employeeReport" />
-
-                        <button type="submit" class="rs-card-link btn">
-                            Report
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-</main>
-
-<div>
-
 </div>
+
+

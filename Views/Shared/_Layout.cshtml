@@ -6,7 +6,6 @@
     var jobID = Context.Session.GetString("jobID");
     var tenantID = Context.Session.GetString("tenantID");
     var employeeID = Context.Session.GetString("employeeID");
-    //TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <!DOCTYPE html>
@@ -57,16 +56,24 @@
                                     }
                                     else if (jobID == "502")
                                     {
-                                        <li class="nav-item">
-                                            @Html.ActionLink("Add Property", "Create", "Properties", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
-                                        </li>
-                                        <li class="nav-item">
-                                            @Html.ActionLink("Manager Dashboard", "Listings", "Managers", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
-                                        </li>
+                                        <div class="nav-item dropdown">
+                                            <a id="managerDropdown" class="btn btn-lg btn-rentaspace-full dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manager Dashboard</a>
+                                            <div class="dropdown-menu" aria-labelledby="managerDropdown">
+                                                @Html.ActionLink("Manager Dashboard", "Listings", "Managers", new { area = "", id = employeeID }, new { @class = "dropdown-item rs-dd-option" })
+                                                @Html.ActionLink("My Messages", "Messages", "Managers", new { area = "", id = employeeID }, new { @class = "dropdown-item rs-dd-option" })
+                                                @Html.ActionLink("My Appointments", "Appointments", "Managers", new { area = "", id = employeeID }, new { @class = "dropdown-item rs-dd-option" })
+                                                <form id="reportForm" asp-controller="Msgs" asp-action="Create" method="get">
+                                                    <input type="hidden" name="msgFrom" value="@employeeID" />
+                                                    <input type="hidden" name="sender" value="employeeReport" />
+                                                    <button type="submit" class="dropdown-item rs-dd-option">Report</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
                                     }
                                 }
                                 <li class="nav-item">
-                                    @Html.ActionLink("Logout", "Index", "Logout", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-outline" })
+                                    @Html.ActionLink("Logout", "Index", "Logout", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-outline", id = "logoutLink" })
                                 </li>
 
                             } else
@@ -120,6 +127,9 @@
             </div>
         </footer>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

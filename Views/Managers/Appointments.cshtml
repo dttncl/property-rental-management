@@ -11,21 +11,20 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Tenant)
+                Tenant
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppointmentDate)
+                Appointment
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Schedule)
+                Apartment
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Apartment)
+                Appointment Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Action
             </th>
-            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -37,8 +36,7 @@
                 </td>
                 <td>
                     @item.AppointmentDate
-                </td>
-                <td>
+                    <br />
                     @item.Schedule.StartTime - @item.Schedule.EndTime
                 </td>
                 <td>
@@ -47,20 +45,18 @@
                     @item.Apartment.Bedrooms Beds - @item.Apartment.Bathrooms Beds - @item.Apartment.FloorArea sqm
                 </td>
                 <td>
-                    <div class="rs-status">
+                    <div class="rs-status rs-manager-appstatus">
                         @item.Status.Description
                     </div>
                 </td>
                 <td>
-                    <!-- Form for updating status -->
-                    <form method="post" asp-controller="Appointments" asp-action="UpdateStatus">
-                        <!-- Assuming your action method is named UpdateStatus in AppointmentsController -->
-                        <input type="hidden" name="appointmentId" value="@item.AppointmentId" /> <!-- Hidden field to send appointment ID -->
-                        <select name="statusId">
+                    <form method="post" asp-controller="Appointments" asp-action="UpdateStatus" class="rs-app-action">
+                        <input type="hidden" name="appointmentId" value="@item.AppointmentId" />
+                        <select name="statusId" class="btn btn-sm btn-rentaspace-outline rs-app-dropdown">
                             <option value="S2">CONFIRM</option>
                             <option value="S3">CANCEL</option>
                         </select>
-                        <button type="submit">Update Status</button>
+                        <button type="submit" class="btn btn-sm btn-rentaspace-full">Update</button>
                     </form>
                 </td>
             </tr>

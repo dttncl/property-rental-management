@@ -39,68 +39,63 @@ document.addEventListener('DOMContentLoaded', function () {
             subject.value = subplaceholder;
         }
     });
-
-
-    // dropdowns
-    var tenantSelect = document.getElementById('tenantSelect');
-    var tenantNameTextbox = document.getElementById('tenantName');
-    var tenantEmailTextbox = document.getElementById('tenantEmail');
-    var tenantPhoneTextbox = document.getElementById('tenantPhone');
-
-    var selectedValue = tenantSelect.value;
-    var tenantID = selectedValue.split('|')[0];
-    var tenantName = tenantID = selectedValue.split('|')[2];
-    var tenantEmail = tenantID = selectedValue.split('|')[1];
-    var tenantPhone = tenantID = selectedValue.split('|')[3];
-
-    tenantNameTextbox.value = tenantName;
-    tenantEmailTextbox.value = tenantEmail;
-    tenantPhoneTextbox.value = tenantPhone;
-
-    tenantSelect.addEventListener('change', function () {
-        var selectedValue = tenantSelect.value;
-        var tenantID = selectedValue.split('|')[0];
-        var tenantName = tenantID = selectedValue.split('|')[2];
-        var tenantEmail = tenantID = selectedValue.split('|')[1];
-        var tenantPhone = tenantID = selectedValue.split('|')[3];
-
-        tenantNameTextbox.value = tenantName;
-        tenantEmailTextbox.value = tenantEmail;
-        tenantPhoneTextbox.value = tenantPhone;
-
-    });
-
-
-    // NEW ONE
+    /*
     var optionSelect = document.getElementById('optionSelect');
-    var txtName = document.getElementById('txtName');
-    var txtEmail = document.getElementById('txtEmail');
-    var txtPhone = document.getElementById('txtPhone');
+    var txtNameInput = document.getElementById('txtName');
+    var txtEmailInput = document.getElementById('txtEmail');
+    var txtPhoneInput = document.getElementById('txtPhone');
 
+    
     var selectedValue = optionSelect.value;
     var userID = selectedValue.split('|')[0];
-    var txtName = userID = selectedValue.split('|')[2];
-    var txtEmail = userID = selectedValue.split('|')[1];
-    var txtPhone = userID = selectedValue.split('|')[3];
+    var txtName = selectedValue.split('|')[2];
+    var txtEmail = selectedValue.split('|')[1];
+    var txtPhone = selectedValue.split('|')[3];
 
-    txtName.value = txtName;
-    txtEmail.value = txtEmail;
-    txtPhone.value = txtPhone;
+    txtNameInput.value = txtName;
+    txtEmailInput.value = txtEmail;
+    txtPhoneInput.value = txtPhone;
 
     optionSelect.addEventListener('change', function () {
-        var selectedValue = optionSelect.value;
-        var userID = selectedValue.split('|')[0];
-        var txtName = userID = selectedValue.split('|')[2];
-        var txtEmail = userID = selectedValue.split('|')[1];
-        var txtPhone = userID = selectedValue.split('|')[3];
 
-        txtName.value = txtName;
-        txtEmail.value = txtEmail;
-        txtPhone.value = txtPhone;
+        selectedValue = optionSelect.value;
+        userID = selectedValue.split('|')[0];
+        txtName = selectedValue.split('|')[2];
+        txtEmail = selectedValue.split('|')[1];
+        txtPhone = selectedValue.split('|')[3];
 
+        txtNameInput.value = txtName;
+        txtEmailInput.value = txtEmail;
+        txtPhoneInput.value = txtPhone;
     });
+    */
+    var selectedOption = localStorage.getItem('selectedOption');
+    if (selectedOption) {
+        dropdownButton.innerText = selectedOption;
+    }
 
+});
 
+var dropdownLinks = document.getElementsByClassName('rs-dd-option');
+var dropdownButton = document.getElementById('managerDropdown');
 
+for (var i = 0; i < dropdownLinks.length; i++) {
+    dropdownLinks[i].addEventListener('click', function () {
+        var selectedOptionText = this.innerText.trim();
+        dropdownButton.innerText = selectedOptionText;
+        localStorage.setItem('selectedOption', selectedOptionText);
+    });
+}
 
+// Set the dropdown button text from local storage on page load
+document.addEventListener('DOMContentLoaded', function () {
+    var selectedOption = localStorage.getItem('selectedOption');
+    if (selectedOption) {
+        dropdownButton.innerText = selectedOption;
+    }
+});
+
+var logout = document.getElementById('logoutLink');
+logout.addEventListener('click', function () {
+    localStorage.clear();
 });

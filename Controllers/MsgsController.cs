@@ -27,24 +27,37 @@ namespace property_rental_management.Controllers
 
         private async Task<String> GetUserDetails(string userId)
         {
+            string userDetails;
             bool isManager = await _context.Managers
                 .AnyAsync(m => m.ManagerId.ToString() == userId);
 
-            if (isManager)
+            bool isAdmin = await _context.Admins
+                .AnyAsync(m => m.AdminId.ToString() == userId);
+
+            bool isTenant = await _context.Tenants
+                .AnyAsync(m => m.TenantId.ToString() == userId);
+
+            if (isManager || isAdmin)
             {
                 var managerDetails = await _context.Employees
                     .FirstOrDefaultAsync(m => m.EmployeeId.ToString() == userId);
 
-                return $"{managerDetails?.FirstName} {managerDetails?.LastName}";
-                
+                userDetails = $"{managerDetails?.FirstName} {managerDetails?.LastName}";
+
             }
-            else
+            else if (isTenant)
             {
                 var tenantDetails = await _context.Tenants
                     .FirstOrDefaultAsync(t => t.TenantId == userId);
 
-                return $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+                userDetails = $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
             }
+            else
+            {
+                userDetails = "[Account Not Found]";
+            }
+
+            return userDetails;
         }
 
         // GET: Msgs/Details/5
@@ -82,7 +95,7 @@ namespace property_rental_management.Controllers
         public IActionResult Create(String msgTo, String msgFrom, String sender)
         {
 
-            if (sender == null)
+            if (sender == "tenant")
             {
                 var isManager = _context.Managers.Any(m => m.ManagerId.ToString() == msgTo);
                 if (isManager)
@@ -102,50 +115,7 @@ namespace property_rental_management.Controllers
 
                     ViewData["managersList"] = new SelectList(managers, "ManagerID", "ManagerValue");
                 }
-            }
-            else
-            {
-                ViewData["managerID"] = msgFrom;
-            }
-            
 
-            if (sender == "employee")
-            {
-                var tenants = _context.Tenants.Select(t => new {
-                    TenantID = t.TenantId,
-                    TenantEmail = t.Email,
-                    TenantValue = $"{t.TenantId}|{t.Email}|{t.FirstName} {t.LastName}|{t.Phone}"
-                }).ToList();
-
-                ViewData["tenantIDList"] = new SelectList(tenants, "TenantValue", "TenantEmail");
-            } 
-            else if (sender == "employeeReply")
-            {
-                ViewData["tenantID"] = msgFrom;
-                ViewData["sender"] = "employeeReply";
-
-                var tenant = _context.Tenants
-                    .FirstOrDefault(t => t.TenantId == msgTo);
-
-                ViewData["txtName"] = $"{tenant.FirstName} {tenant.LastName}";
-                ViewData["txtEmail"] = tenant.Email;
-                ViewData["txtPhone"] = tenant.Phone;
-
-            } else if (sender == "employeeReport")
-            {
-                ViewData["sender"] = "employeeReport";
-
-                var admins = _context.Admins
-                    .Select(a => new {
-                    AdminID = a.AdminId,
-                    AdminEmail = a.Email,
-                    AdminValue = $"{a.AdminId}|{a.Email}|{a.AdminNavigation.FirstName} {a.AdminNavigation.LastName}|{a.AdminNavigation.Phone}"
-                }).ToList();
-
-                ViewData["adminIDList"] = new SelectList(admins, "AdminValue", "AdminEmail");
-            }       
-            else
-            {
                 ViewData["tenantID"] = msgFrom;
 
                 var tenant = _context.Tenants
@@ -154,8 +124,86 @@ namespace property_rental_management.Controllers
                 ViewData["txtName"] = $"{tenant.FirstName} {tenant.LastName}";
                 ViewData["txtEmail"] = tenant.Email;
                 ViewData["txtPhone"] = tenant.Phone;
-            }
 
+            } else if (sender == "employee")
+            {
+                ViewData["managerID"] = msgFrom;
+
+                var tenants = _context.Tenants.Select(t => new {
+                    TenantID = t.TenantId,
+                    TenantEmail = t.Email,
+                    TenantValue = $"{t.TenantId}|{t.Email}|{t.FirstName} {t.LastName}|{t.Phone}"
+                }).ToList();
+
+                ViewData["tenantIDList"] = new SelectList(tenants, "TenantValue", "TenantEmail");
+
+            } else if (sender == "reply")
+            {
+                // check if message is from manager
+                var isManager = _context.Managers.Any(m => m.ManagerId.ToString() == msgFrom);
+
+                // check if message is from tenant
+                var isTenant = _context.Tenants.Any(m => m.TenantId.ToString() == msgFrom);
+
+                if (isTenant)
+                {
+                    ViewData["tenantID"] = msgFrom;
+                    ViewData["managerID"] = msgTo;
+
+                    var managers = _context.Managers
+                        .Where(m => m.ManagerId.ToString() == msgTo)
+                        .Select(p => new
+                        {
+                            ManagerID = p.ManagerId,
+                            ManagerValue = $"{p.ManagerNavigation.FirstName} {p.ManagerNavigation.LastName}"
+                        })
+                        .ToList();
+
+                    ViewData["managersList"] = new SelectList(managers, "ManagerID", "ManagerValue");
+
+                    var tenant = _context.Tenants
+                        .FirstOrDefault(t => t.TenantId == msgFrom);
+
+                    ViewData["txtName"] = $"{tenant.FirstName} {tenant.LastName}";
+                    ViewData["txtEmail"] = tenant.Email;
+                    ViewData["txtPhone"] = tenant.Phone;
+
+                }
+                else if (isManager)
+                {
+                    ViewData["managerID"] = msgFrom;
+                    ViewData["tenantID"] = msgTo;
+
+                    var tenants = _context.Tenants
+                        .Where(m => m.TenantId.ToString() == msgTo)
+                        .Select(t => new {
+                        TenantID = t.TenantId,
+                        TenantEmail = t.Email,
+                        TenantValue = $"{t.TenantId}|{t.Email}|{t.FirstName} {t.LastName}|{t.Phone}"
+                    }).ToList();
+
+                    ViewData["tenantIDList"] = new SelectList(tenants, "TenantValue", "TenantEmail");
+
+                }
+
+                ViewData["sender"] = "reply";
+
+            }
+            else if (sender == "employeeReport")
+            {
+                ViewData["sender"] = "employeeReport";
+                ViewData["managerID"] = msgFrom;
+
+                var admins = _context.Admins
+                    .Select(a => new {
+                        AdminID = a.AdminId,
+                        AdminEmail = a.Email,
+                        AdminValue = $"{a.AdminId}|{a.Email}|{a.AdminNavigation.FirstName} {a.AdminNavigation.LastName}|{a.AdminNavigation.Phone}"
+                    }).ToList();
+
+                ViewData["adminIDList"] = new SelectList(admins, "AdminValue", "AdminEmail");
+            }
+            
             return View();
         }
 

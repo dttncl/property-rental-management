@@ -364,3 +364,73 @@ body {
 .rs-iconmail {
     width: 40px;
 }
+
+.rs-listings {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rs-cards-listings {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.rs-listings-header {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rs-listings-header .rs-iconmail {
+    width: 40px;
+}
+
+.rs-card-list {
+    width: 500px;
+}
+
+.rs-dd-option {
+    background-color: var(--rs-orange);
+    color: var(--rs-white);
+    padding: 10px;
+}
+
+.dropdown-menu {
+    background-color: var(--rs-orange);
+    width: 100%;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+#managerDropdown {
+    width: 260px; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.dropdown-menu {
+    min-width: 260px; 
+}
+
+.rs-app-dropdown:hover {
+    color: var(--rs-orange);
+    background-color: initial;
+}
+
+.rs-app-action {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rs-form-container {
+    margin-top: 20px;
+}

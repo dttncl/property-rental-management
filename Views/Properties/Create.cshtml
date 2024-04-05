@@ -5,12 +5,9 @@
 
 }
 
-<h1>Create</h1>
-
-<h4>Property</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<h1>Register A Property</h1>
+<div class="row rs-form-edit">
+    <div class="col-md-5">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PropertyId" class="form-control" value="X"/>
@@ -23,23 +20,30 @@
 
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <input asp-for="Address" class="form-control" placeholder="Street Address" />
+                <span asp-validation-for="Address" class="text-danger" ></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="control-label">City</label>
+                    <input class="form-control" value="@manager?.City?.CityName" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Province/Rregion</label>
+                    <input class="form-control" value="Quebec" disabled />
+                </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label">City</label>
-                <input class="form-control" value="@manager?.City?.CityName" disabled/>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="YearEstablished" class="control-label"></label>
-                <input asp-for="YearEstablished" class="form-control" />
+                <label asp-for="YearEstablished" class="control-label">Year Established</label>
+                <input type="number" min="2000" max="2024" value="2024" asp-for="YearEstablished" class="form-control" />
                 <span asp-validation-for="YearEstablished" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Confirm" class="btn btn-lg btn-rentaspace-full" />
             </div>
         </form>
     </div>

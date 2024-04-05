@@ -9,11 +9,13 @@
 }
 
 
-<h1>All Messages</h1>
-
+<h1>Inbox</h1>
 <table class="table rs-table">
     <thead>
         <tr>
+            <th>
+                Subject
+            </th>
             <th>
                 From
             </th>
@@ -21,7 +23,7 @@
                 To
             </th>
             <th>
-                Subject
+                Read
             </th>
             <th>
                 Reply
@@ -33,38 +35,40 @@
         {
             <tr>
                 <td>
+                    @item.Subject
+                </td>
+                <td>
                     @item.Sender.Split('|')[1]
                 </td>
                 <td>
                     @item.Receiver.Split('|')[1]
                 </td>
                 <td>
-                    @item.Subject
+                    <form asp-controller="Msgs" asp-action="Details" method="get">
+                        <input type="hidden" name="msgID" value="@item.MessageId" />
+                        <button type="submit" class="rs-card-link btn">
+                            <img src="~/images/icon_open_msg.png" class="rs-icon-mail" />
+                        </button>
+                    </form>
                 </td>
                 <td>
                     <form asp-controller="Msgs" asp-action="Create" method="get">
                         <input type="hidden" name="msgTo" value="@item.Sender.Split('|')[0]" />
                         <input type="hidden" name="msgFrom" value="@item.Receiver.Split('|')[0]" />
-                        <input type="hidden" name="sender" value="employeeReply" />
+                        <input type="hidden" name="sender" value="reply" />
 
                         @if (item.Receiver.Split('|')[0] == employeeID)
                         {
                             <button type="submit" class="rs-card-link btn">
-                                <img src="~/images/icon_reply.png" class="rs-iconmail" />
+                                <img src="~/images/icon_reply.png" class="rs-icon-mail" />
                             </button>
                         }
                         else
                         {
                             <button type="submit" class="rs-card-link btn" disabled>
-                                <img src="~/images/icon_reply_disabled.png" class="rs-icon-  mail" />
+                                <img src="~/images/icon_reply_disabled.png" class="rs-icon-mail" />
                             </button>
                         }
-                    </form>
-                    <form asp-controller="Msgs" asp-action="Details" method="get">
-                        <input type="hidden" name="msgID" value="@item.MessageId" />
-                        <button type="submit" class="rs-card-link btn">
-                            <img src="~/images/icon_open_msg.png" class="rs-iconmail" />
-                        </button>
                     </form>
                 </td>
             </tr>
