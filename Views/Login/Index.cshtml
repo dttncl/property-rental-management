@@ -4,12 +4,17 @@
 
 }
 
-<h1>Login</h1>
-
-<h4>Login</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row rs-login">
+    <div class="rs-login-img">
+        <img src="~/images/welcome.png" alt="Rentaspace Login" class="img-home" />
+    </div>
+    <div class="rs-login-input">
+        <h1>
+            Log In
+        </h1>
+        <p>
+            Log in to book appointments and view your rentals.
+        </p>
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -22,8 +27,11 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+            <div class="form-group rs-button-caption">
+                <input type="submit" value="Log In" class="btn btn-lg btn-rentaspace-full" />
+                <p>
+                    Don't have an account? <a asp-controller="Register" asp-action="Index" class="rs-text-link">Create an Account</a>
+                </p>
             </div>
         </form>
     </div>

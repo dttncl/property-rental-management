@@ -45,7 +45,28 @@ namespace property_rental_management.Controllers
         // GET: BookAppointments/Create
         public IActionResult Create(String managerId, String tenantID, String propertyID)
         {
-            ViewData["managerID"] = managerId;
+
+            var isManager = _context.Managers.Any(m => m.ManagerId.ToString() == managerId);
+
+            if (isManager)
+            {
+                ViewData["managerID"] = managerId;
+            }
+            else
+            {
+                var managers = _context.Managers
+                                    .Where(m => m.Properties.Any(p => p.PropertyId == managerId))
+                                    .Select(p => new
+                                    {
+                                        ManagerID = p.ManagerId,
+                                        ManagerValue = $"{p.ManagerNavigation.FirstName} {p.ManagerNavigation.LastName}"
+                                    })
+                                    .ToList();
+
+                ViewData["managersList"] = new SelectList(managers, "ManagerID", "ManagerValue");
+            }
+
+            //ViewData["managerID"] = managerId;
 
             if (tenantID != null)
             {

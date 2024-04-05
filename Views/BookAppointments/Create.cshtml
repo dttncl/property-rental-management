@@ -3,47 +3,55 @@
 @{
     var tenantID = ViewData["tenantID"];
     var tenantIDList = ViewBag.tenantIDList;
+    var managersList = ViewBag.managersList;
 }
 
 <h1>Book An Appointment</h1>
-
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5 rs-form">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ManagerId" value="@ViewData["managerID"]" />
             <input type="hidden" asp-for="StatusId" value="@ViewData["statusId"]" />
 
             @if (tenantIDList == null)
             {
+                @* FROM TENANT *@
                 <input type="hidden" asp-for="TenantId" value="@ViewData["tenantID"]" />
+                <div class="form-group">
+                    <label asp-for="ManagerId" class="control-label">Manager</label>
+                    <select class="form-select" asp-for="ManagerId" class="form-control" asp-items="@managersList"></select>
+                </div>
+
             } else
             {
+                @* FORM MANAGER *@
+                <input type="hidden" asp-for="ManagerId" value="@ViewData["managerID"]" />
                 <div class="form-group">
-                    <label class="control-label">To: </label>
-                    <select asp-com asp-for="TenantId" class="form-control" asp-items="@tenantIDList"></select>
+                    <label asp-for="TenantId" class="control-label">Tenant</label>
+                    <select class="form-select" asp-for="TenantId" class="form-control" asp-items="@tenantIDList"></select>
                 </div>
             }
 
             <div class="form-group">
-                <label asp-for="ApartmentId" class="control-label"></label>
-                <select asp-for="ApartmentId" class="form-control" asp-items="ViewBag.ApartmentId"></select>
+                <label asp-for="ApartmentId" class="control-label">Apartment</label>
+                <select class="form-select" asp-for="ApartmentId" class="form-control" asp-items="ViewBag.ApartmentId"></select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="ScheduleId" class="control-label">Time</label>
+                    <select class="form-select" asp-for="ScheduleId" class="form-control" asp-items="ViewBag.ScheduleId"></select>
+                </div>
+
+                <div class="form-group col-md-5">
+                    <label asp-for="AppointmentDate" class="control-label">Appointment Date</label>
+                    <input asp-for="AppointmentDate" class="form-control" id="appointment-date" />
+                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="ScheduleId" class="control-label"></label>
-                <select asp-for="ScheduleId" class="form-control" asp-items="ViewBag.ScheduleId"></select>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="AppointmentDate" class="control-label"></label>
-                <input asp-for="AppointmentDate" class="form-control" id="appointment-date" />
-                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Book Now" class="btn btn-lg btn-rentaspace-full" />
             </div>
         </form>
     </div>

@@ -127,7 +127,7 @@ namespace property_rental_management.Controllers
                 var tenant = _context.Tenants
                     .FirstOrDefault(t => t.TenantId == msgTo);
 
-                ViewData["txtName"] = tenant.FirstName;
+                ViewData["txtName"] = $"{tenant.FirstName} {tenant.LastName}";
                 ViewData["txtEmail"] = tenant.Email;
                 ViewData["txtPhone"] = tenant.Phone;
 
@@ -151,7 +151,7 @@ namespace property_rental_management.Controllers
                 var tenant = _context.Tenants
                     .FirstOrDefault(t => t.TenantId == msgFrom);
 
-                ViewData["txtName"] = tenant.FirstName;
+                ViewData["txtName"] = $"{tenant.FirstName} {tenant.LastName}";
                 ViewData["txtEmail"] = tenant.Email;
                 ViewData["txtPhone"] = tenant.Phone;
             }

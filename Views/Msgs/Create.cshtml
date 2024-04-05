@@ -9,11 +9,9 @@
 
 }
 
-<h1>Create Message</h1>
-
-<hr />
+<h1>Send Message</h1>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5 rs-form">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -23,7 +21,7 @@
                 <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
                 <div class="form-group">
                     <label class="control-label">To: </label>
-                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@adminIDList" id="optionSelect"></select>
+                    <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@adminIDList" id="optionSelect"></select>
                 </div>
 
             }
@@ -31,9 +29,10 @@
             else if (tenantIDList == null)
             {
                 <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["tenantID"]" />
-                <h6>To</h6>
                 <div class="form-group">
-                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@managersList" id="optionSelect"></select>
+                    <h5>To</h5>
+                    <label asp-for="Receiver" class="control-label">Manager</label>
+                    <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@managersList" id="optionSelect"></select>
                 </div>
             }
             @* FROM MANAGER *@
@@ -41,29 +40,30 @@
             {
                 <input type="hidden" asp-for="Sender" class="form-control" value="@ViewData["managerID"]" />
                 <div class="form-group">
-                    <label class="control-label">To: </label>
-                    <select asp-com asp-for="Receiver" class="form-control" asp-items="@tenantIDList" id="optionSelect"></select>
+                    <h6>To</h6>
+                    <label asp-for="Receiver" class="control-label">Tenant</label>
+                    <select class="form-select" asp-for="Receiver" class="form-control" asp-items="@tenantIDList" id="optionSelect"></select>
                 </div>
             }
             
-            @if (tenantIDList == null)
-            {
-                <h6>From</h6>
-            }
+            <h5>From</h5>
             <div class="form-group">
                 <label class="control-label">Name</label>
                 <input id="txtName" class="form-control" value="@ViewData["txtName"]" disabled />
             </div>
 
-            <div class="form-group">
-                <label class="control-label">Email</label>
-                <input id="txtEmail" class="form-control" value="@ViewData["txtEmail"]" disabled />
-            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="control-label">Email</label>
+                    <input id="txtEmail" class="form-control" value="@ViewData["txtEmail"]" disabled />
+                </div>
 
-            <div class="form-group">
-                <label class="control-label">Phone</label>
-                <input id="txtPhone" class="form-control" value="@ViewData["txtPhone"]" disabled />
+                <div class="form-group col-md-5">
+                    <label class="control-label">Phone</label>
+                    <input id="txtPhone" class="form-control" value="@ViewData["txtPhone"]" disabled />
+                </div>
             </div>
+            
 
             <div class="form-group">
                 <label class="control-label">Subject</label>
@@ -101,7 +101,8 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Send Message" class="btn btn-lg btn-rentaspace-full" />
+
             </div>
         </form>
     </div>

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eDoDX9T8gax23rwgQs4HNeWWlT94slZVOlNE4jwLOL8=",
+  "Hash": "Px8fRL0gmf91wpjD2oqs22avkwzydEXkhQz/C7vLUKo=",
   "Source": "property-rental-management",
   "BasePath": "_content/property-rental-management",
   "Mode": "Default",
@@ -262,6 +262,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\icon_reply_disabled.png"
+    },
+    {
+      "Identity": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\login.png",
+      "SourceId": "property-rental-management",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\",
+      "BasePath": "_content/property-rental-management",
+      "RelativePath": "images/login.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\login.png"
     },
     {
       "Identity": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\logo.png",

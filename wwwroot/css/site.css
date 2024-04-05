@@ -22,6 +22,10 @@ html {
   }
 }
 
+h5 {
+    margin: 0;
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -243,3 +247,64 @@ body {
     flex-direction: row;
 }
 
+
+
+.rs-form > form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.rs-login {
+    display: flex;
+    flex-direction: row;
+}
+
+.rs-login-img {
+    width: 50%;
+    padding: 50px;
+}
+
+.rs-login-input {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px;
+}
+
+.rs-login-input > h1 {
+    color: var(--rs-orange);
+    font-weight: bold;
+}
+
+.rs-login-input > form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rs-text-link {
+    text-decoration: none;
+    color: var(--rs-orange);
+    font-weight: bold;
+}
+
+.rs-button-caption {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.rs-button-caption > input {
+    width: 100%;
+}
