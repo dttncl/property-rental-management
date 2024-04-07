@@ -4,7 +4,8 @@
     var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
     var employeeID = Context.Session.GetString("employeeID");
-    var returnUrl = Context.Request.Path;
+
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
     TempData["returnUrl"] = (string)returnUrl;
 }
 

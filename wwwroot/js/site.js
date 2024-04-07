@@ -89,3 +89,5 @@ tenantLink.addEventListener("mouseover", function () {
 tenantLink.addEventListener("mouseout", function () {
     tenantIcon.src = "/images/icon_tenants_hover.png";
 });
+
+

@@ -1,7 +1,6 @@
 ﻿@model property_rental_management.Models.Msg
 
 @{
-    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
 <h1>@Model.Subject</h1>
@@ -27,3 +26,21 @@
         </dd>
     </dl>
 </div>
+
+<div>
+    <div class="form-group">
+        <a id="backButton" class="btn btn-lg btn-rentaspace-outline">Back</a>
+    </div>
+</div>
+
+
+<script>
+    document.getElementById("backButton").addEventListener("click", function () {
+        var returnUrl = "@TempData["returnUrl"]";
+        if (returnUrl) {
+            window.location.href = returnUrl;
+        } else {
+            window.history.back();
+        }
+    });
+</script>
