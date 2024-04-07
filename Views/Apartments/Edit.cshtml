@@ -5,42 +5,46 @@
 
 }
 
-<h1>Edit</h1>
+<h1>Manage Apartment</h1>
 
-<h4>Apartment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row rs-form-edit">
+    <div class="col-md-5">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ApartmentId" />
+
             <div class="form-group">
-                <label asp-for="Bedrooms" class="control-label"></label>
-                <input asp-for="Bedrooms" class="form-control" />
+                <label asp-for="Bedrooms" class="control-label">Number of Bedrooms</label>
+                <input type="number" min="0" asp-for="Bedrooms" class="form-control" />
                 <span asp-validation-for="Bedrooms" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Bathrooms" class="control-label"></label>
-                <input asp-for="Bathrooms" class="form-control" />
+                <label asp-for="Bathrooms" class="control-label">Number of Bathrooms</label>
+                <input type="number" min="0" asp-for="Bathrooms" class="form-control" />
                 <span asp-validation-for="Bathrooms" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="FloorArea" class="control-label"></label>
-                <input asp-for="FloorArea" class="form-control" />
+                <label asp-for="FloorArea" class="control-label">Floor Area (sqm)</label>
+                <input type="number" min="0" step=".01" asp-for="FloorArea" class="form-control" />
                 <span asp-validation-for="FloorArea" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
+                <label asp-for="Price" class="control-label">Price</label>
+                <input type="number" step=".01" min="0" asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StatusId" class="control-label">Apartment Status</label>
                 <select asp-for="StatusId" class="form-control" asp-items=@statusList></select>
                 <span asp-validation-for="StatusId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-lg btn-rentaspace-full" />
             </div>
         </form>
     </div>

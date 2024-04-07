@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<property_rental_management.Models.Manager>
 
 @{
+    var userEmail = Context.Session.GetString("userEmail");
+    var employeeID = Context.Session.GetString("employeeID");
     TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+<div class="rs-listings-header">
+    <h2>RentaSpace Managers</h2>
+    @if (employeeID != null)
+    {
+        <a class="rs-text-link" asp-action="Create"><img class="rs-iconmail" src="~/images/icon_add.png" /></a>
+    }
+</div>
 <form asp-controller="Managers" asp-action="Index" method="get">
     <input type="text" name="searchString" placeholder="Search by name, email or city">
     <button type="submit">Search</button>

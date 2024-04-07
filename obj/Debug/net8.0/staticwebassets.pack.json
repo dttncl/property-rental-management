@@ -41,6 +41,14 @@
       "PackagePath": "staticwebassets\\images\\icon_mail.png"
     },
     {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\icon_managers.png",
+      "PackagePath": "staticwebassets\\images\\icon_managers.png"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\icon_managers_hover.png",
+      "PackagePath": "staticwebassets\\images\\icon_managers_hover.png"
+    },
+    {
       "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\icon_open_msg.png",
       "PackagePath": "staticwebassets\\images\\icon_open_msg.png"
     },
@@ -51,6 +59,14 @@
     {
       "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\icon_reply_disabled.png",
       "PackagePath": "staticwebassets\\images\\icon_reply_disabled.png"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\icon_tenants.png",
+      "PackagePath": "staticwebassets\\images\\icon_tenants.png"
+    },
+    {
+      "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\icon_tenants_hover.png",
+      "PackagePath": "staticwebassets\\images\\icon_tenants_hover.png"
     },
     {
       "Id": "C:\\Users\\dette\\source\\repos\\Winter2024\\420_DW4_AS\\property-rental-management\\wwwroot\\images\\login.png",

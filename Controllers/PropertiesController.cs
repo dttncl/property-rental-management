@@ -223,8 +223,7 @@ namespace property_rental_management.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "CityId", prop.CityId);
-            //ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", prop.StatusId);
+
             return View(prop);
         }
 

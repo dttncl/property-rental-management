@@ -434,3 +434,43 @@ body {
 .rs-form-container {
     margin-top: 20px;
 }
+
+.rs-manager-prop-details {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.rs-properties-details-heading {
+    display: flex;
+    flex-direction: column;
+}
+
+.rs-properties-details-heading > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.rs-btn {
+    width: 250px;
+}
+
+.rs-admin-users {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.rs-admin-users > a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.rs-admin-icon {
+    width: 50px;
+}
+

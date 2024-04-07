@@ -1,13 +1,24 @@
 ﻿@model IEnumerable<property_rental_management.Models.Admin>
 
 @{
-    ViewData["Title"] = "Index";
+    var userEmail = Context.Session.GetString("userEmail");
+    var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
+    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
-<h1>Index</h1>
 
-@Html.ActionLink("Managers", "Index", "Managers", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })
+<div class="rs-admin-users-container">
+    <h1>Rentaspace Users</h1>
+    <div class="rs-admin-users">
+        <a asp-controller="Managers" asp-action="Index" class="btn btn-lg btn-rentaspace-outline" id="rs-icon-manager-link">
+            <img src="~/images/icon_managers_hover.png" class="rs-admin-icon" id="rs-icon-manager"/>
+            Managers
+        </a>
+        <a asp-controller="Tenants" asp-action="Index" class="btn btn-lg btn-rentaspace-outline" id="rs-icon-tenant-link">
+            <img src="~/images/icon_tenants_hover.png" class="rs-admin-icon" id="rs-icon-tenant" />
+            Tenants
+        </a>
+    </div>
+</div>
 
-<br />
-
-@Html.ActionLink("Tenants", "Index", "Tenants", new { area = "" }, new { @class = "btn btn-lg btn-rentaspace-full" })

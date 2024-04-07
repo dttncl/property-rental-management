@@ -39,36 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             subject.value = subplaceholder;
         }
     });
-    /*
-    var optionSelect = document.getElementById('optionSelect');
-    var txtNameInput = document.getElementById('txtName');
-    var txtEmailInput = document.getElementById('txtEmail');
-    var txtPhoneInput = document.getElementById('txtPhone');
 
-    
-    var selectedValue = optionSelect.value;
-    var userID = selectedValue.split('|')[0];
-    var txtName = selectedValue.split('|')[2];
-    var txtEmail = selectedValue.split('|')[1];
-    var txtPhone = selectedValue.split('|')[3];
-
-    txtNameInput.value = txtName;
-    txtEmailInput.value = txtEmail;
-    txtPhoneInput.value = txtPhone;
-
-    optionSelect.addEventListener('change', function () {
-
-        selectedValue = optionSelect.value;
-        userID = selectedValue.split('|')[0];
-        txtName = selectedValue.split('|')[2];
-        txtEmail = selectedValue.split('|')[1];
-        txtPhone = selectedValue.split('|')[3];
-
-        txtNameInput.value = txtName;
-        txtEmailInput.value = txtEmail;
-        txtPhoneInput.value = txtPhone;
-    });
-    */
     var selectedOption = localStorage.getItem('selectedOption');
     if (selectedOption) {
         dropdownButton.innerText = selectedOption;
@@ -98,4 +69,23 @@ document.addEventListener('DOMContentLoaded', function () {
 var logout = document.getElementById('logoutLink');
 logout.addEventListener('click', function () {
     localStorage.clear();
+});
+
+var managerLink = document.getElementById("rs-icon-manager-link");
+var managerIcon = document.getElementById("rs-icon-manager");
+var tenantLink = document.getElementById("rs-icon-tenant-link");
+var tenantIcon = document.getElementById("rs-icon-tenant");
+
+managerLink.addEventListener("mouseover", function () {
+    managerIcon.src = "/images/icon_managers.png";
+});
+managerLink.addEventListener("mouseout", function () {
+    managerIcon.src = "/images/icon_managers_hover.png";
+});
+
+tenantLink.addEventListener("mouseover", function () {
+    tenantIcon.src = "/images/icon_tenants.png";
+});
+tenantLink.addEventListener("mouseout", function () {
+    tenantIcon.src = "/images/icon_tenants_hover.png";
 });

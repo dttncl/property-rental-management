@@ -5,12 +5,10 @@
     var statusDesc  = ViewData["statusDesc"];
 }
 
-<h1>Edit</h1>
+<h1>Manage Property</h1>
 
-<h4>Property</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row rs-form-edit">
+    <div class="col-md-5">
         <form asp-controller="Properties" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PropertyId" />
@@ -19,45 +17,36 @@
             <input type="hidden" asp-for="TotalUnits" class="form-control" />
             <input type="hidden" asp-for="AvailableUnits" class="form-control" />
 
-            <dl class="row">
-                <dt class="col-sm-2">
-                    City
-                </dt>
-                <dd class="col-sm-10">
-                    @cityName
-                </dd>
-                <dt class="col-sm-2">
-                    Status
-                </dt>
-                <dd class="col-sm-10">
-                    @statusDesc
-                </dd>
-                <dt class="col-sm-2">
-                    Available Units
-                </dt>
-                <dd class="col-sm-10">
-                    @Model.AvailableUnits / @Model.TotalUnits
-                </dd>
-            </dl>
-
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
+                <input asp-for="Address" class="form-control" placeholder="Street Address" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="control-label">City</label>
+                    <input class="form-control" value="@cityName" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Province/Rregion</label>
+                    <input class="form-control" value="Quebec" disabled />
+                </div>
+            </div>
+
             <div class="form-group">
-                <label asp-for="YearEstablished" class="control-label"></label>
-                <input asp-for="YearEstablished" class="form-control" />
+                <label asp-for="YearEstablished" class="control-label">Year Established</label>
+                <input type="number" min="2000" max="2024" asp-for="YearEstablished" class="form-control" />
                 <span asp-validation-for="YearEstablished" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="form-group rs-row">
+                <input type="submit" value="Save Changes" class="btn btn-lg btn-rentaspace-full" />
+                <a asp-controller="Properties" asp-action="Delete" asp-route-id="@Model?.PropertyId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-controller="Properties" asp-action="Delete" asp-route-id="@Model?.PropertyId">Delete</a>
-</div>
 

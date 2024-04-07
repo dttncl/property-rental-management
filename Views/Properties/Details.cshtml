@@ -4,15 +4,13 @@
     var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
     var employeeID = Context.Session.GetString("employeeID");
-    TempData["returnUrl"] = (string)Context.Request.Path;
     
 }
 
 <div class="rs-properties-details-heading">
 
-    <h1>@Model.Address</h1>
-
     <div>
+        <h1>@Model.Address</h1>
         @if (tenantID != null)
         {
             <form asp-controller="Msgs" asp-action="Create" method="get">
@@ -65,28 +63,33 @@
             </form>
         }
     </div>
+    <p>
+        <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Address , @Model.City.CityName , QC  |
+        <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @Model.YearEstablished |
+        <img src="~/images/icon_apartment.png" class="rs-card-detail-icon" /> @Model.AvailableUnits / @Model.TotalUnits units available
+    </p>
+
 </div>
-<p>
-    <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Address , @Model.City.CityName , QC  |
-    <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" /> @Model.YearEstablished |
-    <img src="~/images/icon_apartment.png" class="rs-card-detail-icon" /> @Model.AvailableUnits / @Model.TotalUnits units available 
 
     @if (employeeID != null)
     {
-        <form asp-controller="Properties" asp-action="Edit" method="get">
-            <input type="hidden" name="id" value="@Model.PropertyId" />
-            <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Manage</button>
-        </form>
-
-        <form asp-controller="Apartments" asp-action="Create" method="get">
-            <input type="hidden" name="id" value="@Model.PropertyId" />
-            <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Add Apartment</button>
-        </form>
-
+        <div class="rs-manager-prop-details">
+            <form asp-controller="Properties" asp-action="Edit" method="get">
+                <input type="hidden" name="id" value="@Model.PropertyId" />
+                <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Manage Property</button>
+            </form>
+        </div>   
     }
-</p>
+
 
 <div>
+    <div class="rs-listings-header">
+        <h2>Apartments</h2>
+        @if (employeeID != null)
+        {
+            <a class="rs-text-link" asp-action="Create" asp-controller="Apartments" asp-route-id="@Model.PropertyId"><img class="rs-iconmail" src="~/images/icon_add.png" /></a>
+        }
+    </div>
     <table class="table rs-table">
         <thead>
             <tr>
