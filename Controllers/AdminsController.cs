@@ -18,11 +18,84 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
+        private async Task<String> GetUserDetails(string userId)
+        {
+            string userDetails;
+            bool isManager = await _context.Managers
+                .AnyAsync(m => m.ManagerId.ToString() == userId);
+
+            bool isAdmin = await _context.Admins
+                .AnyAsync(m => m.AdminId.ToString() == userId);
+
+            bool isTenant = await _context.Tenants
+                .AnyAsync(m => m.TenantId.ToString() == userId);
+
+            if (isManager || isAdmin)
+            {
+                var managerDetails = await _context.Employees
+                    .FirstOrDefaultAsync(m => m.EmployeeId.ToString() == userId);
+
+                userDetails = $"{managerDetails?.FirstName} {managerDetails?.LastName}";
+
+            }
+            else if (isTenant)
+            {
+                var tenantDetails = await _context.Tenants
+                    .FirstOrDefaultAsync(t => t.TenantId == userId);
+
+                userDetails = $"{tenantDetails?.FirstName} {tenantDetails?.LastName}";
+            }
+            else
+            {
+                userDetails = "[Account Not Found]";
+            }
+
+            return userDetails;
+        }
+
         // GET: Admins
         public IActionResult Index()
         {
             return View();
         }
+
+
+        // GET:  Admins/Reports/5
+        public async Task<IActionResult> Reports(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var messages = await _context.Messages
+                .Where(sr => sr.Sender == id || sr.Receiver == id)
+                .ToListAsync();
+
+            messages.Reverse();
+
+            List<Message> formattedMessages = new List<Message>();
+
+            foreach (var msg in messages)
+            {
+                var senderDetails = await GetUserDetails(msg.Sender);
+                var receiverDetails = await GetUserDetails(msg.Receiver);
+
+                Message foundMessage = new Message
+                {
+                    MessageId = msg.MessageId,
+                    Sender = $"{msg.Sender}|{senderDetails}",
+                    Receiver = $"{msg.Receiver}|{receiverDetails}",
+                    Subject = msg.Subject,
+                    Message1 = msg.Message1
+                };
+
+                formattedMessages.Add(foundMessage);
+            }
+
+            return View(formattedMessages);
+        }
+
 
         // GET: Admins/Details/5
         public async Task<IActionResult> Details(int? id)

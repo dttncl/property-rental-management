@@ -50,6 +50,15 @@
                                 {
                                     if (jobID == "500")
                                     {
+                                        <li>
+                                            <form asp-controller="Admins" asp-action="Reports" method="get">
+                                                <input type="hidden" name="id" value="@employeeID" />
+
+                                                <button type="submit" class="rs-card-link btn rs-admin-msg">
+                                                    <img src="~/images/icon_mail.png" class="rs-icon-mail" />
+                                                </button>
+                                            </form>
+                                        </li>
                                         <li class="nav-item">
                                             @Html.ActionLink("Admin Dashboard", "Index", "Admins", new { area = "", id = employeeID }, new { @class = "btn btn-lg btn-rentaspace-full" })
                                         </li>

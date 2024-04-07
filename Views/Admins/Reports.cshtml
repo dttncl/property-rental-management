@@ -1,0 +1,54 @@
+﻿@model IEnumerable<property_rental_management.Models.Message>
+
+@{
+    var userEmail = Context.Session.GetString("userEmail");
+    var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
+    var returnUrl = Context.Request.Path;
+    TempData["returnUrl"] = (string)returnUrl;
+}
+
+
+<h1>Reports</h1>
+<table class="table rs-table">
+    <thead>
+        <tr>
+            <th>
+                Subject
+            </th>
+            <th>
+                From
+            </th>
+            <th>
+                To
+            </th>
+            <th>
+                Read
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Subject
+                </td>
+                <td>
+                    @item.Sender.Split('|')[1]
+                </td>
+                <td>
+                    @item.Receiver.Split('|')[1]
+                </td>
+                <td>
+                    <form asp-controller="Msgs" asp-action="Details" method="get">
+                        <input type="hidden" name="msgID" value="@item.MessageId" />
+                        <button type="submit" class="rs-card-link btn">
+                            <img src="~/images/icon_open_msg.png" class="rs-icon-mail" />
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

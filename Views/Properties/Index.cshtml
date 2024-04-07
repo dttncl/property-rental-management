@@ -54,7 +54,6 @@
                                     </form>
 
                                     <form asp-controller="BookAppointments" asp-action="Create" method="get">
-                                        @* <input type="hidden" name="managerId" value="@property.Managers.First().ManagerId" /> *@
                                         <input type="hidden" name="managerId" value="@property.PropertyId" />
                                         <input type="hidden" name="tenantID" value="@tenantID" />
                                         <input type="hidden" name="propertyID" value="@property.PropertyId" />
