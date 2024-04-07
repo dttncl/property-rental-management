@@ -2,23 +2,27 @@
 
 @{
     var userEmail = Context.Session.GetString("userEmail");
+    var tenantID = Context.Session.GetString("tenantID");
     var employeeID = Context.Session.GetString("employeeID");
     TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
-<div class="rs-listings-header">
-    <h2>RentaSpace Managers</h2>
+<h1 class="rs-admin-head">
+    RentaSpace Managers
+</h1>
+<form asp-controller="Managers" asp-action="Index" method="get" class="rs-search-container">
+    <input type="text" name="s" placeholder="Search by name, email or city" class="rs-search-box">
+    <button type="submit" class="btn btn-lg btn-rentaspace-normal">Search</button>
+</form>
+
+<div class="rs-listings-header rs-admin-subhead">
+    <h2>Managers</h2>
     @if (employeeID != null)
     {
         <a class="rs-text-link" asp-action="Create"><img class="rs-iconmail" src="~/images/icon_add.png" /></a>
     }
 </div>
-<form asp-controller="Managers" asp-action="Index" method="get">
-    <input type="text" name="searchString" placeholder="Search by name, email or city">
-    <button type="submit">Search</button>
-</form>
-
-<table class="table">
+<table class="table rs-table">
     <thead>
         <tr>
             <th>
@@ -36,7 +40,8 @@
             <th>
                 Status
             </th>
-            <th></th>
+            <th>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -55,12 +60,10 @@
                 @manager?.ManagerNavigation.Phone
             </td>
             <td>
-                @manager?.ManagerNavigation.Status.Description
+                <div class="rs-status">@manager?.ManagerNavigation.Status.Description</div>
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@manager?.ManagerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@manager?.ManagerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@manager?.ManagerId">Delete</a>
+                <a asp-action="Details" asp-route-id="@manager?.ManagerId" class="btn btn-lg btn-rentaspace-full">Details</a>
             </td>
         </tr>
 }

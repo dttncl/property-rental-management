@@ -1,42 +1,37 @@
 ﻿@model property_rental_management.Models.Tenant
 
 @{
-    TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
-<h1>Details</h1>
+<h1>@Model.FirstName @Model.LastName</h1>
+<h4>Tenant</h4>
 
 <div>
-    <h4>Tenant</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            Email
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Model.EmailNavigation.Email
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            Password
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+            @Model.EmailNavigation.Password
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
+            Phone
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailNavigation.Email)
+            @Model.Phone
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.TenantId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="form-group rs-row">
+        <a asp-action="Edit" asp-route-id="@Model?.TenantId" class="btn btn-lg btn-rentaspace-full">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model?.TenantId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
+    </div>
 </div>

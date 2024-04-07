@@ -4,33 +4,59 @@
     TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
-<h1>Details</h1>
+<h1>@Model.ManagerNavigation.FirstName @Model.ManagerNavigation.LastName</h1>
+<h4>Manager</h4>
 
-<div>
-    <h4>Manager</h4>
-    <hr />
+<div class="rs-form-edit">
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
+            Email
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City.CityId)
+            @Model.EmailNavigation.Email
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailNavigation)
+            Password
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailNavigation.Email)
+            @Model.EmailNavigation.Password
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ManagerNavigation)
+            Phone
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ManagerNavigation.EmployeeId)
+            @Model.ManagerNavigation.Phone
+        </dd>
+        <dt class="col-sm-2">
+            Annual Salary
+        </dt>
+        <dd class="col-sm-10">
+            $ @Model.ManagerNavigation.Salary
+        </dd>
+        <dt class="col-sm-2">
+            Supervisor
+        </dt>
+        <dd class="col-sm-10">
+            @Model.ManagerNavigation.Supervisor.FirstName @Model.ManagerNavigation.Supervisor.LastName
+        </dd>
+        <dt class="col-sm-2">
+            City Assigned
+        </dt>
+        <dd class="col-sm-10">
+            @Model.City.CityName, Quebec
+        </dd>
+        <dt class="col-sm-2">
+            Employment Status
+        </dt>
+        <dd class="col-sm-10">
+            @Model.ManagerNavigation.Status.Description
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ManagerId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="form-group rs-row">
+        <a asp-action="Edit" asp-route-id="@Model?.ManagerId" class="btn btn-lg btn-rentaspace-full">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model?.ManagerId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
+    </div>
 </div>

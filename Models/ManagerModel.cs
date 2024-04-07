@@ -9,26 +9,26 @@ namespace property_rental_management.Models
         [Key]
         public int EmployeeId { get; set; }
 
-        //public int? JobId { get; set; } // 502 - manager
-
         public string FirstName { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
 
+        [Required]
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; } = null!;
 
+        [Required]
+        [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 
-        //public string StatusId { get; set; } = null!; // E1 - active
 
         public int? SupervisorId { get; set; }
 
-        // useraccount
+        [Required]
         public string Password { get; set; } = null!;
 
-        // manager
-        //public int ManagerId { get; set; } // same as employeeId
-
+        [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = null!;
 
         public int? CityId { get; set; }

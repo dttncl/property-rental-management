@@ -1,17 +1,24 @@
 ﻿@model IEnumerable<property_rental_management.Models.Tenant>
 
 @{
+    var userEmail = Context.Session.GetString("userEmail");
+    var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
     TempData["returnUrl"] = (string)Context.Request.Path;
 }
 
-<h1>Index</h1>
-
-<form asp-controller="Tenants" asp-action="Index" method="get">
-    <input type="text" name="searchString" placeholder="Search by name or email">
-    <button type="submit">Search</button>
+<h1 class="rs-admin-head">
+    RentaSpace Tenants
+</h1>
+<form asp-controller="Tenants" asp-action="Index" method="get" class="rs-search-container">
+    <input type="text" name="s" placeholder="Search by name or email" class="rs-search-box">
+    <button type="submit" class="btn btn-lg btn-rentaspace-normal">Search</button>
 </form>
 
-<table class="table">
+<div class="rs-listings-header rs-admin-subhead">
+    <h2>Tenants</h2>
+</div>
+<table class="table rs-table">
     <thead>
         <tr>
             <th>
@@ -23,7 +30,8 @@
             <th>
                 Phone
             </th>
-            <th></th>
+            <th>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -39,9 +47,7 @@
                 @item.Phone
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TenantId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TenantId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TenantId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.TenantId" class="btn btn-lg btn-rentaspace-full">Details</a>
             </td>
         </tr>
 }

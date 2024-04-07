@@ -176,6 +176,9 @@ namespace property_rental_management.Controllers
                 .Include(m => m.City)
                 .Include(m => m.EmailNavigation)
                 .Include(m => m.ManagerNavigation)
+                    .ThenInclude(m => m.Supervisor)
+                .Include(m => m.ManagerNavigation)
+                    .ThenInclude(m => m.Status)
                 .FirstOrDefaultAsync(m => m.ManagerId == id);
             if (manager == null)
             {
