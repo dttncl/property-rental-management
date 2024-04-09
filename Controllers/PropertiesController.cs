@@ -18,6 +18,37 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
+        // GET: Properties/List
+        public async Task<IActionResult> List(string s)
+        {
+
+            var properties = _context.Properties.AsQueryable();
+
+            if (!string.IsNullOrEmpty(s))
+            {
+
+                properties = _context.Properties
+                                .Where(q =>
+                                    q.City.CityName.Contains(s) ||
+                                    q.Address.Contains(s))
+                                .Include(c => c.City)
+                                .Include(s => s.Status)
+                                .Include(a => a.Apartments)
+                                .Include(m => m.Managers);
+            }
+            else
+            {
+                properties = _context.Properties
+                                .Include(c => c.City)
+                                .Include(s => s.Status)
+                                .Include(a => a.Apartments)
+                                .Include(m => m.Managers);
+            }
+
+            return View(await properties.ToListAsync());
+
+        }
+
         // GET: Properties
         public async Task<IActionResult> Index(string s)
         {
@@ -49,22 +80,12 @@ namespace property_rental_management.Controllers
 
         }
 
-        // GET: Properties/List
-        public async Task<IActionResult> List()
-        {
-            var rentaSpaceDbContext = _context.Properties
-                .Include(c => c.City)
-                .Include(s => s.Status)
-                .Include(a => a.Apartments);
-            return View(await rentaSpaceDbContext.ToListAsync());
-        }
-
         // GET: Properties/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var @property = await _context.Properties
@@ -76,7 +97,7 @@ namespace property_rental_management.Controllers
                 .FirstOrDefaultAsync(m => m.PropertyId == id);
             if (@property == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(@property);
@@ -85,16 +106,45 @@ namespace property_rental_management.Controllers
         // GET: Properties/Create
         public async Task<IActionResult> CreateAsync(string id)
         {
-            var manager = await _context.Managers
-                                        .Include(m => m.City)
-                                        .FirstOrDefaultAsync(m => m.ManagerId == Convert.ToInt32(id));
 
-            if (manager == null)
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
             {
-                return NotFound();
+                return View("AccessDenied");
             }
 
-            ViewData["manager"] = manager;
+            if (jobID == "500")
+            {
+                var admin = await _context.Admins
+                            .FirstOrDefaultAsync(m => m.AdminId == Convert.ToInt32(id));
+
+                if (admin == null)
+                {
+                    return View("Error");
+                }
+
+                ViewData["admin"] = admin;
+
+                var cities = await _context.Cities.ToListAsync();
+                ViewBag.Cities = cities.Select(c => new SelectListItem { Value = c.CityId.ToString(), Text = c.CityName });
+            } else
+            {
+                var manager = await _context.Managers
+                            .Include(m => m.City)
+                            .FirstOrDefaultAsync(m => m.ManagerId == Convert.ToInt32(id));
+
+                if (manager == null)
+                {
+                    return View("Error");
+                }
+
+                ViewData["manager"] = manager;
+            }
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
 
             return View();
         }
@@ -106,8 +156,16 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string managerId, [Bind("PropertyId,Address,CityId,YearEstablished,TotalUnits,AvailableUnits,StatusId")] PropertyModel prop)
         {
+
             if (ModelState.IsValid)
             {
+                var employeeID = HttpContext.Session.GetString("employeeID");
+                var jobID = HttpContext.Session.GetString("jobID");
+
+                if (employeeID == null || (jobID != "502" && jobID != "500"))
+                {
+                    return View("AccessDenied");
+                }
 
                 string pID;
                 do
@@ -130,10 +188,33 @@ namespace property_rental_management.Controllers
                 _context.Properties.Add(newProperty);
                 await _context.SaveChangesAsync();
 
-                var mId = managerId;
-                await _context.Database.ExecuteSqlRawAsync("INSERT INTO PropertyManagers (ManagerId, PropertyId) VALUES ({0}, {1})", mId, newProperty.PropertyId);
-                await _context.SaveChangesAsync();
+                if (managerId != "admin")
+                {
+                    var mId = managerId;
+                    await _context.Database.ExecuteSqlRawAsync("INSERT INTO PropertyManagers (ManagerId, PropertyId) VALUES ({0}, {1})", mId, newProperty.PropertyId);
+                    await _context.SaveChangesAsync();
 
+
+                } else
+                {
+                    var defaultManager = await _context.Managers
+                                        .Where(m => m.CityId == newProperty.CityId)
+                                        .OrderBy(m => m.ManagerId)
+                                        .FirstOrDefaultAsync();
+
+                    if (defaultManager != null)
+                    {
+                        var mId = defaultManager.ManagerId;
+                        await _context.Database.ExecuteSqlRawAsync("INSERT INTO PropertyManagers (ManagerId, PropertyId) VALUES ({0}, {1})", mId, newProperty.PropertyId);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
+
+                var cities = await _context.Cities.ToListAsync();
+                ViewBag.Cities = cities.Select(c => new SelectListItem { Value = c.CityId.ToString(), Text = c.CityName });
 
                 var returnUrl = TempData["returnUrl"] as string;
                 if (returnUrl != null)
@@ -146,6 +227,8 @@ namespace property_rental_management.Controllers
                 }
             }
 
+            ViewBag.Cities = await _context.Cities.ToListAsync();
+
             return View(prop);
         }
 
@@ -155,15 +238,22 @@ namespace property_rental_management.Controllers
             if (id == null)
             {
 
-                return NotFound();
+                return View("Error");
+            }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
+            {
+                return View("AccessDenied");
             }
 
             var prop = await _context.Properties.FindAsync(id);
-            
 
             if (prop == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             PropertyModel updatedProperty = new PropertyModel
@@ -182,6 +272,10 @@ namespace property_rental_management.Controllers
 
             ViewData["cityName"] = city.CityName;
             ViewData["statusDesc"] = status.Description;
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
+
             return View(updatedProperty);
         }
 
@@ -200,7 +294,7 @@ namespace property_rental_management.Controllers
 
                     if (existingProperty == null)
                     {
-                        return NotFound();
+                        return View("Error");
                     }
 
                     existingProperty.Address = prop.Address;
@@ -214,7 +308,7 @@ namespace property_rental_management.Controllers
                 {
                     if (!PropertyExists(prop.PropertyId))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
@@ -232,17 +326,30 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
+            {
+                return View("AccessDenied");
+            }
+
 
             var @property = await _context.Properties
                 .Include(c => c.City)
                 .Include(s => s.Status)
                 .FirstOrDefaultAsync(m => m.PropertyId == id);
+
             if (@property == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
 
             return View(@property);
         }
@@ -256,7 +363,7 @@ namespace property_rental_management.Controllers
 
             if (prop == null)
             {
-                return NotFound();
+                return View("Error");
             }
             try
             {
@@ -292,7 +399,7 @@ namespace property_rental_management.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                return NotFound();
+                return View("Error");
             }
         }
 

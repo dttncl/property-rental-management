@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<property_rental_management.Models.Appointment>
 
 @{
+
+    var jobID = Context.Session.GetString("jobID");
+    var employeeID = Context.Session.GetString("employeeID");
     TempData["returnUrl"] = (string)Context.Request.Path;
 
 }

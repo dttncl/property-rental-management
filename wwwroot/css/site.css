@@ -507,3 +507,18 @@ body {
 .rs-table td {
     padding: 15px;
 }
+
+.rs-error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1.text-danger {
+    font-size: 3rem;
+}
+
+h2.text-danger {
+    font-size: 1rem;
+}

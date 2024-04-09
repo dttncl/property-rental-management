@@ -1,7 +1,9 @@
 ﻿@model property_rental_management.Models.BookAppointment
 
 @{
-    var tenantID = ViewData["tenantID"];
+
+    var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
     var tenantIDList = ViewBag.tenantIDList;
     var managersList = ViewBag.managersList;
 }
@@ -45,7 +47,7 @@
 
                 <div class="form-group col-md-5">
                     <label asp-for="AppointmentDate" class="control-label">Appointment Date</label>
-                    <input asp-for="AppointmentDate" class="form-control" id="appointment-date" />
+                    <input asp-for="AppointmentDate" class="form-control" id="appointment-date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="AppointmentDate" class="text-danger"></span>
                 </div>
             </div>

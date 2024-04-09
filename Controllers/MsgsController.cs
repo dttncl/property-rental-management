@@ -65,7 +65,16 @@ namespace property_rental_management.Controllers
         {
             if (msgID == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var tenantID = HttpContext.Session.GetString("tenantID");
+            var employeeID = HttpContext.Session.GetString("employeeID");
+
+            if (tenantID == null && employeeID == null)
+            {
+                return View("AccessDenied");
+
             }
 
             var msg = await _context.Messages
@@ -73,7 +82,7 @@ namespace property_rental_management.Controllers
 
             if (msg == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var senderDetails = await GetUserDetails(msg.Sender);
@@ -88,15 +97,49 @@ namespace property_rental_management.Controllers
                 Message1 = msg.Message1
             };
 
+            if (!(tenantID == msg.Sender || tenantID == msg.Receiver || employeeID == msg.Sender || employeeID == msg.Receiver))
+            {
+                return View("AccessDenied");
+            }
+
+            if (tenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", tenantID);
+            }
+
+            if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+            }
+
             return View(foundMessage);
         }
 
         // GET: Msgs/Create
         public IActionResult Create(String msgTo, String msgFrom, String sender)
         {
+            if (msgTo == null && msgFrom == null && sender == null)
+            {
+                return View("Error");
+            }
+
+            var tenantID = HttpContext.Session.GetString("tenantID");
+            var employeeID = HttpContext.Session.GetString("employeeID");
+
+            if (tenantID == null && employeeID == null)
+            {
+                return View("AccessDenied");
+
+            }
 
             if (sender == "tenant")
             {
+                if (tenantID != msgFrom)
+                {
+                    return View("AccessDenied");
+
+                }
+
                 var isManager = _context.Managers.Any(m => m.ManagerId.ToString() == msgTo);
                 if (isManager)
                 {
@@ -127,6 +170,13 @@ namespace property_rental_management.Controllers
 
             } else if (sender == "employee")
             {
+
+                if (employeeID != msgFrom)
+                {
+                    return View("AccessDenied");
+
+                }
+
                 ViewData["managerID"] = msgFrom;
 
                 var tenants = _context.Tenants.Select(t => new {
@@ -147,6 +197,12 @@ namespace property_rental_management.Controllers
 
                 if (isTenant)
                 {
+                    if (tenantID != msgFrom)
+                    {
+                        return View("AccessDenied");
+
+                    }
+
                     ViewData["tenantID"] = msgFrom;
                     ViewData["managerID"] = msgTo;
 
@@ -171,6 +227,12 @@ namespace property_rental_management.Controllers
                 }
                 else if (isManager)
                 {
+                    if (employeeID != msgFrom)
+                    {
+                        return View("AccessDenied");
+
+                    }
+
                     ViewData["managerID"] = msgFrom;
                     ViewData["tenantID"] = msgTo;
 
@@ -191,6 +253,13 @@ namespace property_rental_management.Controllers
             }
             else if (sender == "employeeReport")
             {
+
+                if (employeeID != msgFrom)
+                {
+                    return View("AccessDenied");
+
+                }
+
                 ViewData["sender"] = "employeeReport";
                 ViewData["managerID"] = msgFrom;
 
@@ -203,7 +272,17 @@ namespace property_rental_management.Controllers
 
                 ViewData["adminIDList"] = new SelectList(admins, "AdminValue", "AdminEmail");
             }
-            
+
+            if (tenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", tenantID);
+            }
+
+            if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+            }
+
             return View();
         }
 
@@ -214,11 +293,27 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Msg msg)
         {
+
+            var tenantID = HttpContext.Session.GetString("tenantID");
+            var employeeID = HttpContext.Session.GetString("employeeID");
+
+            if (tenantID == null && employeeID == null)
+            {
+                return View("AccessDenied");
+
+            }
+
+            if (tenantID != msg.Sender && employeeID != msg.Sender)
+            {
+                return View("AccessDenied");
+
+            }
+
             if (ModelState.IsValid)
             {
                 if (msg == null)
                 {
-                    return NotFound();
+                    return View("Error");
                 }
 
                 var newMessage = new Message
@@ -245,96 +340,18 @@ namespace property_rental_management.Controllers
 
             }
 
-            return View(msg);
-        }
-
-        // GET: Msgs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            if (tenantID != null)
             {
-                return NotFound();
+                HttpContext.Session.SetString("tenantID", tenantID);
             }
 
-            var msg = await _context.Msg.FindAsync(id);
-            if (msg == null)
+            if (employeeID != null)
             {
-                return NotFound();
-            }
-            return View(msg);
-        }
-
-        // POST: Msgs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MessageId,ManagerId,TenantId,Message1")] Msg msg)
-        {
-            if (id != msg.MessageId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(msg);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MsgExists(msg.MessageId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(msg);
-        }
-
-        // GET: Msgs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var msg = await _context.Msg
-                .FirstOrDefaultAsync(m => m.MessageId == id);
-            if (msg == null)
-            {
-                return NotFound();
+                HttpContext.Session.SetString("employeeID", employeeID);
             }
 
             return View(msg);
         }
 
-        // POST: Msgs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var msg = await _context.Msg.FindAsync(id);
-            if (msg != null)
-            {
-                _context.Msg.Remove(msg);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool MsgExists(int id)
-        {
-            return _context.Msg.Any(e => e.MessageId == id);
-        }
     }
 }

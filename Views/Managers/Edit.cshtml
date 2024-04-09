@@ -7,7 +7,7 @@
 <h1>Edit Manager Details</h1>
 <div class="row">
     <div class="col-md-5 rs-form-edit">
-        <form asp-action="Edit">
+        <form asp-action="Edit" onsubmit="return validateForm()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="EmployeeId" class="form-control" value="@Model.EmployeeId"/>
             <input type="hidden" asp-for="Password" class="form-control" value="@Model.Password"/>
@@ -21,7 +21,7 @@
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label"> </label>
+                    <label class="control-label"></label>
                     <input asp-for="LastName" class="form-control" placeholder="Last Name" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
@@ -29,13 +29,13 @@
 
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
+                <input type="number" asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Salary" class="control-label">Annual Salary</label>
-                <input asp-for="Salary" class="form-control" />
+                <input type="number" step=".01" min="0" asp-for="Salary" class="form-control" />
                 <span asp-validation-for="Salary" class="text-danger"></span>
             </div>
 
@@ -56,3 +56,19 @@
         </form>
     </div>
 </div>
+
+<script>
+    function validateForm() {
+        var firstName = document.getElementById("FirstName").value;
+        var lastName = document.getElementById("LastName").value;
+        var phone = document.getElementById("Phone").value;
+        var salary = document.getElementById("Salary").value;
+
+        if (firstName.trim() === "" || lastName.trim() === "" || phone.trim() === "" || salary.trim() === "") {
+            alert("Please fill in all required fields.");
+            return false;
+        }
+
+        return true;
+    }
+</script>

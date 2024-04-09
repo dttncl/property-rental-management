@@ -56,6 +56,17 @@ namespace property_rental_management.Controllers
         // GET: Admins
         public IActionResult Index()
         {
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || jobID != "500")
+            {
+                return View("AccessDenied");
+            }
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
+
             return View();
         }
 
@@ -65,7 +76,15 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || jobID != "500")
+            {
+                return View("AccessDenied");
             }
 
             var messages = await _context.Messages
@@ -93,6 +112,10 @@ namespace property_rental_management.Controllers
                 formattedMessages.Add(foundMessage);
             }
 
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
+
+
             return View(formattedMessages);
         }
 
@@ -102,7 +125,7 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var admin = await _context.Admins
@@ -111,7 +134,7 @@ namespace property_rental_management.Controllers
                 .FirstOrDefaultAsync(m => m.AdminId == id);
             if (admin == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(admin);
@@ -148,13 +171,13 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var admin = await _context.Admins.FindAsync(id);
             if (admin == null)
             {
-                return NotFound();
+                return View("Error");
             }
             ViewData["AdminId"] = new SelectList(_context.Employees, "EmployeeId", "EmployeeId", admin.AdminId);
             ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email", admin.Email);
@@ -170,7 +193,7 @@ namespace property_rental_management.Controllers
         {
             if (id != admin.AdminId)
             {
-                return NotFound();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
@@ -184,7 +207,7 @@ namespace property_rental_management.Controllers
                 {
                     if (!AdminExists(admin.AdminId))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
@@ -203,7 +226,7 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var admin = await _context.Admins
@@ -212,7 +235,7 @@ namespace property_rental_management.Controllers
                 .FirstOrDefaultAsync(m => m.AdminId == id);
             if (admin == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(admin);

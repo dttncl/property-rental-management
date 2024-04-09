@@ -1,0 +1,130 @@
+﻿@model IEnumerable<property_rental_management.Models.Property>
+
+@{
+    List<string> imageFiles = new List<string>();
+    imageFiles.Add("/images/properties/sample.jpg");
+    imageFiles.Add("/images/properties/sample_1.jpg");
+    imageFiles.Add("/images/properties/sample_2.jpg");
+    imageFiles.Add("/images/properties/sample_3.jpg");
+    imageFiles.Add("/images/properties/sample_4.jpg");
+    imageFiles.Add("/images/properties/sample_5.jpg");
+
+    var employeeID = Context.Session.GetString("employeeID");
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    TempData["returnUrl"] = (string)returnUrl;
+}
+
+<div class="rs-listings">
+    <div class="rs-listings-header">
+        <h3>
+            Properties
+        </h3>
+        <a class="rs-text-link" asp-action="Create" asp-controller="Properties" asp-route-id="@employeeID"><img class="rs-iconmail" src="~/images/icon_add.png" /></a>
+    </div>
+
+    <div class="rs-cards-listings">
+        @foreach (var property in Model)
+        {
+            <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.PropertyId" class="rs-card-link">
+                <div class="card rs-card-list">
+
+                    <div class="card-header rs-card-header">
+                        <div class="rs-card-header-left">
+                            @property.Address
+                        </div>
+                    </div>
+
+                    <div class="rs-card-body">
+                        <div class="rs-card-left">
+                            @{
+                                string randomImageSrc = "";
+                                if (imageFiles.Count > 0)
+                                {
+                                    Random random = new Random();
+                                    int index = random.Next(imageFiles.Count);
+                                    randomImageSrc += imageFiles[index];
+                                }
+                            }
+                            <img class="card-img rs-card-img" src=@randomImageSrc />
+                        </div>
+
+                        <div class="rs-card-right">
+                            <div class="card-text rs-card-price">
+                                @{
+                                    decimal minPrice;
+                                    decimal maxPrice;
+                                    int minBed;
+                                    int maxBed;
+                                    int minBath;
+                                    int maxBath;
+
+                                    if (property.Apartments.Count != 0)
+                                    {
+                                        minPrice = property.Apartments.Min(p => p.Price);
+                                        maxPrice = property.Apartments.Max(p => p.Price);
+                                        minBed = property.Apartments.Min(p => p.Bedrooms);
+                                        maxBed = property.Apartments.Max(p => p.Bedrooms);
+                                        minBath = property.Apartments.Min(p => p.Bathrooms);
+                                        maxBath = property.Apartments.Max(p => p.Bathrooms);
+                                    }
+                                    else
+                                    {
+                                        minPrice = 0;
+                                        maxPrice = 0;
+                                        minBed = 0;
+                                        maxBed = 0;
+                                        minBath = 0;
+                                        maxBath = 0;
+                                    }
+
+                                }
+
+                                @if (minPrice == maxPrice)
+                                {
+                                    <text>$ @minPrice</text>
+                                }
+                                else
+                                {
+                                    <text>$ @minPrice - $ @maxPrice</text>
+                                }
+                            </div>
+
+                            <div class="card-text rs-card-details">
+                                <div>
+                                    <img src="~/images/icon_calendar.png" class="rs-card-detail-icon" />    @property.YearEstablished
+                                </div>
+                                <div>
+                                    <img src="~/images/icon_bed.png" class="rs-card-detail-icon" />
+                                    @if (minBed == maxBed)
+                                    {
+                                        <text> @minBed Bedrooms</text>
+                                    }
+                                    else
+                                    {
+                                        <text> @minBed - @maxBed Bedrooms</text>
+                                    }
+                                </div>
+                                <div>
+                                    <img src="~/images/icon_bath.png" class="rs-card-detail-icon" />
+                                    @if (minBath == maxBath)
+                                    {
+                                        <text> @minBath Bathrooms</text>
+                                    }
+                                    else
+                                    {
+                                        <text> @minBath - @maxBath Bathrooms</text>
+                                    }
+                                </div>
+                                <div>
+                                    <img src="~/images/icon_location.png" class="rs-card-detail-icon" />    @property.Address, @property.City.CityName, QC
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        }
+    </div>
+</div>

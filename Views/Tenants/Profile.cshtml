@@ -1,53 +1,56 @@
 ﻿@model property_rental_management.Models.Tenant
 
 @{
+    var tenantID = Context.Session.GetString("tenantID");
     var returnUrl = Context.Request.Path;
     TempData["returnUrl"] = (string)returnUrl;
 }
 
-<div class="rs-profile-top">
-    <div class="rs-profile-top-left">
-        <img src="~/images/profile.png" alt="Profile Picture" class="img-profile" />
+
+    <div class="rs-profile-top">
+        <div class="rs-profile-top-left">
+            <img src="~/images/profile.png" alt="Profile Picture" class="img-profile" />
+        </div>
+        <div class="rs-profile-top-right">
+            <h2>@Model.FirstName @Model.LastName</h2>
+            <h5>Tenant</h5>
+        </div>
     </div>
-    <div class="rs-profile-top-right">
-        <h2>@Model.FirstName @Model.LastName</h2>
-        <h5>Tenant</h5>
+    <div class="rs-profile-bottom">
+        <div class="rs-profile-left">
+            <h4>Your Details</h4>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    First Name
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    Last Name
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt class="col-sm-2">
+                    Email
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    Phone
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
+            </dl>
+        </div>
+        <div class="rs-profile-right">
+            <a class="rs-text-link" asp-action="Edit" asp-route-id="@Model?.TenantId">Edit Profile</a>
+            <a class="rs-text-link" asp-action="Messages" asp-route-id="@Model?.TenantId">View Messages</a>
+            <a class="rs-text-link" asp-action="Appointments" asp-route-id="@Model?.TenantId">View Appointments</a>
+        </div>
     </div>
-</div>
-<div class="rs-profile-bottom">
-    <div class="rs-profile-left">
-        <h4>Your Details</h4>
-        <dl class="row">
-            <dt class="col-sm-2">
-                First Name
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
-            <dt class="col-sm-2">
-                Last Name
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.LastName)
-            </dd>
-            <dt class="col-sm-2">
-                Email
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt class="col-sm-2">
-                Phone
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Phone)
-            </dd>
-        </dl>
-    </div>
-    <div class="rs-profile-right">
-        <a class="rs-text-link" asp-action="Edit" asp-route-id="@Model?.TenantId">Edit Profile</a>
-        <a class="rs-text-link" asp-action="Messages" asp-route-id="@Model?.TenantId">View Messages</a>
-        <a class="rs-text-link" asp-action="Appointments" asp-route-id="@Model?.TenantId">View Appointments</a>
-    </div>
-</div>
+
 

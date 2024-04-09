@@ -13,8 +13,9 @@
     var userType = Context.Session.GetString("userType");
     var jobID = Context.Session.GetString("jobID");
     var employeeID = Context.Session.GetString("employeeID");
-    TempData["returnUrl"] = (string)Context.Request.Path;
 
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    TempData["returnUrl"] = (string)returnUrl;
 }
 
 <div>
@@ -154,5 +155,3 @@
         }
     </div>
 </div>
-
-

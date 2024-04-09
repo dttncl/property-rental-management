@@ -45,6 +45,13 @@ namespace property_rental_management.Controllers
         // GET: Tenants
         public async Task<IActionResult> Index(string s)
         {
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || jobID != "500")
+            {
+                return View("AccessDenied");
+            }
 
             var tenants = _context.Tenants.AsQueryable();
 
@@ -63,6 +70,10 @@ namespace property_rental_management.Controllers
                             .Include(t => t.EmailNavigation);
             }
 
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
+
+
             return View(await tenants.ToListAsync());
 
         }
@@ -72,9 +83,17 @@ namespace property_rental_management.Controllers
         // GET: Tenants/Profile
         public async Task<IActionResult> Profile(string id)
         {
+            var tenantID = HttpContext.Session.GetString("tenantID");
+
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            if (tenantID == null)
+            {
+                return View("AccessDenied");
+
             }
 
             var tenant = await _context.Tenants
@@ -83,8 +102,10 @@ namespace property_rental_management.Controllers
 
             if (tenant == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            HttpContext.Session.SetString("tenantID", tenantID);
 
             return View(tenant);
         }
@@ -92,19 +113,45 @@ namespace property_rental_management.Controllers
         // GET: Tenants/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+            var tenantID = HttpContext.Session.GetString("tenantID");
+
+            if ((employeeID == null || jobID != "500") && tenantID == null)
+            {
+                return View("AccessDenied");
+            }
+
+            if (tenantID != null && tenantID != id)
+            {
+                return View("AccessDenied");
             }
 
             var tenant = await _context.Tenants.FindAsync(id);
 
             if (tenant == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             ViewData["Email"] = tenant.Email;
+
+            if (tenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", tenantID);
+
+            } else if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
+
+            }
 
             return View(tenant);
         }
@@ -116,13 +163,31 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("TenantId,FirstName,LastName,Email,Phone")] TenantModel tenant)
         {
+
+
             if (id != tenant.TenantId)
             {
-                return NotFound();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
             {
+
+                var employeeID = HttpContext.Session.GetString("employeeID");
+                var jobID = HttpContext.Session.GetString("jobID");
+                var tenantID = HttpContext.Session.GetString("tenantID");
+
+                if ((employeeID == null || jobID != "500") && tenantID == null)
+                {
+                    return View("AccessDenied");
+                }
+
+                if (tenantID != null && tenantID != id)
+                {
+                    return View("AccessDenied");
+                }
+
+
                 try
                 {
                     var existingTenant = await _context.Tenants.FindAsync(tenant.TenantId);
@@ -138,19 +203,32 @@ namespace property_rental_management.Controllers
                     }
                     else
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TenantExists(tenant.TenantId))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
                         throw;
                     }
+                }
+
+
+                if (tenantID != null)
+                {
+                    HttpContext.Session.SetString("tenantID", tenantID);
+
+                }
+                else if (employeeID != null)
+                {
+                    HttpContext.Session.SetString("employeeID", employeeID);
+                    HttpContext.Session.SetString("jobID", jobID);
+
                 }
 
                 var returnUrl = TempData["returnUrl"] as string;
@@ -172,9 +250,19 @@ namespace property_rental_management.Controllers
         // GET:  Tenants/Messages/5
         public async Task<IActionResult> Messages(string id)
         {
+
+
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var tenantID = HttpContext.Session.GetString("tenantID");
+
+            if (tenantID == null)
+            {
+                return View("AccessDenied");
+
             }
 
             var messages = await _context.Messages
@@ -202,6 +290,8 @@ namespace property_rental_management.Controllers
                 formattedMessages.Add(foundMessage);
             }
 
+            HttpContext.Session.SetString("tenantID", tenantID);
+
             return View(formattedMessages);
         }
 
@@ -209,9 +299,20 @@ namespace property_rental_management.Controllers
         // GET:  Tenants/Appointments/5
         public async Task<IActionResult> Appointments(string id)
         {
+
+
+
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var tenantID = HttpContext.Session.GetString("tenantID");
+
+            if (tenantID == null)
+            {
+                return View("AccessDenied");
+
             }
 
             var appointments = await _context.Appointments
@@ -225,31 +326,39 @@ namespace property_rental_management.Controllers
                 .OrderByDescending(app => app.AppointmentDate)
                 .ToListAsync();
 
+            HttpContext.Session.SetString("tenantID", tenantID);
+
             return View(appointments);
         }
-
-
-
-
-
-
-
 
         // GET: Tenants/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || jobID != "500")
+            {
+                return View("AccessDenied");
+            }
+
 
             var tenant = await _context.Tenants
                 .Include(t => t.EmailNavigation)
                 .FirstOrDefaultAsync(m => m.TenantId == id);
+
             if (tenant == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
 
             return View(tenant);
         }
@@ -285,7 +394,21 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+            var tenantID = HttpContext.Session.GetString("tenantID");
+
+            if ((employeeID == null || jobID != "500") && tenantID == null)
+            {
+                return View("AccessDenied");
+            }
+
+            if (tenantID != null && tenantID != id)
+            {
+                return View("AccessDenied");
             }
 
             var tenant = await _context.Tenants
@@ -294,7 +417,19 @@ namespace property_rental_management.Controllers
 
             if (tenant == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            if (tenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", tenantID);
+
+            }
+            else if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
+
             }
 
             return View(tenant);
@@ -305,6 +440,20 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+            var tenantID = HttpContext.Session.GetString("tenantID");
+
+            if ((employeeID == null || jobID != "500") && tenantID == null)
+            {
+                return View("AccessDenied");
+            }
+
+            if (tenantID != null && tenantID != id)
+            {
+                return View("AccessDenied");
+            }
 
             var appointments = await _context.Appointments
                         .Where(t => t.TenantId == id)
@@ -323,6 +472,19 @@ namespace property_rental_management.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            if (tenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", tenantID);
+
+            }
+            else if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
+
+            }
+
 
             var returnUrl = TempData["returnUrl"] as string;
             if (returnUrl != null)

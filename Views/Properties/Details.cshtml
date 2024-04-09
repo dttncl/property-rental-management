@@ -1,9 +1,10 @@
 ﻿@model property_rental_management.Models.Property
 
 @{
-    var userEmail = Context.Session.GetString("userEmail");
     var tenantID = Context.Session.GetString("tenantID");
     var employeeID = Context.Session.GetString("employeeID");
+    var jobID = Context.Session.GetString("jobID");
+
     
 }
 
@@ -30,7 +31,7 @@
                 <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
             </form>
         }
-        else if (employeeID != null)
+        else if (employeeID != null && jobID == "502")
         {
             // SENDER: Employee
             <form asp-controller="Msgs" asp-action="Create" method="get">
@@ -49,6 +50,7 @@
                 <button type="submit" class="rs-card-link btn btn-lg btn-rentaspace-full">Book</button>
             </form>
         }
+        else if (employeeID != null && jobID == "500") {}
         else
         {
 

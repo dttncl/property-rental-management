@@ -65,7 +65,16 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var tenantID = HttpContext.Session.GetString("tenantID");
+            var employeeID = HttpContext.Session.GetString("employeeID");
+
+            if (tenantID == null && employeeID == null)
+            {
+                return View("AccessDenied");
+
             }
 
             var apartment = await _context.Apartments
@@ -73,12 +82,21 @@ namespace property_rental_management.Controllers
                 .Include(p => p.Properties)
                     .ThenInclude(c => c.City)
                 .FirstOrDefaultAsync(m => m.ApartmentId == id);
+
             if (apartment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString();
+            if (tenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", tenantID);
+            }
+
+            if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+            }
 
 
             return View(apartment);
@@ -89,12 +107,21 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
+            {
+                return View("AccessDenied");
             }
 
             ViewBag.PropertyId = id;
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString();
 
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
 
             return View();
         }
@@ -108,6 +135,14 @@ namespace property_rental_management.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var employeeID = HttpContext.Session.GetString("employeeID");
+                var jobID = HttpContext.Session.GetString("jobID");
+
+                if (employeeID == null || (jobID != "502" && jobID != "500"))
+                {
+                    return View("AccessDenied");
+                }
 
                 string aID;
                 do
@@ -169,6 +204,10 @@ namespace property_rental_management.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
+
+
             }
 
             return View(apartment);
@@ -179,13 +218,22 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
+            {
+                return View("AccessDenied");
+            }
+
 
             var apartment = await _context.Apartments.FindAsync(id);
             if (apartment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var statuses = _context.Statuses
@@ -194,7 +242,10 @@ namespace property_rental_management.Controllers
                 .ToList();
 
             ViewData["StatusId"] = new SelectList(statuses, "StatusId", "Description", apartment.StatusId);
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString();
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
+
 
             return View(apartment);
         }
@@ -208,7 +259,15 @@ namespace property_rental_management.Controllers
         {
             if (id != apartment.ApartmentId)
             {
-                return NotFound();
+                return View("Error");
+            }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
+            {
+                return View("AccessDenied");
             }
 
             if (ModelState.IsValid)
@@ -233,7 +292,7 @@ namespace property_rental_management.Controllers
                     }
                     else
                     {
-                        return NotFound();
+                        return View("Error");
                     }
 
                 }
@@ -241,13 +300,16 @@ namespace property_rental_management.Controllers
                 {
                     if (!ApartmentExists(apartment.ApartmentId))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
                         throw;
                     }
                 }
+
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
 
                 var returnUrl = TempData["returnUrl"] as string;
                 if (returnUrl != null)
@@ -268,8 +330,17 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || (jobID != "502" && jobID != "500"))
+            {
+                return View("AccessDenied");
+            }
+
 
             var apartment = await _context.Apartments
                 .Include(a => a.Status)
@@ -277,9 +348,11 @@ namespace property_rental_management.Controllers
 
             if (apartment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
 
             return View(apartment);
         }
@@ -293,7 +366,7 @@ namespace property_rental_management.Controllers
 
             if (apartment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             try
@@ -342,7 +415,7 @@ namespace property_rental_management.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                return NotFound();
+                return View("Error");
             }
         }
 

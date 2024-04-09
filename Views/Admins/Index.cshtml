@@ -1,15 +1,16 @@
 ﻿@model IEnumerable<property_rental_management.Models.Admin>
 
 @{
-    var userEmail = Context.Session.GetString("userEmail");
-    var tenantID = Context.Session.GetString("tenantID");
+    var jobID = Context.Session.GetString("jobID");
     var employeeID = Context.Session.GetString("employeeID");
-    TempData["returnUrl"] = (string)Context.Request.Path;
+
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    TempData["returnUrl"] = (string)returnUrl;
 }
 
 
 <div class="rs-admin-users-container">
-    <h1>Rentaspace Users</h1>
+    <h1>Manage Rentaspace</h1>
     <div class="rs-admin-users">
         <a asp-controller="Managers" asp-action="Index" class="btn btn-lg btn-rentaspace-outline" id="rs-icon-manager-link">
             <img src="~/images/icon_managers_hover.png" class="rs-admin-icon" id="rs-icon-manager"/>
@@ -19,6 +20,9 @@
             <img src="~/images/icon_tenants_hover.png" class="rs-admin-icon" id="rs-icon-tenant" />
             Tenants
         </a>
+        <a asp-controller="Properties" asp-action="List" class="btn btn-lg btn-rentaspace-outline" id="rs-icon-bldg-link">
+            <img src="~/images/icon_bldg_hover.png" class="rs-admin-icon" id="rs-icon-bldg" />
+            Properties
+        </a>
     </div>
 </div>
-

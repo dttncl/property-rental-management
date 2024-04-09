@@ -1,6 +1,8 @@
 ﻿@model property_rental_management.Models.Apartment
 
 @{
+    var employeeID = Context.Session.GetString("employeeID");
+
  }
 
 <h1>Manage Apartment</h1>
@@ -40,9 +42,14 @@
         </dd>
     </dl>
 </div>
-<div>
-    <div class="form-group rs-row">
-        <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-full">Edit</a>
-        <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
+
+@if (employeeID != null)
+{
+    <div>
+        <div class="form-group rs-row">
+            <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-full">Edit</a>
+            <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
+        </div>
     </div>
-</div>
+
+}

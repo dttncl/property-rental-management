@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label asp-for="StatusId" class="control-label">Apartment Status</label>
-                <select asp-for="StatusId" class="form-control" asp-items=@statusList></select>
+                <select class="form-select" asp-for="StatusId" class="form-control" asp-items=@statusList></select>
                 <span asp-validation-for="StatusId" class="text-danger"></span>
             </div>
 

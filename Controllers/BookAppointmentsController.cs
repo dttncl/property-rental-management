@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Protocol.Plugins;
 using property_rental_management.Models;
 
 namespace property_rental_management.Controllers
@@ -29,14 +31,14 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var bookAppointment = await _context.Appointments
                 .FirstOrDefaultAsync(m => m.AppointmentId == id);
             if (bookAppointment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(bookAppointment);
@@ -46,14 +48,40 @@ namespace property_rental_management.Controllers
         public IActionResult Create(String managerId, String tenantID, String propertyID)
         {
 
+            if (managerId == null && tenantID == null && propertyID == null)
+            {
+                return View("Error");
+            }
+
+            var stenantID = HttpContext.Session.GetString("tenantID");
+            var employeeID = HttpContext.Session.GetString("employeeID");
+
+            if (stenantID == null && employeeID == null)
+            {
+                return View("AccessDenied");
+
+            }
+
             var isManager = _context.Managers.Any(m => m.ManagerId.ToString() == managerId);
 
             if (isManager)
             {
+                if (employeeID != managerId)
+                {
+                    return View("AccessDenied");
+
+                }
+
                 ViewData["managerID"] = managerId;
             }
             else
             {
+                if (stenantID != tenantID)
+                {
+                    return View("AccessDenied");
+
+                }
+
                 var managers = _context.Managers
                                     .Where(m => m.Properties.Any(p => p.PropertyId == managerId))
                                     .Select(p => new
@@ -65,8 +93,6 @@ namespace property_rental_management.Controllers
 
                 ViewData["managersList"] = new SelectList(managers, "ManagerID", "ManagerValue");
             }
-
-            //ViewData["managerID"] = managerId;
 
             if (tenantID != null)
             {
@@ -97,6 +123,16 @@ namespace property_rental_management.Controllers
 
             ViewData["statusId"] = "S1";
 
+            if (stenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", stenantID);
+            }
+
+            if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+            }
+
             return View();
         }
 
@@ -107,12 +143,22 @@ namespace property_rental_management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AppointmentId,ManagerId,TenantId,ScheduleId,AppointmentDate,StatusId,ApartmentId")] BookAppointment bookAppointment)
         {
+
+            var stenantID = HttpContext.Session.GetString("tenantID");
+            var employeeID = HttpContext.Session.GetString("employeeID");
+
+            if (stenantID == null && employeeID == null)
+            {
+                return View("AccessDenied");
+
+            }
+
             if (ModelState.IsValid)
             {
 
                 if (bookAppointment == null)
                 {
-                    return NotFound();
+                    return View("Error");
                 }
 
                 var newAppointment = new Appointment
@@ -129,13 +175,7 @@ namespace property_rental_management.Controllers
                 _context.Appointments.Add(newAppointment);
                 await _context.SaveChangesAsync();
 
-
-                //HttpContext.Session.SetString("userEmail", userAccount.Email);
-                //HttpContext.Session.SetString("userType", userAccount.UserType);
-                //HttpContext.Session.SetString("tenantID", tenant.TenantId);
-
-
-                var returnUrl = TempData["returnUrl"] as string;
+                var returnUrl = ViewData["returnUrl"] as string;
                 if (returnUrl != null)
                 {
                     return Redirect((string)returnUrl);
@@ -147,6 +187,16 @@ namespace property_rental_management.Controllers
 
             }
 
+            if (stenantID != null)
+            {
+                HttpContext.Session.SetString("tenantID", stenantID);
+            }
+
+            if (employeeID != null)
+            {
+                HttpContext.Session.SetString("employeeID", employeeID);
+            }
+
             return View(bookAppointment);
         }
 
@@ -155,13 +205,13 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var bookAppointment = await _context.Appointments.FindAsync(id);
             if (bookAppointment == null)
             {
-                return NotFound();
+                return View("Error");
             }
             return View(bookAppointment);
         }
@@ -175,7 +225,7 @@ namespace property_rental_management.Controllers
         {
             if (id != bookAppointment.AppointmentId)
             {
-                return NotFound();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
@@ -189,7 +239,7 @@ namespace property_rental_management.Controllers
                 {
                     if (!BookAppointmentExists(bookAppointment.AppointmentId))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
@@ -206,14 +256,14 @@ namespace property_rental_management.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var bookAppointment = await _context.Appointments
                 .FirstOrDefaultAsync(m => m.AppointmentId == id);
             if (bookAppointment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(bookAppointment);

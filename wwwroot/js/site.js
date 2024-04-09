@@ -75,6 +75,8 @@ var managerLink = document.getElementById("rs-icon-manager-link");
 var managerIcon = document.getElementById("rs-icon-manager");
 var tenantLink = document.getElementById("rs-icon-tenant-link");
 var tenantIcon = document.getElementById("rs-icon-tenant");
+var bldgLink = document.getElementById("rs-icon-bldg-link");
+var bldgIcon = document.getElementById("rs-icon-bldg");
 
 managerLink.addEventListener("mouseover", function () {
     managerIcon.src = "/images/icon_managers.png";
@@ -90,4 +92,9 @@ tenantLink.addEventListener("mouseout", function () {
     tenantIcon.src = "/images/icon_tenants_hover.png";
 });
 
-
+bldgLink.addEventListener("mouseover", function () {
+    bldgIcon.src = "/images/icon_bldg.png";
+});
+bldgLink.addEventListener("mouseout", function () {
+    bldgIcon.src = "/images/icon_bldg_hover.png";
+});

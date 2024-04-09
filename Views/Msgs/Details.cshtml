@@ -1,6 +1,8 @@
 ﻿@model property_rental_management.Models.Msg
 
 @{
+    var tenantID = Context.Session.GetString("tenantID");
+    var employeeID = Context.Session.GetString("employeeID");
 }
 
 <h1>@Model.Subject</h1>
