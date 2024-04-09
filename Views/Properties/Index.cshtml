@@ -182,11 +182,10 @@
     var map;
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 45.5017, lng: -73.5673 }, // New York City coordinates (default center)
+            center: { lat: 45.5017, lng: -73.5673 },
             zoom: 12
         });
 
-        // Call getLatLong function to get latitude and longitude for each address
         getLatLong();
     }
 
@@ -219,7 +218,6 @@
     }
 </script>
 <script>
-    // Initialize the map when the DOM is ready
     document.addEventListener('DOMContentLoaded', function () {
         initMap();
     });
