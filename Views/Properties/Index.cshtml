@@ -164,7 +164,7 @@
                                         }
                                     </div>
                                     <div>
-                                        <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @property.Address, @property.City.CityName, QC
+                                        <img src="~/images/icon_location.png" class="rs-card-detail-icon" /> <span class="rs-address">@property.Address, @property.City.CityName, QC</span>
                                     </div>
 
                                 </div>
@@ -177,12 +177,50 @@
     </div>
 </main>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=API_KEY" defer></script>
 <script>
+    var map;
     function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 45.5017, lng: -73.5673 }, // New York City coordinates (default center)
+            zoom: 12
+        });
+
+        // Call getLatLong function to get latitude and longitude for each address
+        getLatLong();
+    }
+
+    function getLatLong() {
+        var addresses = document.getElementsByClassName('rs-address');
+        for (var i = 0; i < addresses.length; i++) {
+            var address = addresses[i].textContent;
+            geocodeAddress(address);
+        }
+    }
+
+    function geocodeAddress(address) {
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+
+                // Create marker
+                var marker = new google.maps.Marker({
+                    position: { lat: latitude, lng: longitude },
+                    map: map,
+                    title: address
+                });
+            } else {
+                console.log('Geocode was not successful for the following reason: ' + status);
+            }
         });
     }
+</script>
+<script>
+    // Initialize the map when the DOM is ready
+    document.addEventListener('DOMContentLoaded', function () {
+        initMap();
+    });
 </script>
