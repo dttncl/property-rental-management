@@ -37,9 +37,8 @@
                 {
                     <div class="form-group">
                         <input type="hidden" name="managerId" value="admin" />
-                        <label class="control-label">City</label>
-                        <label asp-for="CityId" class="control-label"></label>
-                        <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities"></select>
+                        <label asp-for="CityId" class="control-label">City</label>
+                        <select class="form-select" asp-for="CityId" class="form-control" asp-items="ViewBag.Cities"></select>
                     </div>
                 }
 

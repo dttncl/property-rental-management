@@ -522,3 +522,44 @@ h1.text-danger {
 h2.text-danger {
     font-size: 1rem;
 }
+
+.rs-error-404,
+.rs-error-denied {
+    width: 350px;
+}
+
+h5 {
+    margin-bottom: 20px;
+}
+
+.rs-apartment-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.rs-apartment-left {
+    width: 40%;
+}
+
+.rs-apartment-right {
+    width: 60%;
+}
+
+.rs-row {
+    flex-direction: column;
+}
+
+.rs-row > div {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.rs-apartment-right > .rs-form-edit {
+    margin-top: 0;
+}
+
+.rs-h4 {
+    margin-bottom: 20px;
+}

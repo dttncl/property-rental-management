@@ -33,7 +33,7 @@ namespace property_rental_management.Controllers
             {
                 if (register == null)
                 {
-                    return NotFound();
+                    return View("Error");
                 }
 
                 var userAccount = await _context.UserAccounts

@@ -33,7 +33,7 @@ namespace property_rental_management.Controllers
             {
                 if (login == null)
                 {
-                    return NotFound();
+                    return View("Error");
                 }
 
                 var userAccount = await _context.UserAccounts
@@ -41,7 +41,8 @@ namespace property_rental_management.Controllers
 
                 if (userAccount == null)
                 {
-                    return NotFound();
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                    return View(login);
 
                 } else
                 {
@@ -57,7 +58,7 @@ namespace property_rental_management.Controllers
 
                         if (employee == null || employee.StatusId == "E2")
                         {
-                            return NotFound();
+                            return View("Error");
                         }
 
                         // ADMIN
@@ -83,7 +84,7 @@ namespace property_rental_management.Controllers
 
                         if (tenant == null)
                         {
-                            return NotFound();
+                            return View("Error");
                         }
 
                         HttpContext.Session.SetString("tenantID", tenant.TenantId);

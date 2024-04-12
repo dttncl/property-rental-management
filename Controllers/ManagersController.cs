@@ -18,6 +18,7 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
+
         private async Task<String> GetUserDetails(string userId)
         {
             string userDetails;
@@ -52,7 +53,50 @@ namespace property_rental_management.Controllers
             return userDetails;
         }
 
-        // GET:  Managers/Messages/5
+        // GET: Managers
+        public async Task<IActionResult> Index(string s)
+        {
+
+            var employeeID = HttpContext.Session.GetString("employeeID");
+            var jobID = HttpContext.Session.GetString("jobID");
+
+            if (employeeID == null || jobID != "500")
+            {
+                return View("AccessDenied");
+            }
+
+            var managers = _context.Managers.AsQueryable();
+
+            if (!string.IsNullOrEmpty(s))
+            {
+                managers = _context.Managers
+                                .Where(q =>
+                                    q.ManagerNavigation.FirstName.Contains(s) ||
+                                    q.ManagerNavigation.LastName.Contains(s) ||
+                                    q.Email.Contains(s) ||
+                                    q.City.CityName.Contains(s))
+                                .Include(m => m.City)
+                                .Include(m => m.EmailNavigation)
+                                .Include(m => m.ManagerNavigation)
+                                    .ThenInclude(s => s.Status);
+
+            }
+            else
+            {
+                managers = _context.Managers
+                                .Include(m => m.City)
+                                .Include(m => m.EmailNavigation)
+                                .Include(m => m.ManagerNavigation)
+                                    .ThenInclude(s => s.Status);
+            }
+
+            HttpContext.Session.SetString("employeeID", employeeID);
+            HttpContext.Session.SetString("jobID", jobID);
+
+            return View(await managers.ToListAsync());
+        }
+
+        // GET:  Managers/Messages/id
         public async Task<IActionResult> Messages(string id)
         {
             if (id == null)
@@ -101,7 +145,7 @@ namespace property_rental_management.Controllers
             return View(formattedMessages);
         }
 
-        // GET:  Managers/Appointments/5
+        // GET:  Managers/Appointments/id
         public async Task<IActionResult> Appointments(string id)
         {
             if (id == null)
@@ -133,8 +177,8 @@ namespace property_rental_management.Controllers
             return View(appointments);
         }
 
-        // GET: Managers/Listings/5
-
+        // GET: Managers/Listings/id
+        // display manager dashboard
         public async Task<IActionResult> Listings(string id)
         {
             if (id == null)
@@ -169,49 +213,9 @@ namespace property_rental_management.Controllers
             return View(manager);
         }
 
-        // GET: Managers
-        public async Task<IActionResult> Index(string s)
-        {
+        
 
-            var employeeID = HttpContext.Session.GetString("employeeID");
-            var jobID = HttpContext.Session.GetString("jobID");
-
-            if (employeeID == null || jobID != "500")
-            {
-                return View("AccessDenied");
-            }
-
-            var managers = _context.Managers.AsQueryable();
-
-            if (!string.IsNullOrEmpty(s))
-            {
-                managers = _context.Managers
-                                .Where(q => 
-                                    q.ManagerNavigation.FirstName.Contains(s) ||
-                                    q.ManagerNavigation.LastName.Contains(s) ||
-                                    q.Email.Contains(s) ||
-                                    q.City.CityName.Contains(s))
-                                .Include(m => m.City)
-                                .Include(m => m.EmailNavigation)
-                                .Include(m => m.ManagerNavigation)
-                                    .ThenInclude(s => s.Status);
-
-            } else
-            {
-                managers = _context.Managers
-                                .Include(m => m.City)
-                                .Include(m => m.EmailNavigation)
-                                .Include(m => m.ManagerNavigation)
-                                    .ThenInclude(s => s.Status);
-            }
-
-            HttpContext.Session.SetString("employeeID", employeeID);
-            HttpContext.Session.SetString("jobID", jobID);
-
-            return View(await managers.ToListAsync());
-        }
-
-        // GET: Managers/Details/5
+        // GET: Managers/Details/id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -366,7 +370,7 @@ namespace property_rental_management.Controllers
             return View(manager);
         }
 
-        // GET: Managers/Edit/5
+        // GET: Managers/Edit/id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -431,7 +435,7 @@ namespace property_rental_management.Controllers
             return View(modifyManager);
         }
 
-        // POST: Managers/Edit/5
+        // POST: Managers/Edit/id
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -529,7 +533,7 @@ namespace property_rental_management.Controllers
             return View(manager);
         }
 
-        // GET: Managers/Delete/5
+        // GET: Managers/Delete/id
         public async Task<IActionResult> Delete(int? id)
         {
 
@@ -581,7 +585,7 @@ namespace property_rental_management.Controllers
             return View(modifyManager);
         }
 
-        // POST: Managers/Delete/5
+        // POST: Managers/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -19,12 +19,6 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
-        // GET: Msgs
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Msg.ToListAsync());
-        }
-
         private async Task<String> GetUserDetails(string userId)
         {
             string userDetails;
@@ -149,6 +143,7 @@ namespace property_rental_management.Controllers
                 {
                     var managers = _context.Managers
                                         .Where(m => m.Properties.Any(p => p.PropertyId == msgTo))
+                                        .Where(e => e.ManagerNavigation.StatusId == "E1")
                                         .Select(p => new
                                         {
                                             ManagerID = p.ManagerId,

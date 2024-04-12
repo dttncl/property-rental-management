@@ -79,7 +79,6 @@ namespace property_rental_management.Controllers
         }
 
 
-
         // GET: Tenants/Profile
         public async Task<IActionResult> Profile(string id)
         {
@@ -362,32 +361,7 @@ namespace property_rental_management.Controllers
 
             return View(tenant);
         }
-
-        // GET: Tenants/Create
-        public IActionResult Create()
-        {
-            ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email");
-            return View();
-        }
-
-        // POST: Tenants/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TenantId,FirstName,LastName,Email,Phone")] Tenant tenant)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(tenant);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Email"] = new SelectList(_context.UserAccounts, "Email", "Email", tenant.Email);
-            return View(tenant);
-        }
-
-        
+      
 
         // GET: Tenants/Delete/5
         public async Task<IActionResult> Delete(string id)

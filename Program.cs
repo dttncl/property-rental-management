@@ -12,14 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("RentaSpaceDatabase");
 
 builder.Services.AddDbContext <property_rental_management.Models.RentaSpaceDbContext> (options => options.UseSqlServer(connection));
-//builder.Services.AddRazorPages();
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(20);
+    options.IdleTimeout = TimeSpan.FromSeconds(50);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -39,7 +38,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.UseSession();
-//app.MapRazorPages();
 app.MapControllerRoute(
  name: "default",
  pattern: "{controller=Home}/{action=Index}/{id?}");

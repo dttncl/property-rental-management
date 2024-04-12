@@ -20,12 +20,6 @@ namespace property_rental_management.Controllers
             _context = context;
         }
 
-        // GET: BookAppointments
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Appointments.ToListAsync());
-        }
-
         // GET: BookAppointments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -84,6 +78,7 @@ namespace property_rental_management.Controllers
 
                 var managers = _context.Managers
                                     .Where(m => m.Properties.Any(p => p.PropertyId == managerId))
+                                    .Where(e => e.ManagerNavigation.StatusId == "E1")
                                     .Select(p => new
                                     {
                                         ManagerID = p.ManagerId,
@@ -200,93 +195,5 @@ namespace property_rental_management.Controllers
             return View(bookAppointment);
         }
 
-        // GET: BookAppointments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return View("Error");
-            }
-
-            var bookAppointment = await _context.Appointments.FindAsync(id);
-            if (bookAppointment == null)
-            {
-                return View("Error");
-            }
-            return View(bookAppointment);
-        }
-
-        // POST: BookAppointments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,ManagerId,TenantId,ScheduleId,AppointmentDate,StatusId,ApartmentId")] BookAppointment bookAppointment)
-        {
-            if (id != bookAppointment.AppointmentId)
-            {
-                return View("Error");
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(bookAppointment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookAppointmentExists(bookAppointment.AppointmentId))
-                    {
-                        return View("Error");
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(bookAppointment);
-        }
-
-        // GET: BookAppointments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return View("Error");
-            }
-
-            var bookAppointment = await _context.Appointments
-                .FirstOrDefaultAsync(m => m.AppointmentId == id);
-            if (bookAppointment == null)
-            {
-                return View("Error");
-            }
-
-            return View(bookAppointment);
-        }
-
-        // POST: BookAppointments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var bookAppointment = await _context.Appointments.FindAsync(id);
-            if (bookAppointment != null)
-            {
-                _context.Appointments.Remove(bookAppointment);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool BookAppointmentExists(int id)
-        {
-            return _context.Appointments.Any(e => e.AppointmentId == id);
-        }
     }
 }

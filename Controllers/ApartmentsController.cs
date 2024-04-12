@@ -51,14 +51,6 @@ namespace property_rental_management.Controllers
             return View(await rentaSpaceDbContext.ToListAsync());
         }
 
-        // GET: Apartments/List
-        public async Task<IActionResult> List()
-        {
-            var rentaSpaceDbContext = _context.Apartments
-                .Include(a => a.Status)
-                .Include(p => p.Properties);
-            return View(await rentaSpaceDbContext.ToListAsync());
-        }
 
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(string id)
@@ -194,6 +186,10 @@ namespace property_rental_management.Controllers
 
                 }
 
+                HttpContext.Session.SetString("employeeID", employeeID);
+                HttpContext.Session.SetString("jobID", jobID);
+
+
                 var returnUrl = TempData["returnUrl"] as string;
                 if (returnUrl != null)
                 {
@@ -203,10 +199,6 @@ namespace property_rental_management.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-
-                HttpContext.Session.SetString("employeeID", employeeID);
-                HttpContext.Session.SetString("jobID", jobID);
-
 
             }
 
@@ -311,6 +303,8 @@ namespace property_rental_management.Controllers
                 HttpContext.Session.SetString("employeeID", employeeID);
                 HttpContext.Session.SetString("jobID", jobID);
 
+                ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
+
                 var returnUrl = TempData["returnUrl"] as string;
                 if (returnUrl != null)
                 {
@@ -321,7 +315,6 @@ namespace property_rental_management.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusId", apartment.StatusId);
             return View(apartment);
         }
 
@@ -398,8 +391,6 @@ namespace property_rental_management.Controllers
                     _context.Properties.Update(relatedProperty);
 
                 }              
-
-                //_context.Apartments.Remove(apartment);
 
                 await _context.SaveChangesAsync();
 

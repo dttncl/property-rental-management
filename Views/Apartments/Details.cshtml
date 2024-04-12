@@ -1,55 +1,110 @@
 ﻿@model property_rental_management.Models.Apartment
 
 @{
+
+    List<string> imageFiles = new List<string>();
+    imageFiles.Add("/images/apartments/apartment_1.jpg");
+    imageFiles.Add("/images/apartments/apartment_2.jpg");
+    imageFiles.Add("/images/apartments/apartment_3.jpg");
+    imageFiles.Add("/images/apartments/apartment_4.jpg");
+    imageFiles.Add("/images/apartments/apartment_5.jpg");
+    imageFiles.Add("/images/apartments/apartment_6.jpg");
+    imageFiles.Add("/images/apartments/apartment_7.jpg");
+
     var employeeID = Context.Session.GetString("employeeID");
 
  }
 
-<h1>Manage Apartment</h1>
-<h4><img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Properties.First().Address , @Model.Properties.First().City.CityName , QC</h4>
-
-<div class="rs-form-edit">
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Bedrooms
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Bedrooms
-        </dd>
-        <dt class = "col-sm-2">
-            Bathrooms
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Bathrooms
-        </dd>
-        <dt class = "col-sm-2">
-            Floor Area
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.FloorArea sqm.
-        </dd>
-        <dt class = "col-sm-2">
-            Price
-        </dt>
-        <dd class = "col-sm-10">
-            $ @Model.Price
-        </dd>
-        <dt class = "col-sm-2">
-            Apartment Status
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Status.Description
-        </dd>
-    </dl>
-</div>
-
-@if (employeeID != null)
+@if (employeeID != null) {
+    <h1>Manage Apartment</h1>
+} else
 {
-    <div>
-        <div class="form-group rs-row">
-            <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-full">Edit</a>
-            <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
+    <h1>Apartment</h1>
+}
+
+<h4 class="rs-h4"><img src="~/images/icon_location.png" class="rs-card-detail-icon" /> @Model.Properties.First().Address , @Model.Properties.First().City.CityName , QC</h4>
+
+<div class="rs-apartment-container">
+    <div id="carouselExampleIndicators" class="carousel slide rs-apartment-left" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @for (int i = 0; i < imageFiles.Count; i++)
+            {
+                <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@((i == 0) ? "active" : "")"></li>
+            }
+        </ol>
+        <div class="carousel-inner">
+            @for (int i = 0; i < imageFiles.Count; i++)
+            {
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img class="d-block w-100" src="@imageFiles[i]" alt="Apartment Image @(i+1)">
+                </div>
+            }
         </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
     </div>
 
-}
+    <div class="rs-apartment-right">
+        <div class="rs-form-edit">
+            <dl class="row rs-row">
+                <div>
+                    <dt class="col-sm-3">
+                        Bedrooms
+                    </dt>
+                    <dd class="col-sm-5">
+                        @Model.Bedrooms
+                    </dd>
+                </div>
+                <div>
+                    <dt class="col-sm-3">
+                        Bathrooms
+                    </dt>
+                    <dd class="col-sm-5">
+                        @Model.Bathrooms
+                    </dd>
+                </div>
+                <div>
+                    <dt class="col-sm-3">
+                        Floor Area
+                    </dt>
+                    <dd class="col-sm-5">
+                        @Model.FloorArea sqm.
+                    </dd>
+                </div>
+                <div>
+                    <dt class="col-sm-3">
+                        Price
+                    </dt>
+                    <dd class="col-sm-5">
+                        $ @Model.Price
+                    </dd>
+                </div>
+                <div>
+                    <dt class="col-sm-3">
+                        Apartment Status
+                    </dt>
+                    <dd class="col-sm-5">
+                        @Model.Status.Description
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+        @if (employeeID != null)
+        {
+            <div>
+                <div class="form-group rs-row">
+                    <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-full">Edit</a>
+                    <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@Model?.ApartmentId" class="btn btn-lg btn-rentaspace-outline">Delete</a>
+                </div>
+            </div>
+
+        }
+    </div>
+
+</div>
+
